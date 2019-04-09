@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e33cfea313a97168e3fb40760bbccf5c",
+    "content-hash": "1f254ade98449fe207a22fb67ada60f7",
     "packages": [
         {
             "name": "abtercms/framework",
