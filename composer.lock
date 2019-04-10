@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "131ef6771e79fb764cd66a9ebec234ec",
+    "content-hash": "1c5be810c7657c520a7797df21651c82",
     "packages": [
         {
-            "name": "abtercms/framework",
+            "name": "abterphp/framework",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/abtercms/framework.git",
-                "reference": "af1729b6de4ae7daed4f95471f5a9db19b6e3b77"
+                "url": "https://github.com/abterphp/framework.git",
+                "reference": "5b39519546b00bd79330d06f90662b3c11d83b07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abtercms/framework/zipball/af1729b6de4ae7daed4f95471f5a9db19b6e3b77",
-                "reference": "af1729b6de4ae7daed4f95471f5a9db19b6e3b77",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/5b39519546b00bd79330d06f90662b3c11d83b07",
+                "reference": "5b39519546b00bd79330d06f90662b3c11d83b07",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,7 @@
                 "mikey179/vfsstream": "^1.6",
                 "monolog/monolog": "1.22.0",
                 "opulence/opulence": "1.1.*",
-                "php": "^7.1",
+                "php": "^7.2",
                 "swiftmailer/swiftmailer": "^6.1"
             },
             "require-dev": {
@@ -55,6 +55,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -66,11 +67,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "support": {
-                "source": "https://github.com/abtercms/framework/tree/master",
-                "issues": "https://github.com/abtercms/framework/issues"
-            },
-            "time": "2019-04-08T17:06:38+00:00"
+            "time": "2019-04-10T11:50:41+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1879,20 +1876,20 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "78af75148f9fdd34ea727c8b529a9b4a8f7b740c"
+                "reference": "e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/78af75148f9fdd34ea727c8b529a9b4a8f7b740c",
-                "reference": "78af75148f9fdd34ea727c8b529a9b4a8f7b740c",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72",
+                "reference": "e6828efaba2c9b79f4499dae1d66ef8bfa7b2b72",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.1"
             },
             "replace": {
                 "myclabs/deep-copy": "self.version"
@@ -1900,8 +1897,6 @@
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
                 "phpunit/phpunit": "^7.1"
             },
             "type": "library",
@@ -1925,7 +1920,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-10-30T00:14:44+00:00"
+            "time": "2019-04-07T13:18:21+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -4302,7 +4297,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "abtercms/framework": 20
+        "abterphp/framework": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
