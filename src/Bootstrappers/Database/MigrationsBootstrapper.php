@@ -68,7 +68,6 @@ class MigrationsBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function getDriver(): string
     {
-        $dirMigrations = getenv(Env::DIR_MIGRATIONS);
         $driverClass   = getenv(Env::DB_DRIVER) ?: PostgreSqlDriver::class;
 
         switch ($driverClass) {
