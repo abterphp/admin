@@ -18,6 +18,7 @@ return [
     ],
     Module::CLI_BOOTSTRAPPERS  => [
         Bootstrappers\Console\Commands\CommandsBootstrapper::class,
+        Bootstrappers\Database\MigrationsBootstrapper::class,
     ],
     Module::HTTP_BOOTSTRAPPERS => [
         Bootstrappers\Http\Controllers\Execute\LoginBootstrapper::class,
@@ -64,7 +65,8 @@ return [
     ],
     Module::MIGRATION_PATHS    => [
         Priorities::NORMAL => [
-            realpath(__DIR__ . '/Databases/Migrations'),
+            realpath(__DIR__ . '/src/Databases/Migrations'),
         ],
     ],
+    Module::RESOURCE_PATH    => realpath(__DIR__ . '/resources'),
 ];
