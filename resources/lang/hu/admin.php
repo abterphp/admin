@@ -49,10 +49,10 @@ return [
 
     'environment' => 'Környezet: %s',
 
-    'throttled'         => 'Too many login attempts. Please try again later.',
-    'dbProblem'         => 'Unexpected database issue. Please try again later.',
-    'unexpectedProblem' => 'Unexpected issue. Retrying may not help. Please contact the administrator.',
-    'unknownFailure'    => 'Login failed. Provided username or password is invalid',
+    'throttled'         => 'Túl sok jelszó probálgatás után a felhasználói név átmenetileg blokkolásra került.',
+    'dbProblem'         => 'Ismeretlen adatbázis hiba. Kérjük próbáld később újra vagy jelezd a hibát az adminisztrátoroknak.',
+    'unexpectedProblem' => 'Ismeretlen hiba. Kérjük próbáld később újra vagy jelezd a hibát az adminisztrátoroknak.',
+    'unknownFailure'    => 'Sikertelen belépés. Megadott felhasználói név vagy jelszó nem megfelelő.',
 
     // Template
     'password'          => 'Jelszó',
