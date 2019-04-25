@@ -69,4 +69,7 @@ return [
         ],
     ],
     Module::RESOURCE_PATH    => realpath(__DIR__ . '/resources'),
+    Module::ASSETS_PATHS  => [
+        'admin-assets' => realpath(__DIR__ . '/resources/rawassets'),
+    ],
 ];

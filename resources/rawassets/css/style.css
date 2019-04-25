@@ -1,0 +1,85 @@
+.trumbowyg-box, .trumbowyg-editor {
+    margin: 3px auto 17px !important;
+}
+
+.environment-warning {
+    line-height: 2em;
+    text-align: center;
+    font-weight: bold;
+    color: #ff2800;
+}
+
+.environment-warning i {
+    font-size: 2.5em;
+    vertical-align: bottom;
+}
+
+.user-img {
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgb(200, 200, 200);
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+}
+
+.user-img img {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.count {
+    color: #ff2800;
+}
+
+.grid-pagination {
+    padding: 0.5em 0;
+}
+
+.gp-numbers {
+    text-align: left;
+}
+
+.gp-options {
+    text-align: right;
+}
+
+.grid-pagination a, .grid-pagination button {
+    min-width: auto;
+}
+
+.caret-down {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    border-left: 5px solid rgba(0,0,0,0);
+    border-right: 4px solid rgba(0,0,0,0);
+    border-top: 5px solid;
+}
+
+.caret-up {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    border-left: 5px solid rgba(0,0,0,0);
+    border-right: 4px solid rgba(0,0,0,0);
+    border-bottom: 5px solid;
+}
+
+.caret-active {
+    color: #e64a19;
+}
+
+.caret-down:hover, .caret-up:hover {
+    color: #337ab7;
+}
+
+.caret-active:hover, .caret-active:focus, .caret-up:focus, .caret-down:focus {
+    color: #ffc107;
+}
+
+.td-file-filename {
+    word-break: break-all;
+}
