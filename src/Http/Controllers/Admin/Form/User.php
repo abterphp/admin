@@ -130,7 +130,7 @@ class User extends FormAbstract
         );
         $this->assets->addJsContent(
             $footerResource,
-            "var frontendSalt = '{$this->frontendSalt}';"
+            "var frontendSalt = '{$this->frontendSalt}'"
         );
         $this->assets->addJs(
             $footerResource,

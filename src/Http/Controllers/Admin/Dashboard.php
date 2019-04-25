@@ -14,6 +14,8 @@ use Opulence\Routing\Urls\UrlGenerator;
 
 class Dashboard extends AdminAbstract
 {
+    const ENTITY_SINGULAR = 'dashboard';
+
     const TITLE_DASHBOARD = 'admin:dashboard';
 
     /** @var ITranslator */

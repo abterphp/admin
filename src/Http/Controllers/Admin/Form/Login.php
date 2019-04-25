@@ -15,6 +15,8 @@ use Opulence\Sessions\ISession;
 
 class Login extends AdminAbstract
 {
+    const ENTITY_SINGULAR = 'login';
+
     const POST_USERNAME = 'username';
 
     /** @var AssetManager */
@@ -52,7 +54,7 @@ class Login extends AdminAbstract
      */
     public function display(): Response
     {
-        $this->assets->addJsContent('admin-login', "var frontendSalt = '{$this->frontendSalt}';");
+        $this->assets->addJsContent('admin-login', "var frontendSalt = '{$this->frontendSalt}'");
 
         $this->view = $this->viewFactory->createView('contents/backend/login');
 
