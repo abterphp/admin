@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Events\Listeners;
 
 use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Events\NavigationReady;
 use AbterPhp\Framework\Html\Component\ButtonFactory;
 use AbterPhp\Framework\Navigation\Dropdown;
@@ -51,9 +52,19 @@ class NavigationBuilder
         }
 
         $this->insertFirstItem($navigation);
-        $this->addUser($navigation);
-        $this->addUserGroup($navigation);
-        $this->addLogout($navigation);
+
+        $dropdown = new Dropdown();
+        $dropdown[] = $this->createUserItem();
+        $dropdown[] = $this->createUserGroupItem();
+        $dropdown[] = $this->createLogoutItem();
+
+        $item   = $this->createUserItem();
+        $item->setIntent(Item::INTENT_DROPDOWN);
+        $item->setAttribute(Html5::ATTR_ID, 'nav-users');
+        $item[0]->setAttribute(Html5::ATTR_HREF, 'javascript:void(0);');
+        $item[1] = $dropdown;
+
+        $navigation->addItem($item, static::DEFAULT_BASE_WEIGHT);
     }
 
     /**
@@ -90,11 +101,10 @@ class NavigationBuilder
     }
 
     /**
-     * @param Navigation $navigation
-     *
-     * @throws \Opulence\Routing\Urls\URLException
+     * @return Item
+     * @throws \Opulence\Routing\Urls\UrlException
      */
-    protected function addUser(Navigation $navigation)
+    protected function createUserItem(): Item
     {
         $text = 'admin:users';
         $icon = 'person';
@@ -102,15 +112,17 @@ class NavigationBuilder
         $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_USERS, [], $icon);
         $resource = $this->getAdminResource(Routes::ROUTE_USERS);
 
-        $navigation->addItem(new Item($button), static::DEFAULT_BASE_WEIGHT, $resource);
+        $item = new Item($button);
+        $item->setResource($resource);
+
+        return $item;
     }
 
     /**
-     * @param Navigation $navigation
-     *
-     * @throws \Opulence\Routing\Urls\URLException
+     * @return Item
+     * @throws \Opulence\Routing\Urls\UrlException
      */
-    protected function addUserGroup(Navigation $navigation)
+    protected function createUserGroupItem(): Item
     {
         $text = 'admin:userGroups';
         $icon = 'group';
@@ -118,15 +130,17 @@ class NavigationBuilder
         $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_USER_GROUPS, [], $icon);
         $resource = $this->getAdminResource(Routes::ROUTE_USER_GROUPS);
 
-        $navigation->addItem(new Item($button), static::DEFAULT_BASE_WEIGHT, $resource);
+        $item = new Item($button);
+        $item->setResource($resource);
+
+        return $item;
     }
 
     /**
-     * @param Navigation $navigation
-     *
-     * @throws \Opulence\Routing\Urls\URLException
+     * @return Item
+     * @throws \Opulence\Routing\Urls\UrlException
      */
-    protected function addLogout(Navigation $navigation)
+    protected function createLogoutItem(): Item
     {
         $text = 'admin:logout';
         $icon = 'settings_power';
@@ -134,7 +148,10 @@ class NavigationBuilder
         $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_LOGOUT, [], $icon);
         $resource = $this->getAdminResource(Routes::ROUTE_LOGOUT);
 
-        $navigation->addItem(new Item($button), PHP_INT_MAX, $resource);
+        $item = new Item($button);
+        $item->setResource($resource);
+
+        return $item;
     }
 
     /**

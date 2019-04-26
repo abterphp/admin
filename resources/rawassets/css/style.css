@@ -83,3 +83,8 @@
 .td-file-filename {
     word-break: break-all;
 }
+
+.nav-open .dropdown-menu {
+    display: block !important;
+    transition: none !important;
+}

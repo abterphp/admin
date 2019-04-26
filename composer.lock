@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "7353cfb148115678fdd134039363eb49509313d3"
+                "reference": "f5da2122325762afc7130cfbbeb6b7a2e44b0bd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/7353cfb148115678fdd134039363eb49509313d3",
-                "reference": "7353cfb148115678fdd134039363eb49509313d3",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/f5da2122325762afc7130cfbbeb6b7a2e44b0bd3",
+                "reference": "f5da2122325762afc7130cfbbeb6b7a2e44b0bd3",
                 "shasum": ""
             },
             "require": {
@@ -25,6 +25,7 @@
                 "casbin/casbin": "^0.1.6",
                 "casbin/database-adapter": "^0.2.0",
                 "cocur/slugify": "^3.1",
+                "dflydev/apache-mime-types": "^1.0",
                 "ext-iconv": "*",
                 "ext-json": "*",
                 "ext-pdo": "*",
@@ -67,7 +68,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2019-04-15T18:46:24+00:00"
+            "time": "2019-04-26T16:50:28+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -268,6 +269,61 @@
                 "slugify"
             ],
             "time": "2019-01-31T20:38:55+00:00"
+        },
+        {
+            "name": "dflydev/apache-mime-types",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dflydev/dflydev-apache-mime-types.git",
+                "reference": "f30a57e59b7476e4c5270b6a0727d79c9c0eb861"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dflydev/dflydev-apache-mime-types/zipball/f30a57e59b7476e4c5270b6a0727d79c9c0eb861",
+                "reference": "f30a57e59b7476e4c5270b6a0727d79c9c0eb861",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "twig/twig": "1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Dflydev\\ApacheMimeTypes": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dragonfly Development Inc.",
+                    "email": "info@dflydev.com",
+                    "homepage": "http://dflydev.com"
+                },
+                {
+                    "name": "Beau Simensen",
+                    "email": "beau@dflydev.com",
+                    "homepage": "http://beausimensen.com"
+                }
+            ],
+            "description": "Apache MIME Types",
+            "keywords": [
+                "apache",
+                "mime",
+                "mimetypes"
+            ],
+            "time": "2013-05-14T02:02:01+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1059,16 +1115,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v6.2.0",
+            "version": "v6.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "6fa3232ff9d3f8237c0fae4b7ff05e1baa4cd707"
+                "reference": "5397cd05b0a0f7937c47b0adcb4c60e5ab936b6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/6fa3232ff9d3f8237c0fae4b7ff05e1baa4cd707",
-                "reference": "6fa3232ff9d3f8237c0fae4b7ff05e1baa4cd707",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/5397cd05b0a0f7937c47b0adcb4c60e5ab936b6a",
+                "reference": "5397cd05b0a0f7937c47b0adcb4c60e5ab936b6a",
                 "shasum": ""
             },
             "require": {
@@ -1117,7 +1173,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2019-03-10T07:52:41+00:00"
+            "time": "2019-04-21T09:21:45+00:00"
         },
         {
             "name": "symfony/expression-language",

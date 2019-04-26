@@ -65,6 +65,7 @@ class AdminBuilder implements IViewBuilder
     public function build(IView $view): IView
     {
         $this->assets->addJs(View::ASSET_HEADER, '/admin-assets/vendor/jquery/jquery.min.js');
+        $this->assets->addJs(View::ASSET_HEADER, '/admin-assets/js/navigation.js');
 
         $view->setVar('env', getenv(Env::ENV_NAME));
         $view->setVar('title', 'Admin');

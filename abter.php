@@ -36,19 +36,19 @@ return [
     Module::EVENTS             => [
         Event::AUTH_READY         => [
             /** @see Events\Listeners\AuthInitializer::handle */
-            sprintf('%s@handle', Events\Listeners\AuthInitializer::class),
+            Priorities::NORMAL => [sprintf('%s@handle', Events\Listeners\AuthInitializer::class)],
         ],
         Event::NAVIGATION_READY   => [
             /** @see Events\Listeners\NavigationBuilder::handle */
-            sprintf('%s@handle', Events\Listeners\NavigationBuilder::class),
+            Priorities::NORMAL => [sprintf('%s@handle', Events\Listeners\NavigationBuilder::class)],
         ],
         Event::ENTITY_POST_CHANGE => [
             /** @see Events\Listeners\AuthInvalidator::handle */
-            sprintf('%s@handle', Events\Listeners\AuthInvalidator::class),
+            Priorities::NORMAL => [sprintf('%s@handle', Events\Listeners\AuthInvalidator::class)],
         ],
         Event::DASHBOARD_READY    => [
             /** @see Events\Listeners\DashboardRegistrar::build */
-            sprintf('%s@handle', Events\Listeners\DashboardBuilder::class),
+            Priorities::NORMAL => [sprintf('%s@handle', Events\Listeners\DashboardBuilder::class)],
         ],
     ],
     Module::MIDDLEWARE         => [
