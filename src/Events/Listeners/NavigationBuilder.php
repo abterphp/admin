@@ -56,15 +56,17 @@ class NavigationBuilder
         $dropdown = new Dropdown();
         $dropdown[] = $this->createUserItem();
         $dropdown[] = $this->createUserGroupItem();
-        $dropdown[] = $this->createLogoutItem();
 
-        $item   = $this->createUserItem();
-        $item->setIntent(Item::INTENT_DROPDOWN);
-        $item->setAttribute(Html5::ATTR_ID, 'nav-users');
-        $item[0]->setAttribute(Html5::ATTR_HREF, 'javascript:void(0);');
-        $item[1] = $dropdown;
+        $mainItem   = $this->createUserItem();
+        $mainItem->setIntent(Item::INTENT_DROPDOWN);
+        $mainItem->setAttribute(Html5::ATTR_ID, 'nav-users');
+        $mainItem[0]->setAttribute(Html5::ATTR_HREF, 'javascript:void(0);');
+        $mainItem[1] = $dropdown;
 
-        $navigation->addItem($item, static::DEFAULT_BASE_WEIGHT);
+        $logout = $this->createLogoutItem();
+
+        $navigation->addItem($mainItem, static::DEFAULT_BASE_WEIGHT);
+        $navigation->addItem($logout, static::DEFAULT_BASE_WEIGHT);
     }
 
     /**
