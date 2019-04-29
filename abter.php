@@ -68,8 +68,8 @@ return [
             realpath(__DIR__ . '/src/Databases/Migrations'),
         ],
     ],
-    Module::RESOURCE_PATH    => realpath(__DIR__ . '/resources'),
-    Module::ASSETS_PATHS  => [
+    Module::RESOURCE_PATH      => realpath(__DIR__ . '/resources'),
+    Module::ASSETS_PATHS       => [
         'admin-assets' => realpath(__DIR__ . '/resources/rawassets'),
     ],
 ];
