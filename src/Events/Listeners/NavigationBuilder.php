@@ -27,7 +27,7 @@ class NavigationBuilder
     protected $buttonFactory;
 
     /**
-     * NavigationRegistrar constructor.
+     * NavigationBuilder constructor.
      *
      * @param ISession      $session
      * @param ButtonFactory $buttonFactory
@@ -148,10 +148,8 @@ class NavigationBuilder
         $icon = 'settings_power';
 
         $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_LOGOUT, [], $icon);
-        $resource = $this->getAdminResource(Routes::ROUTE_LOGOUT);
 
         $item = new Item($button);
-        $item->setResource($resource);
 
         return $item;
     }
