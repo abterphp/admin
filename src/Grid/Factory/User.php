@@ -17,11 +17,9 @@ use Opulence\Routing\Urls\UrlGenerator;
 
 class User extends BaseFactory
 {
-    const GROUP_ID       = 'user-id';
     const GROUP_USERNAME = 'user-username';
     const GROUP_EMAIL    = 'user-email';
 
-    const GETTER_ID       = 'getId';
     const GETTER_USERNAME = 'getUsername';
     const GETTER_EMAIL    = 'getEmail';
 
@@ -50,7 +48,6 @@ class User extends BaseFactory
     public function getGetters(): array
     {
         return [
-            static::GROUP_ID       => static::GETTER_ID,
             static::GROUP_USERNAME => static::GETTER_USERNAME,
             static::GROUP_EMAIL    => static::GETTER_EMAIL,
         ];
