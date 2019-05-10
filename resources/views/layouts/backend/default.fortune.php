@@ -16,11 +16,17 @@
     {{! $postHeader !}}
 
     {{! assetCss('admin-layout') !}}
+    <% if ($pageType) %>
+    {{! assetCss($pageType) !}}
+    <% endif %>
     <% if ($page) %>
     {{! assetCss($page) !}}
     <% endif %>
 
     {{! assetJs('admin-layout-header') !}}
+    <% if ($pageTypeHeader) %>
+    {{! assetJs($pageTypeHeader) !}}
+    <% endif %>
     <% if ($pageHeader) %>
     {{! assetJs($pageHeader) !}}
     <% endif %>
@@ -49,6 +55,9 @@
 
     <!-- Scripts Starts -->
     {{! assetJs('admin-layout-footer') !}}
+    <% if ($pageTypeFooter) %>
+    {{! assetJs($pageTypeFooter) !}}
+    <% endif %>
     <% if ($pageFooter) %>
     {{! assetJs($pageFooter) !}}
     <% endif %>
