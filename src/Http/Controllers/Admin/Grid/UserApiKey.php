@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Grid;
 
-use AbterPhp\Admin\Service\RepoGrid\UserGroup as RepoGrid;
+use AbterPhp\Admin\Service\RepoGrid\UserApiKey as RepoGrid;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Http\Controllers\Admin\GridAbstract;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -12,18 +12,18 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
 
-class UserGroup extends GridAbstract
+class UserApiKey extends GridAbstract
 {
-    const ENTITY_SINGULAR = 'userGroup';
-    const ENTITY_PLURAL   = 'userGroups';
+    const ENTITY_SINGULAR = 'userApiKey';
+    const ENTITY_PLURAL   = 'userApiKeys';
 
-    const ENTITY_TITLE_PLURAL = 'admin:userGroups';
+    const ENTITY_TITLE_PLURAL = 'admin:userApiKeys';
 
     /** @var string */
-    protected $resource = 'user_groups';
+    protected $resource = 'user_api_keys';
 
     /**
-     * UserGroup constructor.
+     * ApiKey constructor.
      *
      * @param FlashService     $flashService
      * @param ITranslator      $translator

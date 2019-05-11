@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Bootstrappers\Http\Controllers\Form;
 
-use AbterPhp\Admin\Form\Factory\User as FormFactory;
-use AbterPhp\Admin\Http\Controllers\Admin\Form\User;
+use AbterPhp\Admin\Form\Factory\Profile as FormFactory;
+use AbterPhp\Admin\Http\Controllers\Admin\Form\Profile;
 use AbterPhp\Admin\Orm\UserRepo as Repo;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Constant\Env;
@@ -18,7 +18,7 @@ use Opulence\Ioc\IContainer;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 
-class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
+class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
      * @return array
@@ -26,7 +26,7 @@ class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function getBindings(): array
     {
         return [
-            User::class,
+            Profile::class,
         ];
     }
 
@@ -45,7 +45,7 @@ class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $eventDispatcher = $container->resolve(IEventDispatcher::class);
         $frontendSalt    = getenv(Env::CRYPTO_FRONTEND_SALT);
 
-        $userController = new User(
+        $profileController = new Profile(
             $flashService,
             $translator,
             $urlGenerator,
@@ -57,6 +57,6 @@ class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
             $frontendSalt
         );
 
-        $container->bindInstance(User::class, $userController);
+        $container->bindInstance(Profile::class, $profileController);
     }
 }

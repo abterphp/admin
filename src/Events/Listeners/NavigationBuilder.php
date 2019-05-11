@@ -53,11 +53,11 @@ class NavigationBuilder
 
         $this->insertFirstItem($navigation);
 
-        $dropdown = new Dropdown();
+        $dropdown   = new Dropdown();
         $dropdown[] = $this->createUserItem();
         $dropdown[] = $this->createUserGroupItem();
 
-        $mainItem   = $this->createUserItem();
+        $mainItem = $this->createUserItem();
         $mainItem->setIntent(Item::INTENT_DROPDOWN);
         $mainItem->setAttribute(Html5::ATTR_ID, 'nav-users');
         $mainItem[0]->setAttribute(Html5::ATTR_HREF, 'javascript:void(0);');
@@ -77,7 +77,7 @@ class NavigationBuilder
         $firstItem = new Item(null, [UserBlock::class]);
 
         $firstItem[] = $this->createUserBlock();
-        $firstItem[] = $this->createDropdown();
+        $firstItem[] = $this->createUserBlockDropdown();
 
         $navigation->addItem($firstItem, static::FIRST_ITEM_WEIGHT);
     }
@@ -93,13 +93,46 @@ class NavigationBuilder
     /**
      * @return Dropdown
      */
-    protected function createDropdown(): Dropdown
+    protected function createUserBlockDropdown(): Dropdown
     {
-        $text = 'framework:logout';
+        $items   = [];
+        $items[] = $this->createProfileItem();
+        $items[] = $this->createApiKeysItem();
+        $items[] = $this->createLogoutItem();
 
-        $button = $this->buttonFactory->createFromName($text, Routes::ROUTE_LOGOUT, []);
+        return new Dropdown($items);
+    }
 
-        return new Dropdown(new Item($button));
+    /**
+     * @return Dropdown
+     */
+    protected function createApiKeysItem(): Item
+    {
+        $text = 'admin:userApiKeys';
+        $icon = 'vpn_key';
+
+        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_USER_API_KEYS, [], $icon);
+        $resource = $this->getAdminResource(Routes::ROUTE_USER_API_KEYS);
+
+        $item = new Item($button);
+        $item->setResource($resource);
+
+        return $item;
+    }
+
+    /**
+     * @return Dropdown
+     */
+    protected function createProfileItem(): Item
+    {
+        $text = 'admin:profile';
+        $icon = 'account_box';
+
+        $button = $this->buttonFactory->createFromName($text, Routes::ROUTE_PROFILE, [], $icon);
+
+        $item = new Item($button);
+
+        return $item;
     }
 
     /**
@@ -147,7 +180,7 @@ class NavigationBuilder
         $text = 'admin:logout';
         $icon = 'settings_power';
 
-        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_LOGOUT, [], $icon);
+        $button = $this->buttonFactory->createFromName($text, Routes::ROUTE_LOGOUT, [], $icon);
 
         $item = new Item($button);
 

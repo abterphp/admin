@@ -24,6 +24,7 @@ return [
         Bootstrappers\Http\Controllers\Execute\LoginBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\LoginBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\UserBootstrapper::class,
+        Bootstrappers\Http\Controllers\Form\ProfileBootstrapper::class,
         Bootstrappers\Http\Views\BuildersBootstrapper::class,
         Bootstrappers\Vendor\SlugifyBootstrapper::class,
     ],

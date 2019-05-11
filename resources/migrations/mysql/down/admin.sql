@@ -7,4 +7,6 @@ DROP TABLE IF EXISTS `user_groups`;
 DROP TABLE IF EXISTS `user_groups_admin_resources`;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `users_user_groups`;
+DROP TABLE IF EXISTS `user_api_keys`;
+DROP TABLE IF EXISTS `user_api_keys_admin_resources`;
 SET FOREIGN_KEY_CHECKS = true;

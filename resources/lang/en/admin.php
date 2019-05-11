@@ -6,11 +6,18 @@ return [
     'adminResource'  => 'Admin Resource',
     'adminResources' => 'Admin Resources',
 
+    'profile' => 'Profile',
+
+    'userApiKey'            => 'API Key',
+    'userApiKeys'           => 'API Keys',
+    'userApiKeyDescription' => 'Description',
+    'userApiKeyId'          => 'Id',
+
     'user'                  => 'User',
     'userId'                => 'Id',
     'userIdentifier'        => 'Identifier',
     'userIsGravatarAllowed' => 'Is gravatar allowed?',
-    'userCanLogin'          => 'Can user log in?',
+    'userCanLogin'          => 'Is logging in allowed?',
     'userConfirmPassword'   => 'Confirm Password',
     'userEmail'             => 'Email',
     'userPassword'          => 'Password',

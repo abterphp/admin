@@ -28,8 +28,9 @@ $router->group(
             ],
             function (Router $router) {
                 $entities = [
-                    'usergroups' => 'UserGroup',
-                    'users'      => 'User',
+                    'usergroups'  => 'UserGroup',
+                    'users'       => 'User',
+                    'userapikeys' => 'UserApiKey',
                 ];
 
                 foreach ($entities as $route => $controllerName) {
@@ -37,6 +38,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\User::show() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\UserGroup::show() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\UserApiKey::show() */
                     $router->get(
                         "/${path}",
                         "Admin\Grid\\${controllerName}@show",
@@ -56,6 +58,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\User::new() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserGroup::new() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserApiKey::new() */
                     $router->get(
                         "/${path}/new",
                         "Admin\Form\\${controllerName}@new",
@@ -72,8 +75,9 @@ $router->group(
                         ]
                     );
 
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\User::create() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserGroup::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\User::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserGroup::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserApiKey::create() */
                     $router->post(
                         "/${path}/new",
                         "Admin\Execute\\${controllerName}@create",
@@ -92,6 +96,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\User::edit() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserGroup::edit() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserApiKey::edit() */
                     $router->get(
                         "/${path}/:entityId/edit",
                         "Admin\Form\\${controllerName}@edit",
@@ -110,6 +115,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\User::update() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserGroup::update() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserApiKey::update() */
                     $router->put(
                         "/${path}/:entityId/edit",
                         "Admin\Execute\\${controllerName}@update",
@@ -128,6 +134,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\User::delete() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserGroup::delete() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserApiKey::delete() */
                     $router->get(
                         "/${path}/:entityId/delete",
                         "Admin\Execute\\${controllerName}@delete",
@@ -144,6 +151,24 @@ $router->group(
                         ]
                     );
                 }
+
+                /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\Profile::profile() */
+                $router->get(
+                    Routes::PATH_PROFILE,
+                    'Admin\Form\Profile@profile',
+                    [
+                        OPTION_NAME => Routes::ROUTE_PROFILE,
+                    ]
+                );
+
+                /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\Profile::execute() */
+                $router->put(
+                    Routes::PATH_PROFILE,
+                    'Admin\Execute\Profile@profile',
+                    [
+                        OPTION_NAME => Routes::ROUTE_PROFILE,
+                    ]
+                );
 
                 /** @see \AbterPhp\Admin\Http\Controllers\Admin\Dashboard::showDashboard() */
                 $router->get(

@@ -17,6 +17,18 @@ class Routes
     const PATH_LOGOUT    = '/logout';
     const PATH_DASHBOARD = '/dashboard';
 
+    const ROUTE_USER_API_KEYS   = 'userapikeys';
+    const ROUTE_USER_API_NEW    = 'userapikeys-new';
+    const ROUTE_USER_API_EDIT   = 'userapikeys-edit';
+    const ROUTE_USER_API_DELETE = 'userapikeys-delete';
+    const PATH_USER_API_KEYS    = '/userapikeys';
+    const PATH_USER_API_NEW     = '/userapikeys/new';
+    const PATH_USER_API_EDIT    = '/userapikeys/:id/edit';
+    const PATH_USER_API_DELETE  = '/userapikeys/:id/delete';
+
+    const ROUTE_PROFILE = 'profile';
+    const PATH_PROFILE  = '/profile';
+
     const ROUTE_USERS        = 'users';
     const ROUTE_USERS_NEW    = 'users-new';
     const ROUTE_USERS_EDIT   = 'users-edit';

@@ -6,11 +6,18 @@ return [
     'adminResource'  => 'Admin erőforrás',
     'adminResources' => 'Admin erőforrások',
 
+    'profile' => 'Profil',
+
+    'userApiKey'            => 'API kulcs',
+    'userApiKeys'           => 'API kulcsok',
+    'userApiKeyDescription' => 'Leírás',
+    'userApiKeyId'          => 'Id',
+
     'user'                  => 'Felhasználó',
     'userId'                => 'Id',
     'userIdentifier'        => 'Azonosító',
     'userIsGravatarAllowed' => 'Gravatar engedélyezve',
-    'userCanLogin'          => 'Beléphet a felhasználó?',
+    'userCanLogin'          => 'Belépés engedélyezve',
     'userConfirmPassword'   => 'Jelszó megerősítése',
     'userEmail'             => 'E-mail',
     'userPassword'          => 'Jelszó',

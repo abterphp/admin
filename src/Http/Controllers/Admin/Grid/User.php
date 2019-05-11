@@ -14,8 +14,8 @@ use Opulence\Routing\Urls\UrlGenerator;
 
 class User extends GridAbstract
 {
-    const ENTITY_PLURAL   = 'users';
     const ENTITY_SINGULAR = 'user';
+    const ENTITY_PLURAL   = 'users';
 
     const ENTITY_TITLE_PLURAL = 'admin:users';
 

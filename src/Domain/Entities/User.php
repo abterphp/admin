@@ -42,7 +42,7 @@ class User implements IStringerEntity
      * @param bool         $canLogin
      * @param bool         $isGravatarAllowed
      * @param UserLanguage $userLanguage
-     * @param array        $userGroups
+     * @param UserGroup[]  $userGroups
      */
     public function __construct(
         string $id,

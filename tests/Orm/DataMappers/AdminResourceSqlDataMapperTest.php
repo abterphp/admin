@@ -55,7 +55,7 @@ class AdminResourceSqlDataMapperTest extends SqlTestCase
         $id         = '24bd4165-1229-4a6e-a679-76bf90743ee1';
         $identifier = 'foo';
 
-        $sql          = 'SELECT admin_resources.id, admin_resources.identifier FROM admin_resources WHERE (admin_resources.deleted = 0)'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0)'; // phpcs:ignore
         $values       = [];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
 
@@ -71,7 +71,7 @@ class AdminResourceSqlDataMapperTest extends SqlTestCase
         $id         = '4b72daf8-81a9-400f-b865-28306d1c1646';
         $identifier = 'foo';
 
-        $sql          = 'SELECT admin_resources.id, admin_resources.identifier FROM admin_resources WHERE (admin_resources.deleted = 0) AND (admin_resources.id = :admin_resource_id)'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.id = :admin_resource_id)'; // phpcs:ignore
         $values       = ['admin_resource_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
 
@@ -87,7 +87,7 @@ class AdminResourceSqlDataMapperTest extends SqlTestCase
         $id         = '998ac138-85be-4b8f-ac7a-3fb8c249a7bf';
         $identifier = 'foo';
 
-        $sql          = 'SELECT admin_resources.id, admin_resources.identifier FROM admin_resources WHERE (admin_resources.deleted = 0) AND (admin_resources.identifier = :identifier)'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.identifier = :identifier)'; // phpcs:ignore
         $values       = ['identifier' => [$identifier, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
 
