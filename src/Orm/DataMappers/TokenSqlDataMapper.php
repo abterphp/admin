@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\Token as Entity;
+use AbterPhp\Framework\Orm\DataMappers\IdGeneratorUserTrait;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -19,7 +20,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     public function add($entity)
     {
         if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User entity.');
+            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
         }
 
         $query = (new QueryBuilder())
@@ -49,7 +50,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     public function delete($entity)
     {
         if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User entity.');
+            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
         }
 
         $rand     = rand(0, PHP_INT_MAX);
@@ -124,7 +125,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     public function update($entity)
     {
         if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User entity.');
+            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
         }
 
         $query = (new QueryBuilder())
