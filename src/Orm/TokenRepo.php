@@ -6,10 +6,9 @@ namespace AbterPhp\Admin\Orm;
 
 use AbterPhp\Admin\Domain\Entities\Token as Entity;
 use AbterPhp\Admin\Orm\DataMappers\TokenSqlDataMapper;
-use AbterPhp\Framework\Orm\IGridRepo;
 use Opulence\Orm\Repositories\Repository;
 
-class TokenRepo extends Repository implements IGridRepo
+class TokenRepo extends Repository
 {
     /**
      * @param string $username

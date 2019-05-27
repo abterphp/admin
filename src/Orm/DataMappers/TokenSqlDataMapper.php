@@ -10,7 +10,7 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
-class TokenSqlDataMapper extends SqlDataMapper implements IUserDataMapper
+class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 {
     use IdGeneratorUserTrait;
 
