@@ -94,4 +94,18 @@ class UserLanguage implements IStringerEntity
     {
         return $this->getIdentifier();
     }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return json_encode(
+            [
+                "id"         => $this->getId(),
+                "identifier" => $this->getIdentifier(),
+                "name"       => $this->getName(),
+            ]
+        );
+    }
 }

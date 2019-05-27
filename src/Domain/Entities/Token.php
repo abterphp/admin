@@ -140,4 +140,16 @@ class Token implements IStringerEntity
     {
         return $this->getUsername();
     }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return json_encode(
+            [
+                "id" => $this->getId(),
+            ]
+        );
+    }
 }

@@ -130,4 +130,24 @@ class UserGroup implements IStringerEntity
     {
         return $this->getName();
     }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        $adminResourceIds = [];
+        foreach ($this->getAdminResources() as $adminResource) {
+            $adminResourceIds[] = $adminResource->getId();
+        }
+
+        return json_encode(
+            [
+                "id"                 => $this->getId(),
+                "identifier"         => $this->getIdentifier(),
+                "name"               => $this->getName(),
+                "admin_resource_ids" => $adminResourceIds,
+            ]
+        );
+    }
 }
