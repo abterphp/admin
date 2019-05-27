@@ -6,12 +6,12 @@ namespace AbterPhp\Admin\Grid\Factory\Table;
 
 use AbterPhp\Framework\Grid\Factory\TableFactory;
 use AbterPhp\Framework\Grid\Factory\Table\BodyFactory;
-use AbterPhp\Admin\Grid\Factory\Table\Header\UserApiKey as HeaderFactory;
+use AbterPhp\Admin\Grid\Factory\Table\Header\ApiClient as HeaderFactory;
 
-class UserApiKey extends TableFactory
+class ApiClient extends TableFactory
 {
     /**
-     * User constructor.
+     * ApiClient constructor.
      *
      * @param HeaderFactory $headerFactory
      * @param BodyFactory   $bodyFactory

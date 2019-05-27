@@ -7,7 +7,7 @@ namespace AbterPhp\Admin\Validation\Factory;
 use Opulence\Validation\Factories\ValidatorFactory;
 use Opulence\Validation\IValidator;
 
-class UserApiKey extends ValidatorFactory
+class ApiClient extends ValidatorFactory
 {
     /**
      * @return IValidator

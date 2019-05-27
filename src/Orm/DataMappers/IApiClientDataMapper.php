@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Orm\DataMappers;
 
-use AbterPhp\Admin\Domain\Entities\ApiKey as Entity;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use Opulence\Orm\DataMappers\IDataMapper;
 
-interface IUserApiKeyDataMapper extends IDataMapper
+interface IApiClientDataMapper extends IDataMapper
 {
     /**
      * @param int      $limitFrom

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Orm;
 
-use AbterPhp\Admin\Domain\Entities\UserApiKey as Entity;
-use AbterPhp\Admin\Orm\DataMappers\UserApiKeySqlDataMapper;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
+use AbterPhp\Admin\Orm\DataMappers\ApiClientSqlDataMapper;
 use AbterPhp\Framework\Orm\IGridRepo;
 use Opulence\Orm\Repositories\Repository;
 
-class UserApiKeyRepo extends Repository implements IGridRepo
+class ApiClientRepo extends Repository implements IGridRepo
 {
     /**
      * @param int      $limitFrom
@@ -22,7 +22,7 @@ class UserApiKeyRepo extends Repository implements IGridRepo
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
-        /** @see UserApiKeySqlDataMapper::getPage() */
+        /** @see ApiClientSqlDataMapper::getPage() */
         return $this->getFromDataMapper('getPage', [$limitFrom, $pageSize, $orders, $conditions, $params]);
     }
 }

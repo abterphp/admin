@@ -6,12 +6,17 @@ return [
     'adminResource'  => 'Admin erőforrás',
     'adminResources' => 'Admin erőforrások',
 
-    'profile' => 'Profil',
+    'apiClient'                  => 'API kulcs',
+    'apiClients'                 => 'API kulcsok',
+    'apiClientDescription'       => 'Leírás',
+    'apiClientId'                => 'Kliens Id',
+    'apiClientSecretPlaceholder' => 'Nincs új generált titok, így az nem fog változni',
+    'apiClientSecret'            => 'Titok',
+    'apiClientSecretHelp'        => 'A generált titok csak most olvasható. Másold ki és mentsd el a jelszókezelődben!',
 
-    'userApiKey'            => 'API kulcs',
-    'userApiKeys'           => 'API kulcsok',
-    'userApiKeyDescription' => 'Leírás',
-    'userApiKeyId'          => 'Id',
+    'generateSecret' => 'Új titok',
+
+    'profile' => 'Profil',
 
     'user'                  => 'Felhasználó',
     'userId'                => 'Id',

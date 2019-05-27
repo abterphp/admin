@@ -97,7 +97,7 @@ class NavigationBuilder
     {
         $items   = [];
         $items[] = $this->createProfileItem();
-        $items[] = $this->createApiKeysItem();
+        $items[] = $this->createApiClientsItem();
         $items[] = $this->createLogoutItem();
 
         return new Dropdown($items);
@@ -106,13 +106,13 @@ class NavigationBuilder
     /**
      * @return Dropdown
      */
-    protected function createApiKeysItem(): Item
+    protected function createApiClientsItem(): Item
     {
-        $text = 'admin:userApiKeys';
+        $text = 'admin:apiClients';
         $icon = 'vpn_key';
 
-        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_USER_API_KEYS, [], $icon);
-        $resource = $this->getAdminResource(Routes::ROUTE_USER_API_KEYS);
+        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_API_CLIENTS, [], $icon);
+        $resource = $this->getAdminResource(Routes::ROUTE_API_CLIENTS);
 
         $item = new Item($button);
         $item->setResource($resource);

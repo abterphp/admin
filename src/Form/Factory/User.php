@@ -70,6 +70,7 @@ class User extends Base
 
         $this->createForm($action, $method)
             ->addDefaultElements()
+            ->addJsOnly()
             ->addUsername($entity)
             ->addEmail($entity)
             ->addPassword()

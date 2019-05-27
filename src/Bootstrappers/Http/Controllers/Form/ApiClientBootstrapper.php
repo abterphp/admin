@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Bootstrappers\Http\Controllers\Form;
 
-use AbterPhp\Admin\Form\Factory\Profile as FormFactory;
-use AbterPhp\Admin\Http\Controllers\Admin\Form\Profile;
-use AbterPhp\Admin\Orm\UserRepo as Repo;
+use AbterPhp\Admin\Form\Factory\ApiClient as FormFactory;
+use AbterPhp\Admin\Http\Controllers\Admin\Form\ApiClient;
+use AbterPhp\Admin\Orm\ApiClientRepo as Repo;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -19,7 +19,7 @@ use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 use Psr\Log\LoggerInterface;
 
-class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
+class ApiClientBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
      * @return array
@@ -27,7 +27,7 @@ class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function getBindings(): array
     {
         return [
-            Profile::class,
+            ApiClient::class,
         ];
     }
 
@@ -45,9 +45,9 @@ class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $formFactory     = $container->resolve(FormFactory::class);
         $eventDispatcher = $container->resolve(IEventDispatcher::class);
         $assets          = $container->resolve(AssetManager::class);
-        $frontendSalt    = getenv(Env::CRYPTO_FRONTEND_SALT);
+        $secretLength    = getenv(Env::OAUTH2_SECRET_LENGTH);
 
-        $profileController = new Profile(
+        $controller = new ApiClient(
             $flashService,
             $translator,
             $urlGenerator,
@@ -57,9 +57,9 @@ class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
             $formFactory,
             $eventDispatcher,
             $assets,
-            $frontendSalt
+            $secretLength
         );
 
-        $container->bindInstance(Profile::class, $profileController);
+        $container->bindInstance(ApiClient::class, $controller);
     }
 }

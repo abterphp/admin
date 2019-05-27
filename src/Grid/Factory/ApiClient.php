@@ -5,23 +5,30 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Grid\Factory;
 
 use AbterPhp\Admin\Constant\Routes;
-use AbterPhp\Admin\Grid\Factory\Table\UserApiKey as Table;
-use AbterPhp\Admin\Grid\Filters\UserApiKey as Filters;
+use AbterPhp\Admin\Grid\Factory\Table\ApiClient as Table;
+use AbterPhp\Admin\Grid\Filters\ApiClient as Filters;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
 use AbterPhp\Framework\Grid\Factory\BaseFactory;
 use AbterPhp\Framework\Grid\Factory\GridFactory;
 use AbterPhp\Framework\Grid\Factory\PaginationFactory as PaginationFactory;
+use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Routing\Urls\UrlGenerator;
 
-class UserApiKey extends BaseFactory
+class ApiClient extends BaseFactory
 {
-    const GROUP_ID          = 'userapikey-id';
-    const GROUP_DESCRIPTION = 'userapikey-description';
+    const LABEL_NEW_SECRET   = 'admin:newSecret';
+
+    const GROUP_ID          = 'apiclient-id';
+    const GROUP_DESCRIPTION = 'apiclient-description';
 
     const GETTER_ID          = 'getId';
     const GETTER_DESCRIPTION = 'getDescription';
+
+    /** @var IEncrypter */
+    protected $encrypter;
 
     /**
      * User constructor.
@@ -31,15 +38,19 @@ class UserApiKey extends BaseFactory
      * @param Table             $tableFactory
      * @param GridFactory       $gridFactory
      * @param Filters           $filters
+     * @param IEncrypter       $encrypter
      */
     public function __construct(
         UrlGenerator $urlGenerator,
         PaginationFactory $paginationFactory,
         Table $tableFactory,
         GridFactory $gridFactory,
-        Filters $filters
+        Filters $filters,
+        IEncrypter $encrypter
     ) {
         parent::__construct($urlGenerator, $paginationFactory, $tableFactory, $gridFactory, $filters);
+
+        $this->encrypter = $encrypter;
     }
 
     /**
@@ -61,11 +72,11 @@ class UserApiKey extends BaseFactory
         $attributeCallbacks = $this->getAttributeCallbacks();
 
         $editAttributes = [
-            Html5::ATTR_HREF => [Routes::ROUTE_USER_API_EDIT],
+            Html5::ATTR_HREF => [Routes::ROUTE_API_CLIENTS_EDIT],
         ];
 
         $deleteAttributes = [
-            Html5::ATTR_HREF => [Routes::ROUTE_USER_API_DELETE],
+            Html5::ATTR_HREF => [Routes::ROUTE_API_CLIENTS_DELETE],
         ];
 
         $cellActions   = new Actions();

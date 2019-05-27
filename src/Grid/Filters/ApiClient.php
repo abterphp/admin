@@ -7,10 +7,10 @@ namespace AbterPhp\Admin\Grid\Filters;
 use AbterPhp\Framework\Grid\Component\Filters;
 use AbterPhp\Framework\Grid\Filter\LikeFilter;
 
-class UserApiKey extends Filters
+class ApiClient extends Filters
 {
     /**
-     * User constructor.
+     * ApiClient constructor.
      *
      * @param string[]    $intents
      * @param array       $attributes
@@ -20,6 +20,6 @@ class UserApiKey extends Filters
     {
         parent::__construct($intents, $attributes, $tag);
 
-        $this->nodes[] = new LikeFilter('description', 'admin:userApiKeyDescription');
+        $this->nodes[] = new LikeFilter('description', 'admin:apiClientDescription');
     }
 }

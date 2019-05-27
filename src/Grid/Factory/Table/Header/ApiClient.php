@@ -6,13 +6,13 @@ namespace AbterPhp\Admin\Grid\Factory\Table\Header;
 
 use AbterPhp\Framework\Grid\Factory\Table\HeaderFactory;
 
-class UserApiKey extends HeaderFactory
+class ApiClient extends HeaderFactory
 {
-    const GROUP_ID          = 'userapikey-id';
-    const GROUP_DESCRIPTION = 'userapikey-description';
+    const GROUP_ID          = 'apiclient-id';
+    const GROUP_DESCRIPTION = 'apiclient-description';
 
-    const HEADER_ID          = 'admin:userApiKeyId';
-    const HEADER_DESCRIPTION = 'admin:userApiKeyDescription';
+    const HEADER_ID          = 'admin:apiClientId';
+    const HEADER_DESCRIPTION = 'admin:apiClientDescription';
 
     /** @var array */
     protected $headers = [
@@ -27,6 +27,6 @@ class UserApiKey extends HeaderFactory
 
     /** @var array */
     protected $fieldNames = [
-        self::GROUP_DESCRIPTION => 'uak.description',
+        self::GROUP_DESCRIPTION => 'ac.description',
     ];
 }

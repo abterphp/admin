@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
-use AbterPhp\Admin\Domain\Entities\UserApiKey as Entity;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Framework\Orm\DataMappers\IdGeneratorUserTrait;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
-class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyDataMapper
+class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapper
 {
     const ADMIN_RESOURCE_IDS = 'admin_resource_ids';
 
@@ -23,16 +23,17 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
     public function add($entity)
     {
         if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User Api Key entity.');
+            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Api Client entity.');
         }
 
         $query = (new QueryBuilder())
             ->insert(
-                'user_api_keys',
+                'api_clients',
                 [
                     'id'          => [$entity->getId(), \PDO::PARAM_STR],
                     'user_id'     => [$entity->getUserId(), \PDO::PARAM_STR],
                     'description' => [$entity->getDescription(), \PDO::PARAM_STR],
+                    'secret'      => [$entity->getSecret(), \PDO::PARAM_STR],
                 ]
             );
 
@@ -52,13 +53,13 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
     public function delete($entity)
     {
         if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User Api Key entity.');
+            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Api Client entity.');
         }
 
         $this->deleteAdminResources($entity);
 
         $query = (new QueryBuilder())
-            ->update('user_api_keys', 'user_api_keys', ['deleted' => [1, \PDO::PARAM_INT]])
+            ->update('api_clients', 'api_clients', ['deleted' => [1, \PDO::PARAM_INT]])
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
@@ -115,10 +116,10 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
      */
     public function getById($id)
     {
-        $query = $this->getBaseQuery()->andWhere('uak.id = :user_api_key_id');
+        $query = $this->getBaseQuery()->andWhere('ac.id = :api_client_id');
 
         $parameters = [
-            'user_api_key_id' => [$id, \PDO::PARAM_STR],
+            'api_client_id' => [$id, \PDO::PARAM_STR],
         ];
 
         return $this->read($query->getSql(), $parameters, self::VALUE_TYPE_ENTITY, true);
@@ -130,15 +131,16 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
     public function update($entity)
     {
         if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User Api Key entity.');
+            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Api Client entity.');
         }
 
         $query = (new QueryBuilder())
             ->update(
-                'user_api_keys',
-                'user_api_keys',
+                'api_clients',
+                'api_clients',
                 [
                     'description' => [$entity->getDescription(), \PDO::PARAM_STR],
+                    'secret'      => [$entity->getSecret(), \PDO::PARAM_STR],
                 ]
             )
             ->where('id = ?')
@@ -166,6 +168,7 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
             $hash['id'],
             $hash['user_id'],
             $hash['description'],
+            $hash['secret'],
             $adminResources
         );
     }
@@ -200,17 +203,18 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
         /** @var SelectQuery $query */
         $query = (new QueryBuilder())
             ->select(
-                'uak.id',
-                'uak.user_id',
-                'uak.description',
+                'ac.id',
+                'ac.user_id',
+                'ac.description',
+                'ac.secret',
                 'GROUP_CONCAT(ar.id) AS admin_resource_ids',
                 'GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers'
             )
-            ->from('user_api_keys', 'uak')
-            ->leftJoin('user_api_keys_admin_resources', 'uakar', 'uakar.user_api_key_id = uak.id')
-            ->leftJoin('admin_resources', 'ar', 'uakar.admin_resource_id = ar.id')
-            ->where('uak.deleted = 0')
-            ->groupBy('uak.id');
+            ->from('api_clients', 'ac')
+            ->leftJoin('api_clients_admin_resources', 'acar', 'acar.api_client_id = ac.id')
+            ->leftJoin('admin_resources', 'ar', 'acar.admin_resource_id = ar.id')
+            ->where('ac.deleted = 0')
+            ->groupBy('ac.id');
 
         return $query;
     }
@@ -221,8 +225,8 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
     protected function deleteAdminResources(Entity $entity)
     {
         $query = (new QueryBuilder())
-            ->delete('user_api_keys_admin_resources')
-            ->where('user_api_key_id = ?')
+            ->delete('api_clients_admin_resources')
+            ->where('api_client_id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
         $sql    = $query->getSql();
@@ -243,10 +247,10 @@ class UserApiKeyGroupSqlDataMapper extends SqlDataMapper implements IUserApiKeyD
         foreach ($entity->getAdminResources() as $adminResource) {
             $query = (new QueryBuilder())
                 ->insert(
-                    'user_api_keys_admin_resources',
+                    'api_clients_admin_resources',
                     [
                         'id'                => [$idGenerator->generate($entity), \PDO::PARAM_STR],
-                        'user_api_key_id'   => [$entity->getId(), \PDO::PARAM_STR],
+                        'api_client_id'     => [$entity->getId(), \PDO::PARAM_STR],
                         'admin_resource_id' => [$adminResource->getId(), \PDO::PARAM_STR],
                     ]
                 );

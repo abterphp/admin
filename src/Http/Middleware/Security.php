@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
-use AbterPhp\Admin\Constant\Env;
+use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Security\SecurityException;
 use Closure;
 use Opulence\Cache\ICacheBridge;
@@ -48,6 +48,7 @@ class Security implements IMiddleware
         // phpcs:enable Generic.CodeAnalysis.EmptyStatement
 
         $this->checkRoutes();
+        $this->checkApi();
 
         $this->cacheBridge->set(static::KEY, true, PHP_INT_MAX);
 
@@ -66,6 +67,13 @@ class Security implements IMiddleware
 
         if (getenv(API_BASE_PATH) === '/api-iddqd') {
             throw new SecurityException('Invalid ADMIN_BASE_PATH environment variable.');
+        }
+    }
+
+    private function checkApi()
+    {
+        if (getenv(Env::OAUTH_PRIVATE_KEY_PASSWORD) === 'CuDU2M9FRD8ckRxj9dhB82f6VjMs4EMf') {
+            throw new SecurityException('Invalid OAUTH_PRIVATE_KEY_PASSWORD environment variable.');
         }
     }
 }

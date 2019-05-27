@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Service\RepoGrid;
 
-use AbterPhp\Admin\Grid\Factory\UserApiKey as GridFactory;
-use AbterPhp\Admin\Orm\UserApiKeyRepo as Repo;
+use AbterPhp\Admin\Grid\Factory\ApiClient as GridFactory;
+use AbterPhp\Admin\Orm\ApiClientRepo as Repo;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Grid\Grid;
@@ -13,13 +13,13 @@ use AbterPhp\Framework\Http\Service\RepoGrid\RepoGridAbstract;
 use Casbin\Enforcer;
 use Opulence\Sessions\ISession;
 
-class UserApiKey extends RepoGridAbstract
+class ApiClient extends RepoGridAbstract
 {
     /** @var ISession */
     protected $session;
 
     /**
-     * UserApiKey constructor.
+     * ApiClient constructor.
      *
      * @param Enforcer    $enforcer
      * @param Repo        $repo
@@ -48,7 +48,7 @@ class UserApiKey extends RepoGridAbstract
     {
         $conditions = $grid->getWhereConditions();
 
-        $conditions[] = 'uak.user_id = ?';
+        $conditions[] = 'ac.user_id = ?';
 
         return $conditions;
     }

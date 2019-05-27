@@ -14,15 +14,20 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
+use Psr\Log\LoggerInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+ */
 class Profile extends User
 {
     /**
-     * User constructor.
+     * Profile constructor.
      *
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param Repo             $repo
      * @param ISession         $session
      * @param FormFactory      $formFactory
@@ -34,6 +39,7 @@ class Profile extends User
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         Repo $repo,
         ISession $session,
         FormFactory $formFactory,
@@ -45,6 +51,7 @@ class Profile extends User
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $repo,
             $session,
             $formFactory,

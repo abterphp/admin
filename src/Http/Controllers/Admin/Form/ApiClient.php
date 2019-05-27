@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Form;
 
-use AbterPhp\Admin\Domain\Entities\User as Entity;
-use AbterPhp\Admin\Domain\Entities\UserLanguage;
-use AbterPhp\Admin\Form\Factory\User as FormFactory;
-use AbterPhp\Admin\Orm\UserRepo as Repo;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
+use AbterPhp\Admin\Form\Factory\ApiClient as FormFactory;
+use AbterPhp\Admin\Orm\ApiClientRepo as Repo;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Http\Controllers\Admin\FormAbstract;
@@ -15,7 +14,6 @@ use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Cocur\Slugify\Slugify;
 use Opulence\Events\Dispatchers\IEventDispatcher;
-use Opulence\Orm\OrmException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 use Psr\Log\LoggerInterface;
@@ -23,16 +21,13 @@ use Psr\Log\LoggerInterface;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveParameterList)
  */
-class User extends FormAbstract
+class ApiClient extends FormAbstract
 {
-    const ENTITY_PLURAL   = 'users';
-    const ENTITY_SINGULAR = 'user';
+    const ENTITY_SINGULAR = 'apiClient';
+    const ENTITY_PLURAL   = 'apiClients';
 
-    const ENTITY_TITLE_SINGULAR = 'admin:user';
-    const ENTITY_TITLE_PLURAL   = 'admin:users';
-
-    const VAR_ALL_USER_GROUPS    = 'allUserGroups';
-    const VAR_ALL_USER_LANGUAGES = 'allUserLanguages';
+    const ENTITY_TITLE_SINGULAR = 'admin:apiClient';
+    const ENTITY_TITLE_PLURAL   = 'admin:apiClients';
 
     /** @var Slugify */
     protected $slugify;
@@ -41,13 +36,13 @@ class User extends FormAbstract
     protected $assets;
 
     /** @var string */
-    protected $frontendSalt;
+    protected $secretLength;
 
     /** @var string */
-    protected $resource = 'users';
+    protected $resource = 'api_clients';
 
     /**
-     * User constructor.
+     * ApiClient constructor.
      *
      * @param FlashService     $flashService
      * @param ITranslator      $translator
@@ -58,7 +53,7 @@ class User extends FormAbstract
      * @param FormFactory      $formFactory
      * @param IEventDispatcher $eventDispatcher
      * @param AssetManager     $assetManager
-     * @param string           $frontendSalt
+     * @param string           $secretLength
      */
     public function __construct(
         FlashService $flashService,
@@ -70,7 +65,7 @@ class User extends FormAbstract
         FormFactory $formFactory,
         IEventDispatcher $eventDispatcher,
         AssetManager $assetManager,
-        string $frontendSalt
+        string $secretLength
     ) {
         parent::__construct(
             $flashService,
@@ -84,7 +79,7 @@ class User extends FormAbstract
         );
 
         $this->assets       = $assetManager;
-        $this->frontendSalt = $frontendSalt;
+        $this->secretLength = $secretLength;
     }
 
     /**
@@ -94,20 +89,7 @@ class User extends FormAbstract
      */
     public function createEntity(string $entityId): IStringerEntity
     {
-        $userLanguage = new UserLanguage(
-            '',
-            '',
-            ''
-        );
-        $entity       = new Entity(
-            (string)$entityId,
-            '',
-            '',
-            '',
-            true,
-            true,
-            $userLanguage
-        );
+        $entity = new Entity((string)$entityId, '', '', '');
 
         return $entity;
     }
@@ -125,19 +107,15 @@ class User extends FormAbstract
 
         $this->assets->addJs(
             $footerResource,
-            '/admin-assets/vendor/sha3/sha3.js'
+            '/admin-assets/vendor/password-generator/password-generator.js'
         );
         $this->assets->addJsContent(
             $footerResource,
-            "var frontendSalt = '{$this->frontendSalt}'"
+            "var secretLength = '{$this->secretLength}'"
         );
         $this->assets->addJs(
             $footerResource,
-            '/admin-assets/vendor/zxcvbn/zxcvbn.min.js'
-        );
-        $this->assets->addJs(
-            $footerResource,
-            '/admin-assets/js/user.js'
+            '/admin-assets/js/api-client.js'
         );
     }
 }

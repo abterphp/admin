@@ -11,6 +11,7 @@ use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
+use Psr\Log\LoggerInterface;
 
 class User extends GridAbstract
 {
@@ -28,6 +29,7 @@ class User extends GridAbstract
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param AssetManager     $assets
      * @param RepoGrid         $repoGrid
      * @param IEventDispatcher $eventDispatcher
@@ -36,6 +38,7 @@ class User extends GridAbstract
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         AssetManager $assets,
         RepoGrid $repoGrid,
         IEventDispatcher $eventDispatcher
@@ -44,6 +47,7 @@ class User extends GridAbstract
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $assets,
             $repoGrid,
             $eventDispatcher

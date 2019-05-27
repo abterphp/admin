@@ -6,7 +6,7 @@ namespace AbterPhp\Admin\Domain\Entities;
 
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 
-class UserApiKey implements IStringerEntity
+class ApiClient implements IStringerEntity
 {
     /** @var string */
     protected $id;
@@ -17,22 +17,32 @@ class UserApiKey implements IStringerEntity
     /** @var string */
     protected $description;
 
+    /** @var string */
+    protected $secret;
+
     /** @var AdminResource[] */
     protected $adminResources;
 
     /**
-     * ApiKey constructor.
+     * ApiClient constructor.
      *
      * @param string          $id
      * @param string          $userId
      * @param string          $description
+     * @param string          $secret
      * @param AdminResource[] $adminResources
      */
-    public function __construct(string $id, string $userId, string $description, array $adminResources = [])
-    {
+    public function __construct(
+        string $id,
+        string $userId,
+        string $description,
+        string $secret,
+        array $adminResources = []
+    ) {
         $this->id             = $id;
         $this->userId         = $userId;
         $this->description    = $description;
+        $this->secret         = $secret;
         $this->adminResources = $adminResources;
     }
 
@@ -65,7 +75,7 @@ class UserApiKey implements IStringerEntity
      *
      * @return $this
      */
-    public function setUserId(string $userId): UserApiKey
+    public function setUserId(string $userId): ApiClient
     {
         $this->userId = $userId;
 
@@ -85,9 +95,29 @@ class UserApiKey implements IStringerEntity
      *
      * @return $this
      */
-    public function setDescription(string $description): UserApiKey
+    public function setDescription(string $description): ApiClient
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret(): string
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     *
+     * @return $this
+     */
+    public function setSecret(string $secret): ApiClient
+    {
+        $this->secret = $secret;
 
         return $this;
     }
@@ -105,7 +135,7 @@ class UserApiKey implements IStringerEntity
      *
      * @return $this
      */
-    public function setAdminResources(array $adminResources): UserApiKey
+    public function setAdminResources(array $adminResources): ApiClient
     {
         $this->adminResources = $adminResources;
 

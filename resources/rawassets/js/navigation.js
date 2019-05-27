@@ -7,8 +7,6 @@ $(document).ready(function () {
         }
 
         $this.toggleClass('nav-open', val === 'true');
-
-        console.log('each', $this);
     });
 
     $('.openable > a').click(function (e) {
@@ -23,7 +21,5 @@ $(document).ready(function () {
         $this.toggleClass('nav-open');
 
         window.localStorage.setItem($id, $this.hasClass('nav-open'));
-
-        console.log('click', $this);
     });
 });

@@ -42,12 +42,22 @@ class AuthInvalidator
             case AdminResource::class:
             case User::class:
             case UserGroup::class:
-                $this->cacheManager->clearAll();
+                try {
+                    $this->cacheManager->clearAll();
+                } catch (\Exception $e) {
+                    // Exception ignored on purpose. Request is likely an API call...
+                    $e;
+                }
                 break;
         }
 
         if ($event->getEntityName() == User::class && $event->getEntityId() == $this->session->get(Session::USER_ID)) {
-            $this->session->flush();
+            try {
+                $this->session->flush();
+            } catch (\Exception $e) {
+                // Exception ignored on purpose. Request is likely an API call...
+                $e;
+            }
         }
     }
 }

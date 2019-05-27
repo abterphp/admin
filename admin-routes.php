@@ -28,9 +28,9 @@ $router->group(
             ],
             function (Router $router) {
                 $entities = [
-                    'usergroups'  => 'UserGroup',
-                    'users'       => 'User',
-                    'userapikeys' => 'UserApiKey',
+                    'usergroups' => 'UserGroup',
+                    'users'      => 'User',
+                    'apiclients' => 'ApiClient',
                 ];
 
                 foreach ($entities as $route => $controllerName) {
@@ -38,7 +38,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\User::show() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\UserGroup::show() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\UserApiKey::show() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Grid\ApiClient::show() */
                     $router->get(
                         "/${path}",
                         "Admin\Grid\\${controllerName}@show",
@@ -58,7 +58,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\User::new() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserGroup::new() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserApiKey::new() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\ApiClient::new() */
                     $router->get(
                         "/${path}/new",
                         "Admin\Form\\${controllerName}@new",
@@ -77,7 +77,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\User::create() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserGroup::create() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserApiKey::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\ApiClient::create() */
                     $router->post(
                         "/${path}/new",
                         "Admin\Execute\\${controllerName}@create",
@@ -96,7 +96,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\User::edit() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserGroup::edit() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\UserApiKey::edit() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\ApiClient::edit() */
                     $router->get(
                         "/${path}/:entityId/edit",
                         "Admin\Form\\${controllerName}@edit",
@@ -115,7 +115,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\User::update() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserGroup::update() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserApiKey::update() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\ApiClient::update() */
                     $router->put(
                         "/${path}/:entityId/edit",
                         "Admin\Execute\\${controllerName}@update",
@@ -134,7 +134,7 @@ $router->group(
 
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\User::delete() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserGroup::delete() */
-                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\UserApiKey::delete() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\ApiClient::delete() */
                     $router->get(
                         "/${path}/:entityId/delete",
                         "Admin\Execute\\${controllerName}@delete",

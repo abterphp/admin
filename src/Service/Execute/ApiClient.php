@@ -5,40 +5,45 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Service\Execute;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
-use AbterPhp\Admin\Domain\Entities\UserGroup as Entity;
-use AbterPhp\Admin\Orm\UserGroupRepo as GridRepo;
-use AbterPhp\Admin\Validation\Factory\UserGroup as ValidatorFactory;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
+use AbterPhp\Admin\Orm\ApiClientRepo as GridRepo;
+use AbterPhp\Admin\Validation\Factory\ApiClient as ValidatorFactory;
+use AbterPhp\Framework\Crypto\Crypto;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
-use Cocur\Slugify\Slugify;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Http\Requests\UploadedFile;
 use Opulence\Orm\IUnitOfWork;
 
-class UserGroup extends RepoServiceAbstract
+class ApiClient extends RepoServiceAbstract
 {
-    /** @var Slugify */
-    protected $slugify;
+    /** @var Crypto */
+    protected $crypto;
 
     /**
-     * UserGroup constructor.
+     * ApiClient constructor.
      *
      * @param GridRepo         $repo
      * @param ValidatorFactory $validatorFactory
      * @param IUnitOfWork      $unitOfWork
      * @param IEventDispatcher $eventDispatcher
-     * @param Slugify          $slugify
+     * @param Crypto           $crypto
      */
     public function __construct(
         GridRepo $repo,
         ValidatorFactory $validatorFactory,
         IUnitOfWork $unitOfWork,
         IEventDispatcher $eventDispatcher,
-        Slugify $slugify
+        Crypto $crypto
     ) {
-        parent::__construct($repo, $validatorFactory, $unitOfWork, $eventDispatcher);
+        parent::__construct(
+            $repo,
+            $validatorFactory,
+            $unitOfWork,
+            $eventDispatcher
+        );
 
-        $this->slugify = $slugify;
+        $this->crypto = $crypto;
     }
 
     /**
@@ -46,9 +51,11 @@ class UserGroup extends RepoServiceAbstract
      *
      * @return Entity
      */
-    protected function createEntity(string $entityId): IStringerEntity
+    public function createEntity(string $entityId): IStringerEntity
     {
-        return new Entity($entityId, '', '');
+        $entity = new Entity($entityId, '', '', '');
+
+        return $entity;
     }
 
     /**
@@ -66,9 +73,9 @@ class UserGroup extends RepoServiceAbstract
             return $entity;
         }
 
-        $name = isset($postData['name']) ? (string)$postData['name'] : '';
-
-        $identifier = $this->slugify->slugify($name);
+        $secret      = (string)$postData['secret'];
+        $description = (string)$postData['description'];
+        $userId      = (string)$postData['user_id'];
 
         $adminResources = [];
         if (array_key_exists('admin_resource_ids', $postData)) {
@@ -78,9 +85,15 @@ class UserGroup extends RepoServiceAbstract
         }
 
         $entity
-            ->setName($name)
-            ->setIdentifier($identifier)
+            ->setDescription($description)
+            ->setUserId($userId)
             ->setAdminResources($adminResources);
+
+        if ($secret) {
+            $secret = $this->crypto->prepareSecret($secret);
+
+            $entity->setSecret($this->crypto->hashCrypt($secret));
+        }
 
         return $entity;
     }

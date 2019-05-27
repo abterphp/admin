@@ -14,6 +14,7 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
+use Psr\Log\LoggerInterface;
 
 class UserGroup extends FormAbstract
 {
@@ -32,6 +33,7 @@ class UserGroup extends FormAbstract
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param Repo             $repo
      * @param ISession         $session
      * @param FormFactory      $formFactory
@@ -41,12 +43,22 @@ class UserGroup extends FormAbstract
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         Repo $repo,
         ISession $session,
         FormFactory $formFactory,
         IEventDispatcher $eventDispatcher
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator, $repo, $session, $formFactory, $eventDispatcher);
+        parent::__construct(
+            $flashService,
+            $translator,
+            $urlGenerator,
+            $logger,
+            $repo,
+            $session,
+            $formFactory,
+            $eventDispatcher
+        );
     }
 
     /**

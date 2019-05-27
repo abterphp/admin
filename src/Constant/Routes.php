@@ -17,14 +17,14 @@ class Routes
     const PATH_LOGOUT    = '/logout';
     const PATH_DASHBOARD = '/dashboard';
 
-    const ROUTE_USER_API_KEYS   = 'userapikeys';
-    const ROUTE_USER_API_NEW    = 'userapikeys-new';
-    const ROUTE_USER_API_EDIT   = 'userapikeys-edit';
-    const ROUTE_USER_API_DELETE = 'userapikeys-delete';
-    const PATH_USER_API_KEYS    = '/userapikeys';
-    const PATH_USER_API_NEW     = '/userapikeys/new';
-    const PATH_USER_API_EDIT    = '/userapikeys/:id/edit';
-    const PATH_USER_API_DELETE  = '/userapikeys/:id/delete';
+    const ROUTE_API_CLIENTS        = 'apiclients';
+    const ROUTE_API_CLIENTS_NEW    = 'apiclients-new';
+    const ROUTE_API_CLIENTS_EDIT   = 'apiclients-edit';
+    const ROUTE_API_CLIENTS_DELETE = 'apiclients-delete';
+    const PATH_API_CLIENTS         = '/apiclients';
+    const PATH_API_CLIENTS_NEW     = '/apiclients/new';
+    const PATH_API_CLIENTS_EDIT    = '/apiclients/:entityId/edit';
+    const PATH_API_CLIENTS_DELETE  = '/apiclients/:entityId/delete';
 
     const ROUTE_PROFILE = 'profile';
     const PATH_PROFILE  = '/profile';
@@ -33,17 +33,27 @@ class Routes
     const ROUTE_USERS_NEW    = 'users-new';
     const ROUTE_USERS_EDIT   = 'users-edit';
     const ROUTE_USERS_DELETE = 'users-delete';
-    const PATH_USERS         = '/user';
-    const PATH_USERS_NEW     = '/user/new';
-    const PATH_USERS_EDIT    = '/user/:id/edit';
-    const PATH_USERS_DELETE  = '/user/:id/delete';
+    const PATH_USERS         = '/users';
+    const PATH_USERS_NEW     = '/users/new';
+    const PATH_USERS_EDIT    = '/users/:entityId/edit';
+    const PATH_USERS_DELETE  = '/users/:entityId/delete';
+    const PATH_USERS_ENTITY  = '/users/:entityId';
 
     const ROUTE_USER_GROUPS        = 'usergroups';
     const ROUTE_USER_GROUPS_NEW    = 'usergroups-new';
     const ROUTE_USER_GROUPS_EDIT   = 'usergroups-edit';
     const ROUTE_USER_GROUPS_DELETE = 'usergroups-delete';
-    const PATH_USER_GROUPS         = '/usergroup';
-    const PATH_USER_GROUPS_NEW     = '/usergroup/new';
-    const PATH_USER_GROUPS_EDIT    = '/usergroup/:id/edit';
-    const PATH_USER_GROUPS_DELETE  = '/usergroup/:id/delete';
+    const PATH_USER_GROUPS         = '/usergroups';
+    const PATH_USER_GROUPS_NEW     = '/usergroups/new';
+    const PATH_USER_GROUPS_EDIT    = '/usergroups/:entityId/edit';
+    const PATH_USER_GROUPS_DELETE  = '/usergroups/:entityId/delete';
+    const PATH_USER_GROUPS_ENTITY  = '/users/:entityId';
+
+    const ROUTE_ACCESS_TOKEN = 'accesstokens';
+    const PATH_ACCESS_TOKEN  = '/access-tokens';
+
+    const ROUTE_404 = '404';
+    const PATH_404  = '/:anything';
+
+    const VAR_ANYTHING = 'anything';
 }

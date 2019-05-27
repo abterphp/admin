@@ -20,7 +20,7 @@ VALUES (UUID(), 'adminresources'),
        (UUID(), 'users'),
        (UUID(), 'usergroups'),
        (UUID(), 'usergroups_adminresources'),
-       (UUID(), 'userapikeys');
+       (UUID(), 'apiclients');
 
 --
 -- Table structure and data for table `casbin_rule`
@@ -94,8 +94,8 @@ CREATE TABLE `user_groups_admin_resources`
     PRIMARY KEY (`id`),
     KEY `user_group_id` (`user_group_id`),
     KEY `admin_resource_id` (`admin_resource_id`),
-    CONSTRAINT `ugar_ibfk_1` FOREIGN KEY (`admin_resource_id`) REFERENCES `admin_resources` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `ugar_ibfk_2` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`id`) ON DELETE NO ACTION
+    CONSTRAINT `ugar_ibfk_1` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `ugar_ibfk_2` FOREIGN KEY (`admin_resource_id`) REFERENCES `admin_resources` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -140,7 +140,7 @@ CREATE TABLE `users`
     UNIQUE KEY `uniq_email` (`email`),
     KEY `users_deleted_index` (`deleted`),
     KEY `user_language_id` (`user_language_id`),
-    CONSTRAINT `user_language_id` FOREIGN KEY (`user_language_id`) REFERENCES `user_languages` (`id`) ON DELETE NO ACTION
+    CONSTRAINT `u_ibfk_1` FOREIGN KEY (`user_language_id`) REFERENCES `user_languages` (`id`) ON DELETE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -160,19 +160,20 @@ CREATE TABLE `users_user_groups`
     KEY `user_id` (`user_id`),
     KEY `user_group_id` (`user_group_id`),
     KEY `user_group_deleted_index` (`deleted`),
-    CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `user_group_id` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`id`) ON DELETE NO ACTION
+    CONSTRAINT `uug_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `uug_ibfk_2` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`id`) ON DELETE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
 --
--- Table structure and data for table `user_api_keys`
+-- Table structure and data for table `api_clients`
 --
 
-CREATE TABLE `user_api_keys`
+CREATE TABLE `api_clients`
 (
     `id`          char(36)            NOT NULL,
-    `user_id`     char(36)            NOT NULL,
+    `user_id`     char(36)            NULL,
+    `secret`      text                NOT NULL,
     `description` mediumtext          NOT NULL,
     `created_at`  timestamp           NOT NULL DEFAULT current_timestamp(),
     `updated_at`  timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -180,7 +181,7 @@ CREATE TABLE `user_api_keys`
     PRIMARY KEY (`id`),
     KEY `users_deleted_index` (`deleted`),
     KEY `user_id` (`user_id`),
-    CONSTRAINT `user_api_keys_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+    CONSTRAINT `uc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -188,18 +189,57 @@ CREATE TABLE `user_api_keys`
 -- Table structure and data for table `user_api_keys_admin_resources`
 --
 
-CREATE TABLE `user_api_keys_admin_resources`
+CREATE TABLE `api_clients_admin_resources`
 (
     `id`                char(36)  NOT NULL,
-    `user_api_key_id`   char(36)  NOT NULL,
+    `api_client_id`     char(36)  NOT NULL,
     `admin_resource_id` char(36)  NOT NULL,
     `created_at`        timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at`        timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
-    KEY `user_api_key_id` (`user_api_key_id`),
+    KEY `api_client_id` (`api_client_id`),
     KEY `admin_resource_id` (`admin_resource_id`),
-    CONSTRAINT `uakar_ibfk_1` FOREIGN KEY (`admin_resource_id`) REFERENCES `admin_resources` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `uakar_ibfk_2` FOREIGN KEY (`user_api_key_id`) REFERENCES `user_api_keys` (`id`) ON DELETE CASCADE
+    CONSTRAINT `acar_ibfk_1` FOREIGN KEY (`api_client_id`) REFERENCES `api_clients` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `acar_ibfk_2` FOREIGN KEY (`admin_resource_id`) REFERENCES `admin_resources` (`id`) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Table structure and data for table `tokens`
+--
+
+CREATE TABLE `tokens`
+(
+    `id`            varchar(120)        NOT NULL,
+    `api_client_id` char(36)            NOT NULL,
+    `expires_at`    timestamp           NOT NULL,
+    `revoked_at`    timestamp           NULL     DEFAULT NULL,
+    `created_at`    timestamp           NOT NULL DEFAULT current_timestamp(),
+    `updated_at`    timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `deleted`       tinyint(1) unsigned NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    KEY `tokens_deleted_index` (`deleted`),
+    KEY `api_client_id` (`api_client_id`),
+    CONSTRAINT `t_ibfk_1` FOREIGN KEY (`api_client_id`) REFERENCES `api_clients` (`id`) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Table structure and data for table `tokens_admin_resources`
+--
+
+CREATE TABLE `tokens_admin_resources`
+(
+    `id`                char(36)     NOT NULL,
+    `token_id`          varchar(120) NOT NULL,
+    `admin_resource_id` char(36)     NOT NULL,
+    `created_at`        timestamp    NOT NULL DEFAULT current_timestamp(),
+    `updated_at`        timestamp    NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    PRIMARY KEY (`id`),
+    KEY `token_id` (`token_id`),
+    KEY `admin_resource_id` (`admin_resource_id`),
+    CONSTRAINT `tar_ibfk_1` FOREIGN KEY (`token_id`) REFERENCES `tokens` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `tar_ibfk_2` FOREIGN KEY (`admin_resource_id`) REFERENCES `admin_resources` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 

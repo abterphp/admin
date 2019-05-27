@@ -22,10 +22,13 @@ return [
     ],
     Module::HTTP_BOOTSTRAPPERS => [
         Bootstrappers\Http\Controllers\Execute\LoginBootstrapper::class,
+        Bootstrappers\Http\Controllers\Form\ApiClientBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\LoginBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\UserBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\ProfileBootstrapper::class,
         Bootstrappers\Http\Views\BuildersBootstrapper::class,
+        Bootstrappers\Oauth2\AuthorizationServerBootstrapper::class,
+        Bootstrappers\Oauth2\ResourceServerBootstrapper::class,
         Bootstrappers\Vendor\SlugifyBootstrapper::class,
     ],
     Module::COMMANDS           => [
@@ -61,6 +64,7 @@ return [
     Module::ROUTE_PATHS        => [
         Priorities::NORMAL => [
             __DIR__ . '/admin-routes.php',
+            __DIR__ . '/api-routes.php',
             __DIR__ . '/login-routes.php',
         ],
     ],

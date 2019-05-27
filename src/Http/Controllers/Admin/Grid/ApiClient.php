@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Grid;
 
-use AbterPhp\Admin\Service\RepoGrid\UserApiKey as RepoGrid;
+use AbterPhp\Admin\Service\RepoGrid\ApiClient as RepoGrid;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Http\Controllers\Admin\GridAbstract;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
+use Psr\Log\LoggerInterface;
 
-class UserApiKey extends GridAbstract
+class ApiClient extends GridAbstract
 {
-    const ENTITY_SINGULAR = 'userApiKey';
-    const ENTITY_PLURAL   = 'userApiKeys';
+    const ENTITY_SINGULAR = 'apiClient';
+    const ENTITY_PLURAL   = 'apiClients';
 
-    const ENTITY_TITLE_PLURAL = 'admin:userApiKeys';
+    const ENTITY_TITLE_PLURAL = 'admin:apiClients';
 
     /** @var string */
-    protected $resource = 'user_api_keys';
+    protected $resource = 'api_clients';
 
     /**
-     * ApiKey constructor.
+     * ApiClient constructor.
      *
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param AssetManager     $assets
      * @param RepoGrid         $repoGrid
      * @param IEventDispatcher $eventDispatcher
@@ -36,6 +38,7 @@ class UserApiKey extends GridAbstract
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         AssetManager $assets,
         RepoGrid $repoGrid,
         IEventDispatcher $eventDispatcher
@@ -44,6 +47,7 @@ class UserApiKey extends GridAbstract
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $assets,
             $repoGrid,
             $eventDispatcher

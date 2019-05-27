@@ -17,6 +17,7 @@ use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
+use Psr\Log\LoggerInterface;
 
 class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
@@ -38,17 +39,19 @@ class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $flashService    = $container->resolve(FlashService::class);
         $translator      = $container->resolve(ITranslator::class);
         $urlGenerator    = $container->resolve(UrlGenerator::class);
+        $logger          = $container->resolve(LoggerInterface::class);
         $repo            = $container->resolve(Repo::class);
         $session         = $container->resolve(ISession::class);
         $formFactory     = $container->resolve(FormFactory::class);
-        $assets          = $container->resolve(AssetManager::class);
         $eventDispatcher = $container->resolve(IEventDispatcher::class);
+        $assets          = $container->resolve(AssetManager::class);
         $frontendSalt    = getenv(Env::CRYPTO_FRONTEND_SALT);
 
         $userController = new User(
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $repo,
             $session,
             $formFactory,
