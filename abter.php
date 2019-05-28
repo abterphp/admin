@@ -62,10 +62,14 @@ return [
         ],
     ],
     Module::ROUTE_PATHS        => [
-        Priorities::NORMAL => [
+        Priorities::BELOW_NORMAL => [
             __DIR__ . '/admin-routes.php',
             __DIR__ . '/api-routes.php',
             __DIR__ . '/login-routes.php',
+        ],
+        // Fallback routes, should be easy to override
+        Priorities::VERY_LOW   => [
+            __DIR__ . '/fallback-routes.php',
         ],
     ],
     Module::MIGRATION_PATHS    => [

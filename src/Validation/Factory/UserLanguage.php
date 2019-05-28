@@ -7,7 +7,7 @@ namespace AbterPhp\Admin\Validation\Factory;
 use Opulence\Validation\Factories\ValidatorFactory;
 use Opulence\Validation\IValidator;
 
-class ApiClient extends ValidatorFactory
+class UserLanguage extends ValidatorFactory
 {
     /**
      * @return IValidator
@@ -18,19 +18,13 @@ class ApiClient extends ValidatorFactory
 
         $validator
             ->field('id')
-            ->uuid();
-
-        $validator
-            ->field('user_id')
             ->uuid()
-            ->required();
+        ;
 
         $validator
-            ->field('description')
-            ->required();
-
-        $validator
-            ->field('admin_resource_ids');
+            ->field('name')
+            ->required()
+        ;
 
         return $validator;
     }

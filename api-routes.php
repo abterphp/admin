@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use AbterPhp\Admin\Constant\Routes;
-use Opulence\Routing\Router;
 use AbterPhp\Admin\Http\Middleware\Api;
+use Opulence\Routing\Router;
 
 /**
  * ----------------------------------------------------------
@@ -33,32 +33,47 @@ $router->group(
         );
         $router->group(
             [
-                'path' => PATH_API,
+                'path'       => PATH_API,
                 'middleware' => [
                     Api::class,
                 ],
             ],
             function (Router $router) {
-                /** @see \AbterPhp\Admin\Http\Controllers\Api\User::create() */
-                $router->post(
-                    Routes::PATH_USERS,
-                    'Api\User@create'
-                );
+                $entities = [
+                    'usergroups'    => 'UserGroup',
+                    'userlanguages' => 'UserLanguage',
+                    'users'         => 'User',
+                    'apiclients'    => 'ApiClient',
+                ];
 
-                /** @see \AbterPhp\Admin\Http\Controllers\Api\User::update() */
-                $router->put(
-                    Routes::PATH_USERS_ENTITY,
-                    'Api\User@update'
-                );
+                foreach ($entities as $route => $controllerName) {
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserLanguage::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserGroup::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\User::create() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\ApiClient::create() */
+                    $router->post(
+                        "/${route}",
+                        "Api\\${controllerName}@create"
+                    );
 
-                /** @see \AbterPhp\Framework\Http\Controllers\Api\Index::notFound() */
-                $router->any(
-                    Routes::PATH_404,
-                    'Api\Index@notFound',
-                    [
-                        OPTION_VARS => [Routes::VAR_ANYTHING => '.+'],
-                    ]
-                );
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserLanguage::update() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserGroup::update() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\User::update() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\ApiClient::update() */
+                    $router->put(
+                        "/${route}/:entityId",
+                        "Api\\${controllerName}@update"
+                    );
+
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserLanguage::delete() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserGroup::delete() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\User::delete() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\ApiClient::delete() */
+                    $router->delete(
+                        "/${route}/:entityId",
+                        "Api\\${controllerName}@delete"
+                    );
+                }
             }
         );
     }
