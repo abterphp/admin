@@ -32,10 +32,15 @@ return [
         Bootstrappers\Vendor\SlugifyBootstrapper::class,
     ],
     Module::COMMANDS           => [
+        Console\Commands\AdminResource\ListCommand::class,
+        Console\Commands\ApiClient\Create::class,
+        Console\Commands\ApiClient\Delete::class,
+        Console\Commands\ApiClient\RegenerateSecret::class,
         Console\Commands\User\Create::class,
         Console\Commands\User\Delete::class,
         Console\Commands\User\UpdatePassword::class,
-        Console\Commands\UserGroup\Display::class,
+        Console\Commands\UserGroup\ListCommand::class,
+        Console\Commands\UserLanguage\ListCommand::class,
     ],
     Module::EVENTS             => [
         Event::AUTH_READY         => [
