@@ -120,8 +120,6 @@ class RegenerateSecret extends Command
                 return;
             }
 
-            $adminResources = $apiClient->getAdminResources();
-
             $rawSecret        = $this->passwordGenerator->generatePassword();
             $preparedPassword = $this->crypto->prepareSecret($rawSecret);
             $packedPassword   = $this->crypto->hashCrypt($preparedPassword);

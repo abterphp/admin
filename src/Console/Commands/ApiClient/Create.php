@@ -201,7 +201,6 @@ class Create extends Command
     protected function getApiClient(string $userId, string $packedPassword, array $adminResources): ApiClient
     {
         $description = $this->getArgumentValue(static::ARGUMENT_DESCRIPTION);
-        $resources   = $this->getArgumentValue(static::ARGUMENT_RESOURCES);
 
         return new ApiClient(
             '',

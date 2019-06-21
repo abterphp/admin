@@ -47,6 +47,24 @@ $router->group(
                 ];
 
                 foreach ($entities as $route => $controllerName) {
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserLanguage::get() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserGroup::get() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\User::get() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\ApiClient::get() */
+                    $router->get(
+                        "/${route}/:entityId",
+                        "Api\\${controllerName}@get"
+                    );
+
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserLanguage::list() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\UserGroup::list() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\User::list() */
+                    /** @see \AbterPhp\Admin\Http\Controllers\Api\ApiClient::list() */
+                    $router->get(
+                        "/${route}",
+                        "Api\\${controllerName}@list"
+                    );
+
                     /** @see \AbterPhp\Admin\Http\Controllers\Api\UserLanguage::create() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Api\UserGroup::create() */
                     /** @see \AbterPhp\Admin\Http\Controllers\Api\User::create() */
