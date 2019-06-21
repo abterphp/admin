@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Http\Middleware;
 
 use AbterPhp\Admin\Service\Login as LoginService;
+use AbterPhp\Framework\Config\Provider as ConfigProvider;
 use AbterPhp\Framework\Psr7\RequestConverter;
 use AbterPhp\Framework\Psr7\ResponseConverter;
 use AbterPhp\Framework\Psr7\ResponseFactory;
@@ -34,6 +35,9 @@ class Api implements IMiddleware
     /** @var LoggerInterface */
     protected $logger;
 
+    /** @var string */
+    protected $problemBaseUrl;
+
     /**
      * @param LoginService $loginService The session used by the application
      */
@@ -42,7 +46,8 @@ class Api implements IMiddleware
         RequestConverter $requestConverter,
         ResponseFactory $responseFactory,
         ResponseConverter $responseConverter,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ConfigProvider $configProvider
     ) {
         $this->server = $server;
 
@@ -50,6 +55,7 @@ class Api implements IMiddleware
         $this->responseFactory   = $responseFactory;
         $this->responseConverter = $responseConverter;
         $this->logger            = $logger;
+        $this->problemBaseUrl    = $configProvider->getProblemBaseUrl();
     }
 
     // TODO: Check error response formats
@@ -61,22 +67,35 @@ class Api implements IMiddleware
         try {
             $psr7Request = $this->server->validateAuthenticatedRequest($psr7Request);
         } catch (OAuthServerException $e) {
-            $psr7Response = $this->responseFactory->create();
-
-            $psr7Response = $e->generateHttpResponse($psr7Response);
-
-            return $this->responseConverter->fromPsr($psr7Response);
+            return $this->createResponse($e);
         } catch (Exception $e) {
-            $psr7Response = $this->responseFactory->create();
-
-            $psr7Response = (new OAuthServerException($e->getMessage(), 0, 'unknown_error', 500))
-                ->generateHttpResponse($psr7Response);
-
-            return $this->responseConverter->fromPsr($psr7Response);
+            return $this->createResponse(new OAuthServerException($e->getMessage(), 0, 'unknown_error', 500));
         }
 
         // $request = $this->requestConverter->fromPsr($psr7Request);
 
         return $next($request);
+    }
+
+    /**
+     * @param OAuthServerException $e
+     *
+     * @return Response
+     */
+    protected function createResponse(OAuthServerException $e): Response
+    {
+        $status  = $e->getHttpStatusCode();
+        $content = [
+            'type'   => sprintf('%srequest-authentication-failure', $this->problemBaseUrl),
+            'title'  => 'Access Denied',
+            'status' => $status,
+            'detail' => $e->getMessage(),
+        ];
+
+        $response = new Response();
+        $response->setStatusCode($status);
+        $response->setContent(json_encode($content));
+
+        return $response;
     }
 }
