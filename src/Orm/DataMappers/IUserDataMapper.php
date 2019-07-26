@@ -10,6 +10,13 @@ use Opulence\Orm\DataMappers\IDataMapper;
 interface IUserDataMapper extends IDataMapper
 {
     /**
+     * @param string $clientId
+     *
+     * @return Entity|null
+     */
+    public function getByClientId(string $clientId): ?Entity;
+
+    /**
      * @param string $username
      *
      * @return Entity|null

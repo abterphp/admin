@@ -143,3 +143,16 @@
 .btn-sm > .media-right {
     padding-left: 4px;
 }
+
+.is-success {
+    color: #259b24;
+}
+.is-warning {
+    color: #ffc107;
+}
+.is-danger {
+    color: #ff5722;
+}
+.is-info {
+    color: #03a9f4;
+}

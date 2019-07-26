@@ -73,7 +73,7 @@ return [
             __DIR__ . '/login-routes.php',
         ],
         // Fallback routes, should be easy to override
-        Priorities::VERY_LOW   => [
+        Priorities::VERY_LOW     => [
             __DIR__ . '/fallback-routes.php',
         ],
     ],

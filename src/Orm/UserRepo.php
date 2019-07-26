@@ -27,6 +27,17 @@ class UserRepo extends Repository implements IGridRepo
     }
 
     /**
+     * @param string $clientId
+     *
+     * @return Entity|null
+     */
+    public function getByClientId(string $clientId): ?Entity
+    {
+        /** @see UserSqlDataMapper::getByClientId() */
+        return $this->getFromDataMapper('getByClientId', [$clientId]);
+    }
+
+    /**
      * @param string $username
      *
      * @return Entity|null
