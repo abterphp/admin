@@ -7,7 +7,8 @@ namespace AbterPhp\Admin\Http\Middleware;
 use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Admin\Service\Login as LoginService;
-use AbterPhp\Framework\Config\Provider as ConfigProvider;
+use AbterPhp\Framework\Config\EnvReader;
+use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Psr7\RequestConverter;
 use AbterPhp\Framework\Psr7\ResponseConverter;
 use AbterPhp\Framework\Psr7\ResponseFactory;
@@ -55,7 +56,7 @@ class Api implements IMiddleware
         ResponseConverter $responseConverter,
         UserRepo $userRepo,
         LoggerInterface $logger,
-        ConfigProvider $configProvider
+        EnvReader $envReader
     ) {
         $this->server = $server;
 
@@ -64,7 +65,7 @@ class Api implements IMiddleware
         $this->responseConverter = $responseConverter;
         $this->userRepo          = $userRepo;
         $this->logger            = $logger;
-        $this->problemBaseUrl    = $configProvider->getProblemBaseUrl();
+        $this->problemBaseUrl    = $envReader->get(Env::API_PROBLEM_BASE_URL);
     }
 
     // TODO: Check error response formats
