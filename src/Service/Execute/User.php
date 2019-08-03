@@ -13,6 +13,7 @@ use AbterPhp\Framework\Crypto\Crypto;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
 use Opulence\Events\Dispatchers\IEventDispatcher;
+use Opulence\Http\Requests\UploadedFile;
 use Opulence\Orm\IUnitOfWork;
 
 class User extends RepoServiceAbstract
@@ -72,35 +73,27 @@ class User extends RepoServiceAbstract
     }
 
     /**
-     * @param Entity $entity
-     * @param array  $data
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param Entity         $entity
+     * @param array          $postData
+     * @param UploadedFile[] $fileData
      *
      * @return Entity
      */
-    protected function fillEntity(IStringerEntity $entity, array $data): IStringerEntity
+    protected function fillEntity(IStringerEntity $entity, array $postData, array $fileData): IStringerEntity
     {
         if (!($entity instanceof Entity)) {
             return $entity;
         }
 
-        $username          = (string)$data['username'];
-        $email             = (string)$data['email'];
-        $password          = (string)$data['password'];
-        $isGravatarAllowed = isset($data['is_gravatar_allowed']) ? (bool)$data['is_gravatar_allowed'] : false;
-        $canLogin          = isset($data['can_login']) ? (bool)$data['can_login'] : false;
-        $userLanguage      = new UserLanguage(
-            (string)$data['user_language_id'],
-            '',
-            ''
-        );
-        $userGroups = [];
-        foreach ($data['user_group_ids'] as $userGroupId) {
-            $userGroups[] = new UserGroup(
-                (string)$userGroupId,
-                '',
-                ''
-            );
-        }
+        $username          = isset($postData['username']) ? (string)$postData['username'] : '';
+        $email             = isset($postData['email']) ? (string)$postData['email'] : '';
+        $password          = isset($postData['password']) ? (string)$postData['password'] : '';
+        $isGravatarAllowed = isset($postData['is_gravatar_allowed']) ? (bool)$postData['is_gravatar_allowed'] : false;
+        $canLogin          = isset($postData['can_login']) ? (bool)$postData['can_login'] : false;
+        $userLanguage      = $this->createUserLanguage($postData);
+        $userGroups        = $this->createUserGroups($postData);
 
         $entity->setUsername($username)
             ->setEmail($email)
@@ -114,5 +107,38 @@ class User extends RepoServiceAbstract
         }
 
         return $entity;
+    }
+
+    /**
+     * @param array $postData
+     *
+     * @return UserLanguage
+     */
+    protected function createUserLanguage(array $postData): UserLanguage
+    {
+        $userLanguageId = isset($postData['user_language_id']) ? (string)$postData['user_language_id'] : '';
+
+        return new UserLanguage($userLanguageId, '', '');
+    }
+
+    /**
+     * @param array $postData
+     *
+     * @return array
+     */
+    protected function createUserGroups(array $postData): array
+    {
+        $userGroups = [];
+        if (!empty($postData['user_group_ids'])) {
+            foreach ($postData['user_group_ids'] as $userGroupId) {
+                $userGroups[] = new UserGroup(
+                    (string)$userGroupId,
+                    '',
+                    ''
+                );
+            }
+        }
+
+        return $userGroups;
     }
 }

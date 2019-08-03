@@ -6,11 +6,23 @@ return [
     'adminResource'  => 'Admin Resource',
     'adminResources' => 'Admin Resources',
 
+    'apiClient'                  => 'API Key',
+    'apiClients'                 => 'API Keys',
+    'apiClientDescription'       => 'Description',
+    'apiClientId'                => 'Client Id',
+    'apiClientSecretPlaceholder' => 'No secret\'s generated. Secret will not change',
+    'apiClientSecret'            => 'Secret',
+    'apiClientSecretHelp'        => 'The generated secret can not be viewed again. Please make sure to save it in your password manager!',
+
+    'generateSecret' => 'New Secret',
+
+    'profile' => 'Profile',
+
     'user'                  => 'User',
     'userId'                => 'Id',
     'userIdentifier'        => 'Identifier',
     'userIsGravatarAllowed' => 'Is gravatar allowed?',
-    'userCanLogin'          => 'Can user log in?',
+    'userCanLogin'          => 'Is logging in allowed?',
     'userConfirmPassword'   => 'Confirm Password',
     'userEmail'             => 'Email',
     'userPassword'          => 'Password',

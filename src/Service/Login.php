@@ -111,9 +111,9 @@ class Login
 
         if ($user && $this->loginThrottle->clear($ipHash, $username)) {
             return $user;
-        } else {
-            $this->logFailure($ipHash, $username, $ipAddress);
         }
+        
+        $this->logFailure($ipHash, $username, $ipAddress);
 
         return null;
     }

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Bootstrappers\Validation;
 
-use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Admin\Validation\Factory\User;
 use AbterPhp\Admin\Validation\Factory\UserGroup;
+use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Validation\Rules\AtLeastOne;
+use AbterPhp\Framework\Validation\Rules\Base64;
+use AbterPhp\Framework\Validation\Rules\Url;
 use AbterPhp\Framework\Validation\Rules\Uuid;
 use InvalidArgumentException;
 use Opulence\Framework\Configuration\Config;
@@ -20,6 +23,8 @@ use Opulence\Validation\Rules\RuleExtensionRegistry;
  */
 class ValidatorBootstrapper extends BaseBootstrapper
 {
+    const LANG_PATH = 'lang/';
+
     /**
      * @var array
      */
@@ -60,11 +65,23 @@ class ValidatorBootstrapper extends BaseBootstrapper
      */
     protected function registerErrorTemplates(ErrorTemplateRegistry $errorTemplateRegistry)
     {
-        $config = require sprintf(
-            '%s/%s/validation.php',
-            Config::get('paths', 'resources.lang'),
-            getenv(Env::DEFAULT_LANGUAGE)
-        );
+        global $abterModuleManager;
+
+        $config = [];
+
+        $lang = getenv(Env::DEFAULT_LANGUAGE);
+
+        $path = sprintf('%s/%s/validation.php', Config::get('paths', 'resources.lang'), $lang);
+        if (is_file($path)) {
+            $config = require $path;
+        }
+
+        foreach ($abterModuleManager->getResourcePaths() as $path) {
+            $path = sprintf('%s/%s/%s/validation.php', $path, static::LANG_PATH, $lang);
+            if (is_file($path)) {
+                $config = array_merge($config, require $path);
+            }
+        }
 
         $errorTemplateRegistry->registerErrorTemplatesFromConfig($config);
     }
@@ -76,6 +93,9 @@ class ValidatorBootstrapper extends BaseBootstrapper
      */
     protected function registerRuleExtensions(RuleExtensionRegistry $ruleExtensionRegistry)
     {
+        $ruleExtensionRegistry->registerRuleExtension(new AtLeastOne());
         $ruleExtensionRegistry->registerRuleExtension(new Uuid());
+        $ruleExtensionRegistry->registerRuleExtension(new Base64());
+        $ruleExtensionRegistry->registerRuleExtension(new Url());
     }
 }

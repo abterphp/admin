@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Bootstrappers\Orm;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
+use AbterPhp\Admin\Domain\Entities\ApiClient;
 use AbterPhp\Admin\Domain\Entities\LoginAttempt;
 use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\AdminResourceRepo;
+use AbterPhp\Admin\Orm\ApiClientRepo;
 use AbterPhp\Admin\Orm\DataMappers\AdminResourceSqlDataMapper;
+use AbterPhp\Admin\Orm\DataMappers\ApiClientSqlDataMapper;
 use AbterPhp\Admin\Orm\DataMappers\LoginAttemptSqlDataMapper;
 use AbterPhp\Admin\Orm\DataMappers\UserGroupSqlDataMapper;
 use AbterPhp\Admin\Orm\DataMappers\UserLanguageSqlDataMapper;
@@ -45,6 +48,7 @@ class OrmBootstrapper extends Bootstrapper implements ILazyBootstrapper
     protected $repoMappers = [
         AdminResourceRepo::class => [AdminResourceSqlDataMapper::class, AdminResource::class],
         LoginAttemptRepo::class  => [LoginAttemptSqlDataMapper::class, LoginAttempt::class],
+        ApiClientRepo::class     => [ApiClientSqlDataMapper::class, ApiClient::class],
         UserGroupRepo::class     => [UserGroupSqlDataMapper::class, UserGroup::class],
         UserLanguageRepo::class  => [UserLanguageSqlDataMapper::class, UserLanguage::class],
         UserRepo::class          => [UserSqlDataMapper::class, User::class],

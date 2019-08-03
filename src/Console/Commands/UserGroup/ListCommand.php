@@ -9,7 +9,7 @@ use AbterPhp\Admin\Orm\UserGroupRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
 
-class Display extends Command
+class ListCommand extends Command
 {
     const COMMAND_NAME        = 'usergroup:list';
     const COMMAND_DESCRIPTION = 'List available user groups';
@@ -18,7 +18,7 @@ class Display extends Command
     protected $userGroupRepo;
 
     /**
-     * Display constructor.
+     * ListCommand constructor.
      *
      * @param UserGroupRepo $userGroupRepo
      */

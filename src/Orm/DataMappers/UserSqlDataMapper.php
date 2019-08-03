@@ -39,8 +39,11 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
                 ]
             );
 
-        $statement = $this->writeConnection->prepare($query->getSql());
-        $statement->bindValues($query->getParameters());
+        $sql    = $query->getSql();
+        $params = $query->getParameters();
+
+        $statement = $this->writeConnection->prepare($sql);
+        $statement->bindValues($params);
         $statement->execute();
 
         $this->addUserGroups($entity);
@@ -74,8 +77,11 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
-        $statement = $this->writeConnection->prepare($query->getSql());
-        $statement->bindValues($query->getParameters());
+        $sql    = $query->getSql();
+        $params = $query->getParameters();
+
+        $statement = $this->writeConnection->prepare($sql);
+        $statement->bindValues($params);
         $statement->execute();
     }
 
@@ -145,11 +151,35 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     {
         $query = $this->getBaseQuery()->andWhere('(username = :identifier OR email = :identifier)');
 
-        $parameters = ['identifier' => [$identifier, \PDO::PARAM_STR]];
+        $sql    = $query->getSql();
+        $params = [
+            'identifier' => [$identifier, \PDO::PARAM_STR],
+        ];
 
-        $sql = $query->getSql();
+        return $this->read($sql, $params, self::VALUE_TYPE_ENTITY);
+    }
 
-        return $this->read($sql, $parameters, self::VALUE_TYPE_ENTITY);
+    /**
+     * @param string $clientId
+     *
+     * @return Entity|null
+     */
+    public function getByClientId(string $clientId): ?Entity
+    {
+        $query = $this->getBaseQuery()
+            ->innerJoin(
+                'api_clients',
+                'ac',
+                'ac.user_id = users.id AND ac.deleted = 0'
+            )
+            ->andWhere('ac.id = :client_id');
+
+        $sql    = $query->getSql();
+        $params = [
+            'client_id' => [$clientId, \PDO::PARAM_STR],
+        ];
+
+        return $this->read($sql, $params, self::VALUE_TYPE_ENTITY, true);
     }
 
     /**
@@ -161,9 +191,12 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     {
         $query = $this->getBaseQuery()->andWhere('`username` = :username');
 
-        $parameters = ['username' => [$username, \PDO::PARAM_STR]];
+        $sql    = $query->getSql();
+        $params = [
+            'username' => [$username, \PDO::PARAM_STR],
+        ];
 
-        return $this->read($query->getSql(), $parameters, self::VALUE_TYPE_ENTITY, true);
+        return $this->read($sql, $params, self::VALUE_TYPE_ENTITY, true);
     }
 
     /**
@@ -175,9 +208,12 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     {
         $query = $this->getBaseQuery()->andWhere('email = :email');
 
-        $parameters = ['email' => [$email, \PDO::PARAM_STR]];
+        $sql    = $query->getSql();
+        $params = [
+            'email' => [$email, \PDO::PARAM_STR],
+        ];
 
-        return $this->read($query->getSql(), $parameters, self::VALUE_TYPE_ENTITY, true);
+        return $this->read($sql, $params, self::VALUE_TYPE_ENTITY, true);
     }
 
     /**
@@ -205,8 +241,11 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
-        $statement = $this->writeConnection->prepare($query->getSql());
-        $statement->bindValues($query->getParameters());
+        $sql    = $query->getSql();
+        $params = $query->getParameters();
+
+        $statement = $this->writeConnection->prepare($sql);
+        $statement->bindValues($params);
         $statement->execute();
 
         $this->deleteUserGroups($entity);

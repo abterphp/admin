@@ -89,6 +89,8 @@ class Login extends ControllerAbstract
                 $this->sessionInitializer->initialize($user);
 
                 return new RedirectResponse(static::SUCCESS_URL);
+            } else {
+                $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_LOGIN_FAILED)]);
             }
         } catch (OrmException $e) {
             $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_DB_PROBLEM)]);

@@ -11,10 +11,12 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Urls\URLException;
 use Opulence\Routing\Urls\UrlGenerator;
-use Opulence\Sessions\ISession;
+use Psr\Log\LoggerInterface;
 
 class Login extends AdminAbstract
 {
+    const ENTITY_SINGULAR = 'login';
+
     const POST_USERNAME = 'username';
 
     /** @var AssetManager */
@@ -26,20 +28,22 @@ class Login extends AdminAbstract
     /**
      * Login constructor.
      *
-     * @param FlashService $flashService
-     * @param ITranslator  $translator
-     * @param UrlGenerator $urlGenerator
-     * @param AssetManager $assets
-     * @param string       $frontendSalt
+     * @param FlashService    $flashService
+     * @param ITranslator     $translator
+     * @param UrlGenerator    $urlGenerator
+     * @param LoggerInterface $logger
+     * @param AssetManager    $assets
+     * @param string          $frontendSalt
      */
     public function __construct(
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         AssetManager $assets,
         string $frontendSalt
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator);
+        parent::__construct($flashService, $translator, $urlGenerator, $logger);
 
         $this->assets       = $assets;
         $this->frontendSalt = $frontendSalt;
@@ -52,7 +56,7 @@ class Login extends AdminAbstract
      */
     public function display(): Response
     {
-        $this->assets->addJsContent('admin-login', "var frontendSalt = '{$this->frontendSalt}';");
+        $this->assets->addJsContent('admin-login', "var frontendSalt = '{$this->frontendSalt}'");
 
         $this->view = $this->viewFactory->createView('contents/backend/login');
 

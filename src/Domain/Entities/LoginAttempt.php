@@ -119,4 +119,16 @@ class LoginAttempt implements IStringerEntity
     {
         return $this->getIpHash();
     }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return json_encode(
+            [
+                "id" => $this->getId(),
+            ]
+        );
+    }
 }

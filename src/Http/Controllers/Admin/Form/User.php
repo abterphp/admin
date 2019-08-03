@@ -7,8 +7,6 @@ namespace AbterPhp\Admin\Http\Controllers\Admin\Form;
 use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Form\Factory\User as FormFactory;
-use AbterPhp\Admin\Orm\UserGroupRepo;
-use AbterPhp\Admin\Orm\UserLanguageRepo;
 use AbterPhp\Admin\Orm\UserRepo as Repo;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
@@ -20,7 +18,11 @@ use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Orm\OrmException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
+use Psr\Log\LoggerInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+ */
 class User extends FormAbstract
 {
     const ENTITY_PLURAL   = 'users';
@@ -31,12 +33,6 @@ class User extends FormAbstract
 
     const VAR_ALL_USER_GROUPS    = 'allUserGroups';
     const VAR_ALL_USER_LANGUAGES = 'allUserLanguages';
-
-    /** @var UserGroupRepo */
-    protected $userGroupRepo;
-
-    /** @var UserLanguageRepo */
-    protected $userLanguageRepo;
 
     /** @var Slugify */
     protected $slugify;
@@ -56,17 +52,19 @@ class User extends FormAbstract
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param Repo             $repo
      * @param ISession         $session
      * @param FormFactory      $formFactory
-     * @param AssetManager     $assetManager
      * @param IEventDispatcher $eventDispatcher
+     * @param AssetManager     $assetManager
      * @param string           $frontendSalt
      */
     public function __construct(
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         Repo $repo,
         ISession $session,
         FormFactory $formFactory,
@@ -78,6 +76,7 @@ class User extends FormAbstract
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $repo,
             $session,
             $formFactory,
@@ -126,11 +125,11 @@ class User extends FormAbstract
 
         $this->assets->addJs(
             $footerResource,
-            '/admin-assets/vendor/sha3/sha3.min.js'
+            '/admin-assets/vendor/sha3/sha3.js'
         );
         $this->assets->addJsContent(
             $footerResource,
-            "var frontendSalt = '{$this->frontendSalt}';"
+            "var frontendSalt = '{$this->frontendSalt}'"
         );
         $this->assets->addJs(
             $footerResource,

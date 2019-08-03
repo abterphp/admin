@@ -12,6 +12,7 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Http\Service\Execute\RepoServiceAbstract;
 use Cocur\Slugify\Slugify;
 use Opulence\Events\Dispatchers\IEventDispatcher;
+use Opulence\Http\Requests\UploadedFile;
 use Opulence\Orm\IUnitOfWork;
 
 class UserGroup extends RepoServiceAbstract
@@ -45,30 +46,33 @@ class UserGroup extends RepoServiceAbstract
      *
      * @return Entity
      */
-    protected function createEntity(string $entityId): IStringerEntity
+    public function createEntity(string $entityId): IStringerEntity
     {
         return new Entity($entityId, '', '');
     }
 
     /**
-     * @param Entity $entity
-     * @param array  $data
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param Entity         $entity
+     * @param array          $postData
+     * @param UploadedFile[] $fileData
      *
      * @return Entity
      */
-    protected function fillEntity(IStringerEntity $entity, array $data): IStringerEntity
+    protected function fillEntity(IStringerEntity $entity, array $postData, array $fileData): IStringerEntity
     {
         if (!($entity instanceof Entity)) {
             return $entity;
         }
 
-        $name = isset($data['name']) ? (string)$data['name'] : '';
+        $name = isset($postData['name']) ? (string)$postData['name'] : '';
 
         $identifier = $this->slugify->slugify($name);
 
         $adminResources = [];
-        if (array_key_exists('admin_resource_ids', $data)) {
-            foreach ($data['admin_resource_ids'] as $id) {
+        if (array_key_exists('admin_resource_ids', $postData)) {
+            foreach ($postData['admin_resource_ids'] as $id) {
                 $adminResources[] = new AdminResource((string)$id, '');
             }
         }

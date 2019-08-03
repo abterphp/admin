@@ -20,4 +20,15 @@ class AdminResourceRepo extends Repository
         /** @see AdminResourceSqlDataMapper::getByIdentifier() */
         return $this->getFromDataMapper('getByIdentifier', [$identifier]);
     }
+    /**
+     * @param string $userId
+     *
+     * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
+     */
+    public function getByUserId(string $userId): array
+    {
+        /** @see AdminResourceSqlDataMapper::getByUserId() */
+        return $this->getFromDataMapper('getByUserId', [$userId]);
+    }
 }

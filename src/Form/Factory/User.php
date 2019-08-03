@@ -70,6 +70,7 @@ class User extends Base
 
         $this->createForm($action, $method)
             ->addDefaultElements()
+            ->addJsOnly()
             ->addUsername($entity)
             ->addEmail($entity)
             ->addPassword()
@@ -189,7 +190,7 @@ class User extends Base
             'raw_password',
             '',
             [],
-            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF]]
+            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF], Html5::ATTR_TYPE => Input::TYPE_PASSWORD]
         );
         $label = new Label('raw_password', 'admin:userPassword');
 
@@ -208,7 +209,7 @@ class User extends Base
             'raw_password_confirmed',
             '',
             [],
-            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF]]
+            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF], Html5::ATTR_TYPE => Input::TYPE_PASSWORD]
         );
         $label = new Label('raw_password_confirmed', 'admin:userConfirmPassword');
 

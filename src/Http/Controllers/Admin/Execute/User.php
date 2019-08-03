@@ -26,25 +26,25 @@ class User extends ExecuteAbstract
      * @param FlashService    $flashService
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
+     * @param LoggerInterface $logger
      * @param RepoService     $repoService
      * @param ISession        $session
-     * @param LoggerInterface $logger
      */
     public function __construct(
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         RepoService $repoService,
-        ISession $session,
-        LoggerInterface $logger
+        ISession $session
     ) {
         parent::__construct(
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $repoService,
-            $session,
-            $logger
+            $session
         );
     }
 }

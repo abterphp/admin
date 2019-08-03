@@ -11,10 +11,12 @@ use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
+use Psr\Log\LoggerInterface;
 
 class UserGroup extends GridAbstract
 {
-    const ENTITY_PLURAL = 'userGroups';
+    const ENTITY_SINGULAR = 'userGroup';
+    const ENTITY_PLURAL   = 'userGroups';
 
     const ENTITY_TITLE_PLURAL = 'admin:userGroups';
 
@@ -27,6 +29,7 @@ class UserGroup extends GridAbstract
      * @param FlashService     $flashService
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
+     * @param LoggerInterface  $logger
      * @param AssetManager     $assets
      * @param RepoGrid         $repoGrid
      * @param IEventDispatcher $eventDispatcher
@@ -35,6 +38,7 @@ class UserGroup extends GridAbstract
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         AssetManager $assets,
         RepoGrid $repoGrid,
         IEventDispatcher $eventDispatcher
@@ -43,6 +47,7 @@ class UserGroup extends GridAbstract
             $flashService,
             $translator,
             $urlGenerator,
+            $logger,
             $assets,
             $repoGrid,
             $eventDispatcher

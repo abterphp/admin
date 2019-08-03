@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Authorization;
 
-use AbterPhp\Admin\Databases\Queries\AdminResourceAuthLoader;
+use AbterPhp\Admin\Databases\Queries\AdminResourceAuthLoader as AuthLoader;
 use Casbin\Exceptions\CasbinException;
 use Casbin\Model\Model;
 use Casbin\Persist\Adapter as CasbinAdapter;
@@ -18,12 +18,12 @@ class AdminResourceProvider implements CasbinAdapter
     /**
      * AdminResourceProvider constructor.
      *
-     * @param AdminResourceAuthLoader $adminResourceAuth
+     * @param AuthLoader $adminResourceAuth
      */
-    public function __construct(AdminResourceAuthLoader $adminResourceAuth)
+    public function __construct(AuthLoader $authLoader)
     {
-        $this->authQueries = $adminResourceAuth;
-        $this->prefix      = static::PREFIX;
+        $this->authLoader = $authLoader;
+        $this->prefix     = static::PREFIX;
     }
 
     /**

@@ -11,9 +11,12 @@ use AbterPhp\Framework\Session\FlashService;
 use Casbin\Enforcer;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Urls\UrlGenerator;
+use Psr\Log\LoggerInterface;
 
 class Dashboard extends AdminAbstract
 {
+    const ENTITY_SINGULAR = 'dashboard';
+
     const TITLE_DASHBOARD = 'admin:dashboard';
 
     /** @var ITranslator */
@@ -31,16 +34,19 @@ class Dashboard extends AdminAbstract
      * @param FlashService        $flashService
      * @param ITranslator         $translator
      * @param UrlGenerator        $urlGenerator
+     * @param LoggerInterface     $logger
+     * @param Enforcer            $enforcer
      * @param DashboardCollection $dashboard
      */
     public function __construct(
         FlashService $flashService,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
+        LoggerInterface $logger,
         Enforcer $enforcer,
         DashboardCollection $dashboard
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator);
+        parent::__construct($flashService, $translator, $urlGenerator, $logger);
 
         $this->enforcer  = $enforcer;
         $this->dashboard = $dashboard;

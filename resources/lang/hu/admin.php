@@ -6,11 +6,23 @@ return [
     'adminResource'  => 'Admin erőforrás',
     'adminResources' => 'Admin erőforrások',
 
+    'apiClient'                  => 'API kulcs',
+    'apiClients'                 => 'API kulcsok',
+    'apiClientDescription'       => 'Leírás',
+    'apiClientId'                => 'Kliens Id',
+    'apiClientSecretPlaceholder' => 'Nincs új generált titok, így az nem fog változni',
+    'apiClientSecret'            => 'Titok',
+    'apiClientSecretHelp'        => 'A generált titok csak most olvasható. Másold ki és mentsd el a jelszókezelődben!',
+
+    'generateSecret' => 'Új titok',
+
+    'profile' => 'Profil',
+
     'user'                  => 'Felhasználó',
     'userId'                => 'Id',
     'userIdentifier'        => 'Azonosító',
     'userIsGravatarAllowed' => 'Gravatar engedélyezve',
-    'userCanLogin'          => 'Beléphet a felhasználó?',
+    'userCanLogin'          => 'Belépés engedélyezve',
     'userConfirmPassword'   => 'Jelszó megerősítése',
     'userEmail'             => 'E-mail',
     'userPassword'          => 'Jelszó',
@@ -49,10 +61,10 @@ return [
 
     'environment' => 'Környezet: %s',
 
-    'throttled'         => 'Too many login attempts. Please try again later.',
-    'dbProblem'         => 'Unexpected database issue. Please try again later.',
-    'unexpectedProblem' => 'Unexpected issue. Retrying may not help. Please contact the administrator.',
-    'unknownFailure'    => 'Login failed. Provided username or password is invalid',
+    'throttled'         => 'Túl sok jelszó probálgatás után a felhasználói név átmenetileg blokkolásra került.',
+    'dbProblem'         => 'Ismeretlen adatbázis hiba. Kérjük próbáld később újra vagy jelezd a hibát az adminisztrátoroknak.',
+    'unexpectedProblem' => 'Ismeretlen hiba. Kérjük próbáld később újra vagy jelezd a hibát az adminisztrátoroknak.',
+    'unknownFailure'    => 'Sikertelen belépés. Megadott felhasználói név vagy jelszó nem megfelelő.',
 
     // Template
     'password'          => 'Jelszó',

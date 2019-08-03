@@ -42,7 +42,7 @@ class User implements IStringerEntity
      * @param bool         $canLogin
      * @param bool         $isGravatarAllowed
      * @param UserLanguage $userLanguage
-     * @param array        $userGroups
+     * @param UserGroup[]  $userGroups
      */
     public function __construct(
         string $id,
@@ -233,5 +233,30 @@ class User implements IStringerEntity
     public function __toString(): string
     {
         return $this->getUsername();
+    }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        $userGroupIds = [];
+        foreach ($this->getUserGroups() as $userGroup) {
+            $userGroupIds[] = $userGroup->getId();
+        }
+
+        $userLanguageId = $this->getUserLanguage()->getId();
+
+        return json_encode(
+            [
+                "id"                  => $this->getId(),
+                "username"            => $this->getUsername(),
+                "email"               => $this->getEmail(),
+                "can_login"           => $this->canLogin(),
+                "is_gravatar_allowed" => $this->isGravatarAllowed(),
+                "user_group_ids"      => $userGroupIds,
+                "user_language_id"    => $userLanguageId,
+            ]
+        );
     }
 }

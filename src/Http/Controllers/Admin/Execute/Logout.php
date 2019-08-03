@@ -19,9 +19,6 @@ class Logout extends AdminAbstract
 {
     const SUCCESS_MSG = 'User "%s" logged out.';
 
-    /** @var LoggerInterface */
-    protected $logger;
-
     /** @var ISession */
     protected $session;
 
@@ -41,9 +38,8 @@ class Logout extends AdminAbstract
         LoggerInterface $logger,
         ISession $session
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator);
+        parent::__construct($flashService, $translator, $urlGenerator, $logger);
 
-        $this->logger  = $logger;
         $this->session = $session;
     }
 

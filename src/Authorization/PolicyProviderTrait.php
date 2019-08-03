@@ -10,7 +10,7 @@ use Casbin\Model\Model;
 trait PolicyProviderTrait
 {
     /** @var IAuthLoader */
-    protected $authQueries;
+    protected $authLoader;
 
     /** @var string */
     protected $prefix = '';
@@ -20,7 +20,7 @@ trait PolicyProviderTrait
      */
     public function loadPolicy($model)
     {
-        $rawData = $this->authQueries->loadAll();
+        $rawData = $this->authLoader->loadAll();
 
         foreach ($rawData as $line) {
             $v0 = $line['v0'];

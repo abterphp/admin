@@ -72,7 +72,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      */
     public function getById($id)
     {
-        $query = $this->getBaseQuery()->andWhere('admin_resources.id = :admin_resource_id');
+        $query = $this->getBaseQuery()->andWhere('ar.id = :admin_resource_id');
 
         $parameters = [
             'admin_resource_id' => [$id, \PDO::PARAM_STR],
@@ -82,19 +82,41 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
     }
 
     /**
-     * @param string $title
+     * @param string $identifier
      *
      * @return Entity|null
      */
     public function getByIdentifier(string $identifier): ?Entity
     {
-        $query = $this->getBaseQuery()->andWhere('admin_resources.identifier = :identifier');
+        $query = $this->getBaseQuery()->andWhere('ar.identifier = :identifier');
 
         $parameters = [
             'identifier' => [$identifier, \PDO::PARAM_STR],
         ];
 
         return $this->read($query->getSql(), $parameters, self::VALUE_TYPE_ENTITY, true);
+    }
+
+    /**
+     * @param string $userId
+     *
+     * @return Entity[]
+     */
+    public function getByUserId(string $userId): array
+    {
+        $query = $this->getBaseQuery()
+            ->innerJoin('user_groups_admin_resources', 'ugar', 'ugar.admin_resource_id = ar.id')
+            ->innerJoin('user_groups', 'ug', 'ug.id = ugar.user_group_id')
+            ->innerJoin('users_user_groups', 'uug', 'uug.user_group_id = ug.id')
+            ->andWhere('uug.user_id = :user_id')
+            ->groupBy('ar.id');
+
+        $sql    = $query->getSql();
+        $params = [
+            'user_id' => [$userId, \PDO::PARAM_STR],
+        ];
+
+        return $this->read($sql, $params, self::VALUE_TYPE_ARRAY);
     }
 
     /**
@@ -144,11 +166,11 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
         /** @var SelectQuery $query */
         $query = (new QueryBuilder())
             ->select(
-                'admin_resources.id',
-                'admin_resources.identifier'
+                'ar.id',
+                'ar.identifier'
             )
-            ->from('admin_resources')
-            ->where('admin_resources.deleted = 0');
+            ->from('admin_resources', 'ar')
+            ->where('ar.deleted = 0');
 
         return $query;
     }
