@@ -16,7 +16,7 @@ class UserSqlDataMapperTest extends SqlTestCase
     /** @var UserSqlDataMapper */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

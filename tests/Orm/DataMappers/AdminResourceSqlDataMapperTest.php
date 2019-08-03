@@ -13,7 +13,7 @@ class AdminResourceSqlDataMapperTest extends SqlTestCase
     /** @var AdminResourceSqlDataMapper */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

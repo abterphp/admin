@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Api;
 
+use AbterPhp\Admin\Psr7\RequestConverter;
+use AbterPhp\Admin\Psr7\ResponseConverter;
+use AbterPhp\Admin\Psr7\ResponseFactory;
 use AbterPhp\Framework\Http\Controllers\ControllerAbstract;
-use AbterPhp\Framework\Psr7\RequestConverter;
-use AbterPhp\Framework\Psr7\ResponseConverter;
-use AbterPhp\Framework\Psr7\ResponseFactory;
 use AbterPhp\Framework\Session\FlashService;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Orm\DataMapper;
+namespace AbterPhp\Admin\Orm\DataMapper;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
@@ -15,7 +15,7 @@ class UserGroupSqlDataMapperTest extends SqlTestCase
     /** @var UserGroupSqlDataMapper */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

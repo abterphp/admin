@@ -138,7 +138,7 @@ class Token implements IStringerEntity
      */
     public function __toString(): string
     {
-        return $this->getUsername();
+        return $this->getId();
     }
 
     /**

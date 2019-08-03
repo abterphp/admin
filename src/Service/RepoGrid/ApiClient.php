@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Service\RepoGrid;
 
 use AbterPhp\Admin\Grid\Factory\ApiClient as GridFactory;
+use AbterPhp\Admin\Http\Service\RepoGrid\RepoGridAbstract;
 use AbterPhp\Admin\Orm\ApiClientRepo as Repo;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Grid\Grid;
-use AbterPhp\Framework\Http\Service\RepoGrid\RepoGridAbstract;
 use Casbin\Enforcer;
 use Opulence\Sessions\ISession;
 

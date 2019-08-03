@@ -12,7 +12,7 @@ class LoginThrottleTest extends SqlTestCase
     /** @var LoginThrottle|MockObject */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

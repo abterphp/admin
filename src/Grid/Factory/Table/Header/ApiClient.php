@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Grid\Factory\Table\Header;
 
-use AbterPhp\Framework\Grid\Factory\Table\HeaderFactory;
+use AbterPhp\Admin\Grid\Factory\Table\HeaderFactory;
 
 class ApiClient extends HeaderFactory
 {

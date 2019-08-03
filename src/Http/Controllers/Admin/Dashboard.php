@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Http\Controllers\Admin;
 
 use AbterPhp\Framework\Dashboard\Dashboard as DashboardCollection;
-use AbterPhp\Framework\Http\Controllers\Admin\AdminAbstract;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Casbin\Enforcer;

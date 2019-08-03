@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Execute;
 
+use AbterPhp\Admin\Http\Controllers\Admin\ExecuteAbstract;
 use AbterPhp\Admin\Service\Execute\UserGroup as RepoService;
-use AbterPhp\Framework\Http\Controllers\Admin\ExecuteAbstract;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Routing\Urls\UrlGenerator;

@@ -29,7 +29,7 @@ class NavigationBuilderTest extends TestCase
     /** @var ButtonFactory|MockObject */
     protected $buttonFactoryMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sessionMock = MockSessionFactory::create($this, $this->sessionData);
 

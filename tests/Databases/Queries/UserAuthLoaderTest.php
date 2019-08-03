@@ -11,7 +11,7 @@ class UserAuthLoaderTest extends SqlTestCase
     /** @var UserAuthLoader */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
