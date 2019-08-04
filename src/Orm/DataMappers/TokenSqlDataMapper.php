@@ -166,7 +166,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
                 'tokens.id',
                 'tokens.api_client_id',
                 'tokens.expires_at',
-                'tokens.revoked_at',
+                'tokens.revoked_at'
             )
             ->from('tokens')
             ->where('tokens.deleted = 0');
