@@ -8,7 +8,7 @@ return [
     'exclude_analysis_directory_list' => ['vendor/'],
     'quick_mode' => true,
     'analyze_signature_compatibility' => true,
-    'minimum_severity' => 5,
+    'minimum_severity' => 10,
     'allow_missing_properties' => false,
     'null_casts_as_any_type' => false,
     'null_casts_as_array' => false,
