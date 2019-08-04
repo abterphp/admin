@@ -11,7 +11,7 @@ class AdminResourceAuthLoaderTest extends SqlTestCase
     /** @var AdminResourceAuthLoader */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

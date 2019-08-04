@@ -8,7 +8,6 @@ use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\DefaultButtons;
-use AbterPhp\Framework\Form\Factory\Base;
 
 class Profile extends User
 {

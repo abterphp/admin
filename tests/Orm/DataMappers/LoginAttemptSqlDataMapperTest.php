@@ -13,7 +13,7 @@ class LoginAttemptSqlDataMapperTest extends SqlTestCase
     /** @var LoginAttemptSqlDataMapper */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

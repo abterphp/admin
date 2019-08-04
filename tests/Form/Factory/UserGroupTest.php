@@ -28,7 +28,7 @@ class UserGroupTest extends TestCase
     /** @var UserGroup */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sessionMock = $this->getMockBuilder(Session::class)
             ->setMethods(['get'])

@@ -7,13 +7,9 @@ namespace AbterPhp\Admin\Grid\Factory;
 use AbterPhp\Admin\Constant\Routes;
 use AbterPhp\Admin\Grid\Factory\Table\ApiClient as Table;
 use AbterPhp\Admin\Grid\Filters\ApiClient as Filters;
-use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
-use AbterPhp\Framework\Grid\Factory\BaseFactory;
-use AbterPhp\Framework\Grid\Factory\GridFactory;
-use AbterPhp\Framework\Grid\Factory\PaginationFactory as PaginationFactory;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Routing\Urls\UrlGenerator;
 

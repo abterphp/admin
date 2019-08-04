@@ -21,7 +21,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "abterphp/framework": "dev-master"
+    "abterphp/framework": "dev-master",
+    "phan/phan": "^2.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.1",

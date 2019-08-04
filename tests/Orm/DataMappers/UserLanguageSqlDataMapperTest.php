@@ -13,7 +13,7 @@ class UserLanguageSqlDataMapperTest extends SqlTestCase
     /** @var UserLanguageSqlDataMapper */
     protected $sut;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

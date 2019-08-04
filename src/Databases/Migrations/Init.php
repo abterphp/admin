@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Migrations;
 
-use AbterPhp\Framework\Databases\Migrations\RawMigration;
+use AbterPhp\Framework\Databases\Migrations\BaseMigration;
 use DateTime;
-use Opulence\Databases\IConnection;
 
-class Init extends RawMigration
+class Init extends BaseMigration
 {
     const FILENAME = 'admin.sql';
 
