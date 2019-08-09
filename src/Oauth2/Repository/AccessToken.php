@@ -13,6 +13,8 @@ use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\Orm\Ids\Generators\UuidV4Generator;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class AccessToken implements AccessTokenRepositoryInterface
 {
     /** @var UuidV4Generator */

@@ -11,6 +11,8 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class Client implements ClientRepositoryInterface
 {
     /** @var Crypto */

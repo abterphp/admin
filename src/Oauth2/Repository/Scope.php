@@ -12,6 +12,8 @@ use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\Conditions\ConditionFactory;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class Scope implements ScopeRepositoryInterface
 {
     /** @var ConnectionPool */
