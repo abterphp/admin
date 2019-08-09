@@ -9,18 +9,17 @@ use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Admin\Psr7\RequestConverter;
 use AbterPhp\Admin\Psr7\ResponseConverter;
 use AbterPhp\Admin\Psr7\ResponseFactory;
-use AbterPhp\Admin\Service\Login as LoginService;
 use AbterPhp\Framework\Config\EnvReader;
 use AbterPhp\Framework\Constant\Env;
 use Closure;
 use Exception;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
-use Nyholm\Psr7\ServerRequest;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
 use Opulence\Orm\OrmException;
 use Opulence\Routing\Middleware\IMiddleware;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 class Api implements IMiddleware
@@ -47,7 +46,15 @@ class Api implements IMiddleware
     protected $problemBaseUrl;
 
     /**
-     * @param LoginService $loginService The session used by the application
+     * Api constructor.
+     *
+     * @param ResourceServer    $server
+     * @param RequestConverter  $requestConverter
+     * @param ResponseFactory   $responseFactory
+     * @param ResponseConverter $responseConverter
+     * @param UserRepo          $userRepo
+     * @param LoggerInterface   $logger
+     * @param EnvReader         $envReader
      */
     public function __construct(
         ResourceServer $server,
@@ -84,7 +91,10 @@ class Api implements IMiddleware
 
         try {
             $user = $this->getUserByClientId($psr7Request);
-        } catch (OrmException $e) {
+            if (null === $user) {
+                throw new Exception('Unexpected user retrieval error');
+            }
+        } catch (Exception $e) {
             return $this->createResponse(new OAuthServerException($e->getMessage(), 0, 'unknown_error', 500));
         }
 
@@ -120,19 +130,29 @@ class Api implements IMiddleware
     }
 
     /**
-     * @param ServerRequest $psr7Request
+     * @param ServerRequestInterface $psr7Request
      *
-     * @return User
+     * @return User|null
+     * @throws OrmException
      */
-    protected function getUserByClientId(ServerRequest $psr7Request): User
+    protected function getUserByClientId(ServerRequestInterface $psr7Request): ?User
     {
         $userId = $psr7Request->getAttribute('oauth_user_id');
         if ($userId) {
-            return $this->userRepo->getById($userId);
+            $user = $this->userRepo->getById($userId);
+
+            if ($user instanceof User) {
+                return $user;
+            }
         }
 
         $clientId = $psr7Request->getAttribute('oauth_client_id');
 
-        return $this->userRepo->getByClientId($clientId);
+        $user = $this->userRepo->getByClientId($clientId);
+        if ($user instanceof User) {
+            return $user;
+        }
+
+        return null;
     }
 }

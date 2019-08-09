@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Console\Commands\UserLanguage;
 
-use AbterPhp\Admin\Domain\Entities\UserLanguage;
+use AbterPhp\Admin\Domain\Entities\UserLanguage; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Admin\Orm\UserLanguageRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;

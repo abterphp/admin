@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers;
 
+use Opulence\Http\Requests\UploadedFile;
+
 trait ApiDataTrait
 {
     /** @var string */
@@ -42,6 +44,7 @@ trait ApiDataTrait
      */
     public function getSharedData(): array
     {
+        // @phan-suppress-next-line PhanUndeclaredProperty
         return $this->request->getJsonBody();
     }
 }

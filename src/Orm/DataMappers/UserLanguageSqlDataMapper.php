@@ -37,6 +37,8 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function delete($entity)
     {
@@ -56,6 +58,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
 
     /**
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getAll(): array
     {
@@ -74,6 +77,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      * @param array    $params
      *
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -101,6 +105,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      * @param string $id
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getById($id)
     {
@@ -134,6 +139,8 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function update($entity)
     {

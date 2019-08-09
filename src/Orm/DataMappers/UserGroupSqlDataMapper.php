@@ -64,7 +64,8 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
     }
 
     /**
-     * @return array
+     * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getAll(): array
     {
@@ -81,6 +82,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      * @param array    $params
      *
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -108,6 +110,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      * @param int|string $id
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getById($id)
     {
@@ -121,9 +124,10 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
     }
 
     /**
-     * @param string $title
+     * @param string $identifier
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByIdentifier(string $identifier): ?Entity
     {
@@ -138,6 +142,8 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function update($entity)
     {
@@ -229,6 +235,8 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     protected function deleteAdminResources(Entity $entity)
     {

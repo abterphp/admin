@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Entity;
 
-use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 class Scope implements ScopeEntityInterface

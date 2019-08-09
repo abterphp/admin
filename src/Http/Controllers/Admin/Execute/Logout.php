@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Execute;
 
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
 use AbterPhp\Admin\Http\Controllers\Admin\AdminAbstract;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -54,6 +55,6 @@ class Logout extends AdminAbstract
 
         $this->logger->info(sprintf(static::SUCCESS_MSG, $username));
 
-        return new RedirectResponse(PATH_LOGIN, ResponseHeaders::HTTP_FOUND);
+        return new RedirectResponse(RoutesConfig::getLoginPath(), ResponseHeaders::HTTP_FOUND);
     }
 }

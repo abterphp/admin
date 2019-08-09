@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Console\Commands\AdminResource;
 
-use AbterPhp\Admin\Domain\Entities\AdminResource;
+use AbterPhp\Admin\Domain\Entities\AdminResource; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Admin\Orm\AdminResourceRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;

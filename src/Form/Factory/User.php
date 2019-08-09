@@ -116,7 +116,7 @@ class User extends Base
             'username',
             $entity->getUsername(),
             [],
-            [Html5::ATTR_NAME => Input::AUTOCOMPLETE_OFF]
+            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF]]
         );
         $label = new Label('body', 'admin:userUsername');
 
@@ -137,7 +137,7 @@ class User extends Base
             'email',
             $entity->getEmail(),
             [],
-            [Html5::ATTR_AUTOCOMPLETE => Input::AUTOCOMPLETE_OFF]
+            [Html5::ATTR_AUTOCOMPLETE => [Input::AUTOCOMPLETE_OFF]]
         );
         $label = new Label('email', 'admin:userEmail');
 
@@ -156,7 +156,7 @@ class User extends Base
             'password',
             '',
             [],
-            [Html5::ATTR_TYPE => Input::TYPE_HIDDEN]
+            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
         );
 
         return $this;
@@ -172,7 +172,7 @@ class User extends Base
             'password_confirmed',
             '',
             [],
-            [Html5::ATTR_TYPE => Input::TYPE_HIDDEN]
+            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
         );
 
         return $this;
@@ -188,7 +188,10 @@ class User extends Base
             'raw_password',
             '',
             [],
-            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF], Html5::ATTR_TYPE => Input::TYPE_PASSWORD]
+            [
+                Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF],
+                Html5::ATTR_TYPE => [Input::TYPE_PASSWORD],
+            ]
         );
         $label = new Label('raw_password', 'admin:userPassword');
 
@@ -207,7 +210,10 @@ class User extends Base
             'raw_password_confirmed',
             '',
             [],
-            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF], Html5::ATTR_TYPE => Input::TYPE_PASSWORD]
+            [
+                Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF],
+                Html5::ATTR_TYPE => [Input::TYPE_PASSWORD],
+            ]
         );
         $label = new Label('raw_password_confirmed', 'admin:userConfirmPassword');
 
@@ -223,7 +229,7 @@ class User extends Base
      */
     protected function addCanLogin(Entity $entity): User
     {
-        $attributes = [Html5::ATTR_TYPE => Input::TYPE_CHECKBOX];
+        $attributes = [Html5::ATTR_TYPE => [Input::TYPE_CHECKBOX]];
         if ($entity->canLogin()) {
             $attributes[Html5::ATTR_CHECKED] = null;
         }
@@ -297,6 +303,7 @@ class User extends Base
 
     /**
      * @return UserGroup[]
+     * @throws \Opulence\Orm\OrmException
      */
     protected function getAllUserGroups(): array
     {
@@ -327,13 +334,12 @@ class User extends Base
      */
     protected function createUserGroupSelect(array $options): Select
     {
-        $attributes = [
-            Html5::ATTR_SIZE => $this->getMultiSelectSize(
-                count($options),
-                static::MULTISELECT_MIN_SIZE,
-                static::MULTISELECT_MAX_SIZE
-            ),
-        ];
+        $size = $this->getMultiSelectSize(
+            count($options),
+            static::MULTISELECT_MIN_SIZE,
+            static::MULTISELECT_MAX_SIZE
+        );
+        $attributes = [Html5::ATTR_SIZE => [$size]];
 
         $select = new MultiSelect('user_group_ids', 'user_group_ids[]', [], $attributes);
 
@@ -374,6 +380,7 @@ class User extends Base
 
     /**
      * @return UserLanguage[]
+     * @throws \Opulence\Orm\OrmException
      */
     protected function getAllUserLanguages(): array
     {
@@ -404,13 +411,12 @@ class User extends Base
      */
     protected function createUserLanguageSelect(array $options): Select
     {
-        $attributes = [
-            Html5::ATTR_SIZE => $this->getMultiSelectSize(
-                count($options),
-                static::MULTISELECT_MIN_SIZE,
-                static::MULTISELECT_MAX_SIZE
-            ),
-        ];
+        $size = $this->getMultiSelectSize(
+            count($options),
+            static::MULTISELECT_MIN_SIZE,
+            static::MULTISELECT_MAX_SIZE
+        );
+        $attributes = [Html5::ATTR_SIZE => [$size]];
 
         $select = new MultiSelect('user_language_id', 'user_language_id', [], $attributes);
 

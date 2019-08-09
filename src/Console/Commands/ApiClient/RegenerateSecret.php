@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Console\Commands\ApiClient;
 
-use AbterPhp\Admin\Domain\Entities\ApiClient;
 use AbterPhp\Admin\Orm\ApiClientRepo;
 use AbterPhp\Framework\Authorization\CacheManager;
 use AbterPhp\Framework\Crypto\Crypto;
@@ -15,6 +14,7 @@ use Opulence\Console\Requests\ArgumentTypes;
 use Opulence\Console\Requests\Option;
 use Opulence\Console\Requests\OptionTypes;
 use Opulence\Console\Responses\IResponse;
+use Opulence\Console\StatusCodes;
 use Opulence\Orm\IUnitOfWork;
 use ZxcvbnPhp\Zxcvbn;
 
@@ -112,12 +112,11 @@ class RegenerateSecret extends Command
         $dryRun     = $this->getOptionValue(static::OPTION_DRY_RUN);
 
         try {
-            /** @var ApiClient $apiClient */
             $apiClient = $this->apiClientRepo->getById($identifier);
             if (!$apiClient) {
                 $response->writeln(sprintf('<fatal>API client not found</fatal>'));
 
-                return;
+                return StatusCodes::ERROR;
             }
 
             $rawSecret        = $this->passwordGenerator->generatePassword();
@@ -131,14 +130,14 @@ class RegenerateSecret extends Command
             }
             $response->writeln(sprintf('<fatal>%s</fatal>', $e->getMessage()));
 
-            return;
+            return StatusCodes::FATAL;
         }
 
         if ($dryRun) {
             $this->unitOfWork->dispose();
             $response->writeln(static::COMMAND_DRY_RUN_MESSAGE);
 
-            return;
+            return StatusCodes::OK;
         }
 
         try {
@@ -150,10 +149,12 @@ class RegenerateSecret extends Command
             }
             $response->writeln(sprintf('<fatal>%s</fatal>', $e->getMessage()));
 
-            return;
+            return StatusCodes::FATAL;
         }
 
         $response->writeln(sprintf(static::RESPONSE_SECRET, $rawSecret));
         $response->writeln(static::COMMAND_SUCCESS);
+
+        return StatusCodes::OK;
     }
 }

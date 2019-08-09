@@ -13,6 +13,7 @@ return [
     Module::DEPENDENCIES       => ['AbterPhp\Framework'],
     Module::ENABLED            => true,
     Module::BOOTSTRAPPERS      => [
+        Bootstrappers\Filesystem\FileFinderBootstrapper::class,
         Bootstrappers\Orm\OrmBootstrapper::class,
         Bootstrappers\Validation\ValidatorBootstrapper::class,
     ],

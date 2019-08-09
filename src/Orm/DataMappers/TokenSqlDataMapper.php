@@ -63,6 +63,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 
     /**
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getAll(): array
     {
@@ -77,6 +78,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      * @param int|string $id
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getById($id): ?Entity
     {
@@ -92,6 +94,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      * @param string $clientId
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByClientId(string $clientId): ?Entity
     {
@@ -105,6 +108,8 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function update($entity)
     {
@@ -134,6 +139,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      * @param array $data
      *
      * @return Entity
+     * @throws \Exception
      */
     protected function loadEntity(array $data): Entity
     {

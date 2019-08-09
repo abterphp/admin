@@ -18,7 +18,7 @@ class AdminResourceProvider implements CasbinAdapter
     /**
      * AdminResourceProvider constructor.
      *
-     * @param AuthLoader $adminResourceAuth
+     * @param AuthLoader $authLoader
      */
     public function __construct(AuthLoader $authLoader)
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Exception\Security as SecurityException;
 use Closure;
@@ -33,7 +34,7 @@ class Security implements IMiddleware
     // $next consists of the next middleware in the pipeline
     public function handle(Request $request, Closure $next): Response
     {
-        if (getenv(\AbterPhp\Framework\Constant\Env::ENV_NAME) !== Environment::PRODUCTION) {
+        if (Environment::getVar(\AbterPhp\Framework\Constant\Env::ENV_NAME) !== Environment::PRODUCTION) {
             return $next($request);
         }
 
@@ -57,22 +58,22 @@ class Security implements IMiddleware
 
     private function checkRoutes()
     {
-        if (getenv(ADMIN_LOGIN_PATH) === '/admin-iddqd') {
+        if (RoutesConfig::getLoginPath() === '/admin-iddqd') {
             throw new SecurityException('Invalid ADMIN_LOGIN_PATH environment variable.');
         }
 
-        if (getenv(ADMIN_BASE_PATH) === '/login-iddqd') {
+        if (RoutesConfig::getAdminBasePath() === '/login-iddqd') {
             throw new SecurityException('Invalid ADMIN_BASE_PATH environment variable.');
         }
 
-        if (getenv(API_BASE_PATH) === '/api-iddqd') {
+        if (RoutesConfig::getApiBasePath() === '/api-iddqd') {
             throw new SecurityException('Invalid ADMIN_BASE_PATH environment variable.');
         }
     }
 
     private function checkApi()
     {
-        if (getenv(Env::OAUTH_PRIVATE_KEY_PASSWORD) === 'CuDU2M9FRD8ckRxj9dhB82f6VjMs4EMf') {
+        if (Environment::getVar(Env::OAUTH2_PRIVATE_KEY_PASSWORD) === 'CuDU2M9FRD8ckRxj9dhB82f6VjMs4EMf') {
             throw new SecurityException('Invalid OAUTH_PRIVATE_KEY_PASSWORD environment variable.');
         }
     }

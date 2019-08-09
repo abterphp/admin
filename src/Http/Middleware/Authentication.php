@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
 use AbterPhp\Framework\Constant\Session as SessionConstants;
 use AbterPhp\Framework\Http\Middleware\Session;
 use Closure;
@@ -18,7 +19,7 @@ class Authentication extends Session
     public function handle(Request $request, Closure $next): Response
     {
         if (!$this->session->get(SessionConstants::USERNAME)) {
-            return new RedirectResponse(PATH_LOGIN, ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
+            return new RedirectResponse(RoutesConfig::getLoginPath(), ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
         }
 
         return $next($request);

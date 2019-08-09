@@ -15,7 +15,6 @@ use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Cocur\Slugify\Slugify;
 use Opulence\Events\Dispatchers\IEventDispatcher;
-use Opulence\Orm\OrmException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 use Psr\Log\LoggerInterface;
@@ -113,9 +112,9 @@ class User extends FormAbstract
     }
 
     /**
-     * @param Entity|null $entity
+     * @param IStringerEntity|null $entity
      *
-     * @throws OrmException
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function addCustomAssets(?IStringerEntity $entity = null)
     {

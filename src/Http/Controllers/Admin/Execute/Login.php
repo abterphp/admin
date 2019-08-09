@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Execute;
 
-use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
 use AbterPhp\Admin\Service\Login as LoginService;
 use AbterPhp\Admin\Service\SessionInitializer;
 use AbterPhp\Framework\Http\Controllers\ControllerAbstract;
@@ -27,9 +27,6 @@ class Login extends ControllerAbstract
     const ERROR_MSG_DB_PROBLEM         = 'admin:dbProblem';
     const ERROR_MSG_UNEXPECTED_PROBLEM = 'admin:unexpectedProblem';
     const ERROR_MSG_LOGIN_FAILED       = 'admin:unknownFailure';
-
-    const SUCCESS_URL = PATH_ADMIN . Routes::PATH_DASHBOARD;
-    const FAILURE_URL = PATH_LOGIN;
 
     const SUCCESS_MSG = 'User "%s" logged in.';
 
@@ -79,7 +76,7 @@ class Login extends ControllerAbstract
             if (!$this->loginService->isLoginAllowed($username, $ipAddress)) {
                 $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_LOGIN_THROTTLED)]);
 
-                return new RedirectResponse(static::FAILURE_URL);
+                return new RedirectResponse(RoutesConfig::getLoginFailurePath());
             }
 
             $user = $this->loginService->login($username, $password, $ipAddress);
@@ -88,7 +85,7 @@ class Login extends ControllerAbstract
 
                 $this->sessionInitializer->initialize($user);
 
-                return new RedirectResponse(static::SUCCESS_URL);
+                return new RedirectResponse(RoutesConfig::getLoginSuccessPath());
             } else {
                 $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_LOGIN_FAILED)]);
             }
@@ -100,7 +97,7 @@ class Login extends ControllerAbstract
             $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_UNEXPECTED_PROBLEM)]);
         }
 
-        return new RedirectResponse(static::FAILURE_URL);
+        return new RedirectResponse(RoutesConfig::getLoginFailurePath());
     }
 
     /**

@@ -11,7 +11,7 @@ class Profile extends User
 {
     public function profile()
     {
-        $userId = $this->session->get(Session::USER_ID);
+        $userId = (string)$this->session->get(Session::USER_ID);
 
         $this->update($userId);
     }
@@ -23,14 +23,11 @@ class Profile extends User
      * @param string|null $entityId
      *
      * @return string
-     * @throws URLException
+     * @throws \Opulence\Routing\Urls\URLException
      */
     protected function getUrl(string $next, string $entityId = null)
     {
-        /** @var UrlGenerator $urlGenerator */
-        $urlGenerator = $this->urlGenerator;
-
-        $url = $urlGenerator->createFromName(Routes::ROUTE_PROFILE);
+        $url = $this->urlGenerator->createFromName(Routes::ROUTE_PROFILE);
 
         return $url;
     }

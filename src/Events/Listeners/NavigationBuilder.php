@@ -104,7 +104,8 @@ class NavigationBuilder
     }
 
     /**
-     * @return Dropdown
+     * @return Item
+     * @throws \Opulence\Routing\Urls\UrlException
      */
     protected function createApiClientsItem(): Item
     {
@@ -121,7 +122,8 @@ class NavigationBuilder
     }
 
     /**
-     * @return Dropdown
+     * @return Item
+     * @throws \Opulence\Routing\Urls\UrlException
      */
     protected function createProfileItem(): Item
     {

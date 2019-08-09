@@ -41,6 +41,8 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function delete($entity)
     {
@@ -62,7 +64,8 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
     }
 
     /**
-     * @return array
+     * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getAll(): array
     {
@@ -77,6 +80,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
      * @param int|string $id
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getById($id)
     {
@@ -92,6 +96,8 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function update($entity)
     {

@@ -36,6 +36,8 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function delete($entity)
     {
@@ -55,6 +57,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
 
     /**
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getAll(): array
     {
@@ -69,6 +72,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      * @param int|string $id
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getById($id)
     {
@@ -85,6 +89,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      * @param string $identifier
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByIdentifier(string $identifier): ?Entity
     {
@@ -101,6 +106,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      * @param string $userId
      *
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByUserId(string $userId): array
     {
@@ -121,6 +127,8 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function update($entity)
     {

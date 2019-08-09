@@ -95,9 +95,9 @@ class ApiClient extends FormAbstract
     }
 
     /**
-     * @param Entity|null $entity
+     * @param IStringerEntity|null $entity
      *
-     * @throws OrmException
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function addCustomAssets(?IStringerEntity $entity = null)
     {

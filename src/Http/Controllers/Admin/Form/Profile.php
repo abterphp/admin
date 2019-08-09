@@ -31,8 +31,8 @@ class Profile extends User
      * @param Repo             $repo
      * @param ISession         $session
      * @param FormFactory      $formFactory
-     * @param AssetManager     $assetManager
      * @param IEventDispatcher $eventDispatcher
+     * @param AssetManager     $assetManager
      * @param string           $frontendSalt
      */
     public function __construct(
@@ -63,7 +63,7 @@ class Profile extends User
 
     public function profile()
     {
-        $userId = $this->session->get(Session::USER_ID);
+        $userId = (string)$this->session->get(Session::USER_ID);
 
         $this->edit($userId);
     }
@@ -74,11 +74,10 @@ class Profile extends User
      * @param string $id
      *
      * @return string
-     * @throws URLException
+     * @throws \Opulence\Routing\Urls\URLException
      */
     protected function getEditUrl(string $id): string
     {
-        /** @var UrlGenerator $urlGenerator */
         $urlGenerator = $this->urlGenerator;
 
         $url = $urlGenerator->createFromName(Routes::ROUTE_PROFILE);

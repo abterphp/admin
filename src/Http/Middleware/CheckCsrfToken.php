@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
 use Closure;
 use Opulence\Framework\Configuration\Config;
 use Opulence\Framework\Http\CsrfTokenChecker;
@@ -58,13 +59,11 @@ class CheckCsrfToken implements IMiddleware
      */
     protected function isApiRequest(Request $request): bool
     {
-        if (!defined('PATH_API')) {
-            return false;
-        }
+        $apiBasePath = RoutesConfig::getApiBasePath();
 
         $path = $request->getPath();
 
-        $isApiRequest = substr($path, 0, strlen(PATH_API)) === PATH_API;
+        $isApiRequest = substr($path, 0, strlen($apiBasePath)) === $apiBasePath;
 
         return $isApiRequest;
     }

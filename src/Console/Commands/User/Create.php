@@ -16,6 +16,7 @@ use Opulence\Console\Requests\ArgumentTypes;
 use Opulence\Console\Requests\Option;
 use Opulence\Console\Requests\OptionTypes;
 use Opulence\Console\Responses\IResponse;
+use Opulence\Console\StatusCodes;
 use Opulence\Orm\IUnitOfWork;
 use ZxcvbnPhp\Zxcvbn;
 
@@ -157,7 +158,7 @@ class Create extends Command
         if (!$this->isSafe()) {
             $response->writeln(static::COMMAND_UNSAFE_PASSWORD);
 
-            return;
+            return StatusCodes::ERROR;
         }
 
         try {
@@ -175,7 +176,7 @@ class Create extends Command
             }
             $response->writeln(sprintf('<fatal>%s</fatal>', $e->getMessage()));
 
-            return;
+            return StatusCodes::FATAL;
         }
 
         $dryRun = (bool)$this->getOptionValue(static::OPTION_DRY_RUN);
@@ -183,7 +184,7 @@ class Create extends Command
             $this->unitOfWork->dispose();
             $response->writeln(static::COMMAND_DRY_RUN_MESSAGE);
 
-            return;
+            return StatusCodes::OK;
         }
 
         try {
@@ -195,10 +196,12 @@ class Create extends Command
             }
             $response->writeln(sprintf('<fatal>%s</fatal>', $e->getMessage()));
 
-            return;
+            return StatusCodes::FATAL;
         }
 
         $response->writeln(static::COMMAND_SUCCESS);
+
+        return StatusCodes::OK;
     }
 
     /**

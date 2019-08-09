@@ -23,7 +23,7 @@ class Profile extends User
             'can_login',
             '1',
             [],
-            [Html5::ATTR_TYPE => Input::TYPE_HIDDEN]
+            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
         );
 
         return $this;

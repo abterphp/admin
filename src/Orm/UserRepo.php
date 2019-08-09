@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm;
 
 use AbterPhp\Admin\Domain\Entities\User as Entity;
-use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper;
+use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Framework\Orm\IGridRepo;
 use Opulence\Orm\Repositories\Repository;
 
@@ -19,6 +19,7 @@ class UserRepo extends Repository implements IGridRepo
      * @param array    $params
      *
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -30,6 +31,7 @@ class UserRepo extends Repository implements IGridRepo
      * @param string $clientId
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByClientId(string $clientId): ?Entity
     {
@@ -41,6 +43,7 @@ class UserRepo extends Repository implements IGridRepo
      * @param string $username
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByUsername(string $username): ?Entity
     {
@@ -52,6 +55,7 @@ class UserRepo extends Repository implements IGridRepo
      * @param string $email
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getByEmail(string $email): ?Entity
     {
@@ -63,6 +67,7 @@ class UserRepo extends Repository implements IGridRepo
      * @param string $identifier
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function find(string $identifier): ?Entity
     {

@@ -73,7 +73,7 @@ class ApiClient extends Base
             ->addId($entity)
             ->addDescription($entity)
             ->addAdminResources($entity)
-            ->addSecret($entity)
+            ->addSecret()
             ->addDefaultButtons($showUrl);
 
         $form = $this->form;
@@ -106,7 +106,7 @@ class ApiClient extends Base
      */
     protected function addId(Entity $entity): ApiClient
     {
-        $this->form[] = new Input('id', 'id', $entity->getId(), [], [Html5::ATTR_TYPE => Input::TYPE_HIDDEN]);
+        $this->form[] = new Input('id', 'id', $entity->getId(), [], [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]);
 
         return $this;
     }
@@ -155,11 +155,12 @@ class ApiClient extends Base
     }
 
     /**
-     * @return UserGroup[]
+     * @return AdminResource[]
+     * @throws \Opulence\Orm\OrmException
      */
     protected function getUserResources(): array
     {
-        $userId = $this->session->get(Session::USER_ID);
+        $userId = (string)$this->session->get(Session::USER_ID);
 
         return $this->adminResourceRepo->getByUserId($userId);
     }
@@ -190,12 +191,13 @@ class ApiClient extends Base
      */
     protected function createAdminResourceSelect(array $options): Select
     {
+        $size = $this->getMultiSelectSize(
+            count($options),
+            static::MULTISELECT_MIN_SIZE,
+            static::MULTISELECT_MAX_SIZE
+        );
         $attributes = [
-            Html5::ATTR_SIZE => $this->getMultiSelectSize(
-                count($options),
-                static::MULTISELECT_MIN_SIZE,
-                static::MULTISELECT_MAX_SIZE
-            ),
+            Html5::ATTR_SIZE => [$size],
         ];
 
         $select = new MultiSelect('admin_resource_ids', 'admin_resource_ids[]', [], $attributes);
@@ -224,12 +226,12 @@ class ApiClient extends Base
                 [],
                 [ButtonWithIcon::INTENT_DANGER, ButtonWithIcon::INTENT_SMALL],
                 [
-                    Html5::ATTR_ID    => 'generateSecret',
-                    'data-positionX'  => 'center',
-                    'data-positionY'  => 'top',
-                    'data-effect'     => 'fadeInUp',
-                    'data-duration'   => '2000',
-                    Html5::ATTR_CLASS => 'pmd-alert-toggle',
+                    Html5::ATTR_ID    => ['generateSecret'],
+                    'data-positionX'  => ['center'],
+                    'data-positionY'  => ['top'],
+                    'data-effect'     => ['fadeInUp'],
+                    'data-duration'   => ['2000'],
+                    Html5::ATTR_CLASS => ['pmd-alert-toggle'],
 
                 ],
                 HTML5::TAG_A
@@ -241,7 +243,7 @@ class ApiClient extends Base
         $container[] = new Help(
             'admin:apiClientSecretHelp',
             [Help::INTENT_HIDDEN],
-            [Html5::ATTR_ID => 'secretHelp']
+            [Html5::ATTR_ID => ['secretHelp']]
         );
 
         $this->form[] = new FormGroup($input, $label, $container);

@@ -42,22 +42,23 @@ class AuthInvalidator
             case AdminResource::class:
             case User::class:
             case UserGroup::class:
+                // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
                 try {
                     $this->cacheManager->clearAll();
                 } catch (\Exception $e) {
-                    // Exception ignored on purpose. Request is likely an API call...
-                    $e;
                 }
+                // phpcs:enable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+
                 break;
         }
 
         if ($event->getEntityName() == User::class && $event->getEntityId() == $this->session->get(Session::USER_ID)) {
+            // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
             try {
                 $this->session->flush();
             } catch (\Exception $e) {
-                // Exception ignored on purpose. Request is likely an API call...
-                $e;
             }
+            // phpcs:enable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
         }
     }
 }

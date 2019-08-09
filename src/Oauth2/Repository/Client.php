@@ -39,7 +39,7 @@ class Client implements ClientRepositoryInterface
      * @param null   $clientSecret
      * @param bool   $mustValidateSecret
      *
-     * @return ClientEntityInterface
+     * @return ClientEntityInterface|null
      */
     public function getClientEntity(
         $clientIdentifier,

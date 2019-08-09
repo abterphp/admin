@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Oauth2\Repository;
 
 use AbterPhp\Admin\Oauth2\Entity\AccessToken as Entity;
-use AbterPhp\Admin\Oauth2\Entity\Scope;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\Orm\Ids\Generators\UuidV4Generator;
@@ -85,12 +85,15 @@ class AccessToken implements AccessTokenRepositoryInterface
 
     /**
      * @param AccessTokenEntityInterface $accessTokenEntity
-     * @param Scope                      $scope
+     * @param ScopeEntityInterface       $scope
      */
-    protected function persistTokenScope(AccessTokenEntityInterface $accessTokenEntity, Scope $scope)
+    protected function persistTokenScope(AccessTokenEntityInterface $accessTokenEntity, ScopeEntityInterface $scope)
     {
+        // @phan-suppress-next-line PhanTypeMismatchArgument
+        $id = $this->uuidGenerator->generate(null);
+
         $data = [
-            'id'                => $this->uuidGenerator->generate(null),
+            'id'                => $id,
             'token_id'          => $accessTokenEntity->getIdentifier(),
             'admin_resource_id' => $scope->getIdentifier(),
         ];

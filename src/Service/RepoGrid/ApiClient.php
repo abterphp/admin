@@ -9,7 +9,7 @@ use AbterPhp\Admin\Http\Service\RepoGrid\RepoGridAbstract;
 use AbterPhp\Admin\Orm\ApiClientRepo as Repo;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
-use AbterPhp\Framework\Grid\Grid;
+use AbterPhp\Framework\Grid\IGrid;
 use Casbin\Enforcer;
 use Opulence\Sessions\ISession;
 
@@ -40,11 +40,11 @@ class ApiClient extends RepoGridAbstract
     }
 
     /**
-     * @param Grid $grid
+     * @param IGrid $grid
      *
      * @return array
      */
-    protected function getWhereConditions(Grid $grid): array
+    protected function getWhereConditions(IGrid $grid): array
     {
         $conditions = $grid->getWhereConditions();
 
@@ -54,11 +54,11 @@ class ApiClient extends RepoGridAbstract
     }
 
     /**
-     * @param Grid $grid
+     * @param IGrid $grid
      *
      * @return array
      */
-    protected function getSqlParams(Grid $grid): array
+    protected function getSqlParams(IGrid $grid): array
     {
         $sqlParams = $grid->getSqlParams();
 

@@ -21,7 +21,7 @@ class GridFactory
 
 
     /**
-     * @param TableFactory $table
+     * @param Table        $table
      * @param IPagination  $pagination
      * @param Filters      $filters
      * @param Actions|null $actions

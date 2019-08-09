@@ -48,6 +48,8 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function delete($entity)
     {
@@ -68,7 +70,8 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
     }
 
     /**
-     * @return array
+     * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getAll(): array
     {
@@ -85,6 +88,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
      * @param array    $params
      *
      * @return Entity[]
+     * @throws \Opulence\Orm\OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -112,6 +116,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
      * @param int|string $id
      *
      * @return Entity|null
+     * @throws \Opulence\Orm\OrmException
      */
     public function getById($id)
     {
@@ -126,6 +131,8 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function update($entity)
     {
@@ -220,6 +227,8 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     protected function deleteAdminResources(Entity $entity)
     {

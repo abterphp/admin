@@ -11,7 +11,7 @@ use Opulence\Routing\Controller;
 class Index extends Controller
 {
     /**
-     * @return array
+     * @return Response
      */
     public function notFound(): Response
     {

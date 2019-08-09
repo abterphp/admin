@@ -6,10 +6,8 @@ namespace AbterPhp\Admin\Http\Service\RepoGrid;
 
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Grid\Factory\IBase as GridFactory;
-use AbterPhp\Framework\Grid\Grid;
 use AbterPhp\Framework\Grid\IGrid;
 use AbterPhp\Framework\Http\Service\RepoGrid\IRepoGrid;
-use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Orm\IGridRepo;
 use Casbin\Enforcer;
 use Opulence\Http\Collection;
@@ -32,7 +30,6 @@ abstract class RepoGridAbstract implements IRepoGrid
      * GridAbstract constructor.
      *
      * @param Enforcer          $enforcer
-     * @param ITranslator       $translator
      * @param IGridRepo         $repo
      * @param FoundRows         $foundRows
      * @param GridFactory       $gridFactory
@@ -75,31 +72,31 @@ abstract class RepoGridAbstract implements IRepoGrid
     }
 
     /**
-     * @param Grid $grid
+     * @param IGrid $grid
      *
      * @return array
      */
-    protected function getSortConditions(Grid $grid): array
+    protected function getSortConditions(IGrid $grid): array
     {
         return $grid->getSortConditions();
     }
 
     /**
-     * @param Grid $grid
+     * @param IGrid $grid
      *
      * @return array
      */
-    protected function getWhereConditions(Grid $grid): array
+    protected function getWhereConditions(IGrid $grid): array
     {
         return $grid->getWhereConditions();
     }
 
     /**
-     * @param Grid $grid
+     * @param IGrid $grid
      *
      * @return array
      */
-    protected function getSqlParams(Grid $grid): array
+    protected function getSqlParams(IGrid $grid): array
     {
         return $grid->getSqlParams();
     }

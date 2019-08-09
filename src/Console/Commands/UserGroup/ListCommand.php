@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Console\Commands\UserGroup;
 
-use AbterPhp\Admin\Domain\Entities\UserGroup;
+use AbterPhp\Admin\Domain\Entities\UserGroup; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Admin\Orm\UserGroupRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;

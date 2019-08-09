@@ -7,16 +7,16 @@ namespace AbterPhp\Admin\Psr7;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Opulence\Http\Requests\Request as OpulenceRequest;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RequestConverter
 {
     /**
      * @param OpulenceRequest $opulenceRequest
      *
-     * @return RequestInterface
+     * @return ServerRequestInterface
      */
-    public function toPsr(OpulenceRequest $opulenceRequest): RequestInterface
+    public function toPsr(OpulenceRequest $opulenceRequest): ServerRequestInterface
     {
         $psr17Factory = new Psr17Factory();
 

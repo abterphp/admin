@@ -20,6 +20,7 @@ trait ApiIssueTrait
      */
     protected function handleErrors(string $msg, array $errors): Response
     {
+        // @phan-suppress-next-line PhanUndeclaredProperty
         $this->logger->debug($msg);
 
         $detail = [];
@@ -52,6 +53,7 @@ trait ApiIssueTrait
      */
     protected function handleException(string $msg, \Exception $exception): Response
     {
+        // @phan-suppress-next-line PhanUndeclaredProperty
         $this->logger->error($msg, $this->getExceptionContext($exception));
 
         $status  = ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR;
@@ -76,10 +78,12 @@ trait ApiIssueTrait
      */
     protected function getExceptionContext(\Exception $exception): array
     {
+        // @phan-suppress-next-line PhanUndeclaredConstant
         $result = [static::LOG_CONTEXT_EXCEPTION => $exception->getMessage()];
 
         $i = 1;
         while ($exception = $exception->getPrevious()) {
+            // @phan-suppress-next-line PhanUndeclaredConstant
             $result[sprintf(static::LOG_PREVIOUS_EXCEPTION, $i++)] = $exception->getMessage();
         }
 

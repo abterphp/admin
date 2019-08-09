@@ -24,7 +24,7 @@ abstract class Base implements IFormFactory
     /** @var ITranslator */
     protected $translator;
 
-    /** @var Form */
+    /** @var Form|null */
     protected $form;
 
     /**
@@ -78,7 +78,7 @@ abstract class Base implements IFormFactory
             Input::NAME_HTTP_METHOD,
             $method,
             [],
-            [Html5::ATTR_TYPE => Input::TYPE_HIDDEN]
+            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
         );
     }
 
@@ -90,7 +90,7 @@ abstract class Base implements IFormFactory
         $name  = CsrfTokenChecker::TOKEN_INPUT_NAME;
         $value = (string)$this->session->get($name);
 
-        $attributes = [Html5::ATTR_TYPE => Input::TYPE_HIDDEN];
+        $attributes = [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]];
 
         $this->form[] = new Input($name, $name, $value, [], $attributes);
 

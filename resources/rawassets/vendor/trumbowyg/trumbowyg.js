@@ -70,7 +70,7 @@ jQuery.trumbowyg = {
     // Plugins
     plugins: {},
 
-    // SVG Path globally
+    // SVG Routes globally
     svgPath: null,
 
     hideButtonTexts: null

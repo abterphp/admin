@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Console\Commands\ApiClient;
 
+use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\ApiClient;
 use AbterPhp\Admin\Orm\AdminResourceRepo;
 use AbterPhp\Admin\Orm\ApiClientRepo;
@@ -17,6 +18,7 @@ use Opulence\Console\Requests\ArgumentTypes;
 use Opulence\Console\Requests\Option;
 use Opulence\Console\Requests\OptionTypes;
 use Opulence\Console\Responses\IResponse;
+use Opulence\Console\StatusCodes;
 use Opulence\Orm\IUnitOfWork;
 use ZxcvbnPhp\Zxcvbn;
 
@@ -161,7 +163,7 @@ class Create extends Command
             }
             $response->writeln(sprintf('<fatal>%s</fatal>', $e->getMessage()));
 
-            return;
+            return StatusCodes::FATAL;
         }
 
 
@@ -170,7 +172,7 @@ class Create extends Command
             $this->unitOfWork->dispose();
             $response->writeln(static::COMMAND_DRY_RUN_MESSAGE);
 
-            return;
+            return StatusCodes::OK;
         }
 
         try {
@@ -182,11 +184,13 @@ class Create extends Command
             }
             $response->writeln(sprintf('<fatal>%s</fatal>', $e->getMessage()));
 
-            return;
+            return StatusCodes::FATAL;
         }
 
         $response->writeln(sprintf(static::RESPONSE_SECRET, $rawSecret));
         $response->writeln(sprintf(static::COMMAND_SUCCESS, $apiClient->getId()));
+
+        return StatusCodes::OK;
     }
 
     /**
@@ -215,6 +219,7 @@ class Create extends Command
      * @param string $userId
      *
      * @return AdminResource[]
+     * @throws \Opulence\Orm\OrmException
      */
     protected function getAdminResources(string $userId): array
     {

@@ -125,7 +125,8 @@ class UserGroup extends Base
     }
 
     /**
-     * @return UserGroup[]
+     * @return AdminResource[]
+     * @throws \Opulence\Orm\OrmException
      */
     protected function getAllAdminResources(): array
     {
@@ -174,13 +175,12 @@ class UserGroup extends Base
      */
     protected function createAdminResourceSelect(array $options): Select
     {
-        $attributes = [
-            Html5::ATTR_SIZE => $this->getMultiSelectSize(
-                count($options),
-                static::MULTISELECT_MIN_SIZE,
-                static::MULTISELECT_MAX_SIZE
-            ),
-        ];
+        $size = $this->getMultiSelectSize(
+            count($options),
+            static::MULTISELECT_MIN_SIZE,
+            static::MULTISELECT_MAX_SIZE
+        );
+        $attributes = [Html5::ATTR_SIZE => [$size]];
 
         $select = new MultiSelect(
             'admin_resource_ids',

@@ -8,7 +8,7 @@ use AbterPhp\Admin\Http\Views\Builders\LoginBuilder;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Constant\Navigation as NavConstant;
 use AbterPhp\Framework\I18n\ITranslator;
-use AbterPhp\Framework\Navigation\Navigation;
+use AbterPhp\Framework\Navigation\Navigation; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;

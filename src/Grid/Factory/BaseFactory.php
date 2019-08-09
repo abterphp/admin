@@ -141,7 +141,7 @@ abstract class BaseFactory implements IBase
         $urlGenerator = $this->urlGenerator;
 
         $hrefClosure = function ($attribute, IEntity $entity) use ($urlGenerator) {
-            return $urlGenerator->createFromName($attribute, $entity->getId());
+            return $urlGenerator->createFromName($attribute, [$entity->getId()]);
         };
 
         $attributeCallbacks = [

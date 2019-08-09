@@ -1,7 +1,7 @@
 <?php
 namespace AbterPhp\Admin\Bootstrappers\Console\Commands;
 
-use AbterPhp\Framework\Module\Manager;
+use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use Exception;
 use Opulence\Console\Commands\CommandCollection;
 use Opulence\Framework\Configuration\Config;
