@@ -11,6 +11,8 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
 {
     use IdGeneratorUserTrait;

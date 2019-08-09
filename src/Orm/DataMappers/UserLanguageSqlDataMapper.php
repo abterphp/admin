@@ -9,6 +9,8 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDataMapper
 {
     /**

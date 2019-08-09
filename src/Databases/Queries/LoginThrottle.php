@@ -7,6 +7,8 @@ namespace AbterPhp\Admin\Databases\Queries;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class LoginThrottle
 {
     /** @var ConnectionPool */

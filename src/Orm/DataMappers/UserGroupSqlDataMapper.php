@@ -10,6 +10,8 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapper
 {
     const ADMIN_RESOURCE_IDS = 'admin_resource_ids';
@@ -44,6 +46,8 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function delete($entity)
     {

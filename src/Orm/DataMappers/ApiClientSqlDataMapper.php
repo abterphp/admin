@@ -10,6 +10,8 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapper
 {
     const ADMIN_RESOURCE_IDS = 'admin_resource_ids';

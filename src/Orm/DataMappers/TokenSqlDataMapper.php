@@ -10,6 +10,8 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 {
     /**
@@ -38,6 +40,8 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 
     /**
      * @param Entity $entity
+     *
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
     public function delete($entity)
     {

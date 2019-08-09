@@ -8,6 +8,8 @@ use AbterPhp\Framework\Databases\Queries\IAuthLoader;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
+/** @phan-file-suppress PhanTypeMismatchArgument */
+
 class FileCategoryAuthLoader implements IAuthLoader
 {
     /** @var ConnectionPool */
