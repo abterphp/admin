@@ -46,6 +46,7 @@ class AuthInvalidator
                 try {
                     $this->cacheManager->clearAll();
                 } catch (\Exception $e) {
+                    // Empty catch
                 }
 
                 break;
@@ -55,6 +56,7 @@ class AuthInvalidator
             try {
                 $this->session->flush();
             } catch (\Exception $e) {
+                // Empty catch
             }
         }
         // phpcs:enable Generic.CodeAnalysis.EmptyStatement.DetectedCatch

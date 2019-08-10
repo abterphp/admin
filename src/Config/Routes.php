@@ -17,13 +17,13 @@ class Routes
     const ADMIN_BASE_PATH  = 'ADMIN_BASE_PATH';
     const API_BASE_PATH    = 'API_BASE_PATH';
 
-    /** @var string */
+    /** @var string|null */
     protected static $loginPath;
 
-    /** @var string */
+    /** @var string|null */
     protected static $adminBasePath;
 
-    /** @var string */
+    /** @var string|null */
     protected static $apiBasePath;
 
     /**
@@ -39,10 +39,11 @@ class Routes
      */
     public static function getLoginPath(): string
     {
-        if (null === static::$loginPath) {
-            static::$loginPath = Environment::getVar(static::ADMIN_LOGIN_PATH);
+        if (null !== static::$loginPath) {
+            return static::$loginPath;
         }
 
+        static::$loginPath = (string)Environment::getVar(static::ADMIN_LOGIN_PATH);
         if (null === static::$loginPath) {
             throw new Config(__CLASS__, [static::ADMIN_LOGIN_PATH]);
         }
@@ -63,10 +64,11 @@ class Routes
      */
     public static function getAdminBasePath(): string
     {
-        if (null === static::$adminBasePath) {
-            static::$adminBasePath = Environment::getVar(static::ADMIN_BASE_PATH);
+        if (null !== static::$adminBasePath) {
+            return static::$adminBasePath;
         }
 
+        static::$adminBasePath = Environment::getVar(static::ADMIN_BASE_PATH);
         if (null === static::$adminBasePath) {
             throw new Config(__CLASS__, [static::ADMIN_BASE_PATH]);
         }
@@ -87,10 +89,11 @@ class Routes
      */
     public static function getApiBasePath(): string
     {
-        if (null === static::$apiBasePath) {
-            static::$apiBasePath = Environment::getVar(static::API_BASE_PATH);
+        if (null !== static::$apiBasePath) {
+            return static::$apiBasePath;
         }
 
+        static::$apiBasePath = Environment::getVar(static::API_BASE_PATH);
         if (null === static::$apiBasePath) {
             throw new Config(__CLASS__, [static::API_BASE_PATH]);
         }

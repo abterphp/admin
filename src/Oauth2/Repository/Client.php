@@ -12,7 +12,6 @@ use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class Client implements ClientRepositoryInterface
 {
     /** @var Crypto */
@@ -36,10 +35,10 @@ class Client implements ClientRepositoryInterface
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
-     * @param string $clientIdentifier
-     * @param null   $grantType
-     * @param null   $clientSecret
-     * @param bool   $mustValidateSecret
+     * @param string      $clientIdentifier
+     * @param string|null $grantType
+     * @param string|null $clientSecret
+     * @param bool        $mustValidateSecret
      *
      * @return ClientEntityInterface|null
      */
@@ -55,9 +54,15 @@ class Client implements ClientRepositoryInterface
             return null;
         }
 
-        $clientSecret = $this->crypto->prepareSecret($clientSecret);
-        if (!$this->crypto->verifySecret($clientSecret, $clientData['secret'])) {
+        if ($mustValidateSecret && empty($clientSecret)) {
             return null;
+        }
+
+        if ($clientSecret) {
+            $clientSecret = $this->crypto->prepareSecret($clientSecret);
+            if (!$this->crypto->verifySecret($clientSecret, $clientData['secret'])) {
+                return null;
+            }
         }
 
         $client = new Entity($clientIdentifier, $clientIdentifier, '');

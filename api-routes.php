@@ -27,7 +27,7 @@ $router->group(
                     Routes::PATH_ACCESS_TOKEN,
                     'Api\AccessToken@create',
                     [
-                        Routes::OPTION_NAME => Routes::ROUTE_ACCESS_TOKEN,
+                        RoutesConfig::OPTION_NAME => Routes::ROUTE_ACCESS_TOKEN,
                     ]
                 );
             }
