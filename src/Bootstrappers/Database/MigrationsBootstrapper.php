@@ -14,10 +14,6 @@ use Opulence\Ioc\IContainer;
 
 class MigrationsBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
-    const MODULE_KEY = 'AbterPhp\\Admin';
-
-    const MIGRATIONS_PATH = '/migrations';
-
     /**
      * @return array
      */
