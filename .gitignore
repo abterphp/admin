@@ -5,3 +5,4 @@ nbproject/
 phpunit.phar
 /vendor/
 NOTES.md
+.phpunit.result.cache
