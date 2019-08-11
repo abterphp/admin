@@ -106,22 +106,22 @@ class UserTest extends TestCase
 
         $form = (string)$this->sut->create($action, $method, $showUrl, $entityMock);
 
-        $this->assertContains($action, $form);
-        $this->assertContains($showUrl, $form);
-        $this->assertContains('CSRF', $form);
-        $this->assertContains('POST', $form);
-        $this->assertContains('username', $form);
-        $this->assertContains('email', $form);
-        $this->assertContains('password', $form);
-        $this->assertContains('password_confirmed', $form);
-        $this->assertContains('raw_password', $form);
-        $this->assertContains('raw_password_confirmed', $form);
-        $this->assertContains('can_login', $form);
-        $this->assertContains('is_gravatar_allowed', $form);
-        $this->assertContains('user_group_ids', $form);
-        $this->assertContains('user_language_id', $form);
-        $this->assertContains('selected', $form);
-        $this->assertContains('button', $form);
+        $this->assertStringContainsString($action, $form);
+        $this->assertStringContainsString($showUrl, $form);
+        $this->assertStringContainsString('CSRF', $form);
+        $this->assertStringContainsString('POST', $form);
+        $this->assertStringContainsString('username', $form);
+        $this->assertStringContainsString('email', $form);
+        $this->assertStringContainsString('password', $form);
+        $this->assertStringContainsString('password_confirmed', $form);
+        $this->assertStringContainsString('raw_password', $form);
+        $this->assertStringContainsString('raw_password_confirmed', $form);
+        $this->assertStringContainsString('can_login', $form);
+        $this->assertStringContainsString('is_gravatar_allowed', $form);
+        $this->assertStringContainsString('user_group_ids', $form);
+        $this->assertStringContainsString('user_language_id', $form);
+        $this->assertStringContainsString('selected', $form);
+        $this->assertStringContainsString('button', $form);
     }
 
     /**
