@@ -13,6 +13,7 @@ use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
+use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
@@ -48,9 +49,9 @@ class AuthorizationServerBootstrapper extends Bootstrapper implements ILazyBoots
         $accessTokenRepository = new Repository\AccessToken($uuidGenerator, $connectionPool);
 
         // Path to public and private keys
-        $privateKeyPath     = getenv(Env::OAUTH2_PRIVATE_KEY_PATH);
-        $privateKeyPassword = getenv(Env::OAUTH2_PRIVATE_KEY_PASSWORD);
-        $encryptionKeyRaw   = getenv(Env::OAUTH2_ENCRYPTION_KEY);
+        $privateKeyPath     = Environment::getVar(Env::OAUTH2_PRIVATE_KEY_PATH);
+        $privateKeyPassword = Environment::getVar(Env::OAUTH2_PRIVATE_KEY_PASSWORD);
+        $encryptionKeyRaw   = Environment::getVar(Env::OAUTH2_ENCRYPTION_KEY);
 
         $encryptionKey = Key::loadFromAsciiSafeString($encryptionKeyRaw);
         $privateKey    = new CryptKey($privateKeyPath, $privateKeyPassword);
@@ -64,7 +65,7 @@ class AuthorizationServerBootstrapper extends Bootstrapper implements ILazyBoots
             $encryptionKey
         );
 
-        $expiry = getenv(Env::OAUTH2_TOKEN_EXPIRY);
+        $expiry = Environment::getVar(Env::OAUTH2_TOKEN_EXPIRY);
         $server->enableGrantType(
             new ClientCredentialsGrant(),
             new DateInterval($expiry)
