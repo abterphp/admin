@@ -34,6 +34,8 @@ trait UrlTrait
     }
 
     /**
+     * @suppress PhanTypeMismatchArgument issue with Opulence\Routing\Urls\UrlGenerator::createFromName
+     *
      * @param string $id
      *
      * @return string
@@ -45,7 +47,7 @@ trait UrlTrait
         $routeName = sprintf(static::URL_EDIT, strtolower(static::ENTITY_PLURAL));
 
         // @phan-suppress-next-line PhanUndeclaredProperty
-        $url = $this->urlGenerator->createFromName($routeName, [$id]);
+        $url = $this->urlGenerator->createFromName($routeName, $id);
 
         return $url;
     }
