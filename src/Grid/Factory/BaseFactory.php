@@ -134,8 +134,6 @@ abstract class BaseFactory implements IBase
     }
 
     /**
-     * @suppress PhanTypeMismatchArgument issue with Opulence\Routing\Urls\UrlGenerator::createFromName
-     *
      * @return callable[]
      */
     protected function getAttributeCallbacks(): array
@@ -143,6 +141,7 @@ abstract class BaseFactory implements IBase
         $urlGenerator = $this->urlGenerator;
 
         $hrefClosure = function ($attribute, IEntity $entity) use ($urlGenerator) {
+            // @phan-suppress-next-line PhanTypeMismatchArgument
             return $urlGenerator->createFromName($attribute, $entity->getId());
         };
 
