@@ -21,6 +21,8 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     const MIGRATION_FILE_FINDER = 'MigrationFileFinder';
 
+    const MIGRATIONS_PATH_SEGMENT = 'migrations';
+
     /** @var string|null */
     protected $dbDriverName;
 
@@ -68,7 +70,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $dbDriver   = $this->getDbDriver();
         $fileFinder = new FileFinder();
         foreach ($abterModuleManager->getResourcePaths() as $resourcePath) {
-            $path    = sprintf('%s%s%s', $resourcePath, DIRECTORY_SEPARATOR, $dbDriver);
+            $path    = $this->getMigrationsPath($resourcePath, $dbDriver);
             $adapter = new Local($path);
             $fs      = new Filesystem($adapter);
 
@@ -76,6 +78,24 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
         }
 
         $container->bindInstance(static::MIGRATION_FILE_FINDER, $fileFinder);
+    }
+
+    /**
+     * @param string $resourcePath
+     * @param string $dbDriver
+     *
+     * @return string
+     */
+    protected function getMigrationsPath(string $resourcePath, string $dbDriver): string
+    {
+        return sprintf(
+            '%s%s%s%s%s',
+            $resourcePath,
+            DIRECTORY_SEPARATOR,
+            static::MIGRATIONS_PATH_SEGMENT,
+            DIRECTORY_SEPARATOR,
+            $dbDriver
+        );
     }
 
     /**
