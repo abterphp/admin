@@ -19,7 +19,7 @@ precommit:
 	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 php -l
 	./vendor/bin/phpunit
 	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q
-	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q -p --colors --cache --standard=PSR12 tests
+	git diff --cached --name-only --diff-filter=ACM | grep Test | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q -p --colors --cache --standard=PSR12
 
 unit:
 	./vendor/bin/phpunit
