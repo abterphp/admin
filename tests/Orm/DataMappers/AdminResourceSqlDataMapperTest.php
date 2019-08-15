@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Orm\DataMappers\AdminResourceSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class AdminResourceSqlDataMapperTest extends DataMapperTestCase
 {
@@ -25,10 +26,10 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $nextId     = '9b6ae58b-1aff-4344-a2ae-cda43a40674e';
         $identifier = 'foo';
 
-        $sql    = 'INSERT INTO admin_resources (id, identifier) VALUES (?, ?)'; // phpcs:ignore
-        $values = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR]];
-
-        $this->prepare($this->writeConnectionMock, $sql, $this->createWriteStatement($values));
+        $sql       = 'INSERT INTO admin_resources (id, identifier) VALUES (?, ?)'; // phpcs:ignore
+        $values    = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR]];
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new AdminResource($nextId, $identifier);
 
         $this->sut->add($entity);
@@ -41,10 +42,10 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '8fe2f659-dbe5-4995-9e07-f49fb018cfe7';
         $identifier = 'foo';
 
-        $sql    = 'UPDATE admin_resources AS admin_resources SET deleted = ? WHERE (id = ?)'; // phpcs:ignore
-        $values = [[1, \PDO::PARAM_INT], [$id, \PDO::PARAM_STR]];
-
-        $this->prepare($this->writeConnectionMock, $sql, $this->createWriteStatement($values));
+        $sql       = 'UPDATE admin_resources AS admin_resources SET deleted = ? WHERE (id = ?)'; // phpcs:ignore
+        $values    = [[1, \PDO::PARAM_INT], [$id, \PDO::PARAM_STR]];
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new AdminResource($id, $identifier);
 
         $this->sut->delete($entity);
@@ -52,14 +53,19 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
 
     public function testGetAll()
     {
-        $id         = '24bd4165-1229-4a6e-a679-76bf90743ee1';
-        $identifier = 'foo';
+        $id0         = '24bd4165-1229-4a6e-a679-76bf90743ee1';
+        $identifier0 = 'foo';
+        $id1         = '51eac0fc-2b26-4231-9559-469e59fae694';
+        $identifier1 = 'bar';
 
         $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0)'; // phpcs:ignore
         $values       = [];
-        $expectedData = [['id' => $id, 'identifier' => $identifier]];
-
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $expectedData = [
+            ['id' => $id0, 'identifier' => $identifier0],
+            ['id' => $id1, 'identifier' => $identifier1],
+        ];
+        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getAll();
 
@@ -74,8 +80,8 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.id = :admin_resource_id)'; // phpcs:ignore
         $values       = ['admin_resource_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
-
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getById($id);
 
@@ -90,8 +96,8 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.identifier = :identifier)'; // phpcs:ignore
         $values       = ['identifier' => [$identifier, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
-
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getByIdentifier($identifier);
 
@@ -103,10 +109,10 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '91693481-276e-495b-82a1-33209c47ca09';
         $identifier = 'foo';
 
-        $sql    = 'UPDATE admin_resources AS admin_resources SET identifier = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
-        $values = [[$identifier, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
-
-        $this->prepare($this->writeConnectionMock, $sql, $this->createWriteStatement($values));
+        $sql       = 'UPDATE admin_resources AS admin_resources SET identifier = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
+        $values    = [[$identifier, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new AdminResource($id, $identifier);
 
         $this->sut->update($entity);

@@ -10,6 +10,7 @@ use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper;
 use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class UserSqlDataMapperTest extends DataMapperTestCase
 {
@@ -33,8 +34,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql    = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
-        $values = [
+        $sql       = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
+        $values    = [
             [$nextId, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
             [$email, \PDO::PARAM_STR],
@@ -43,7 +44,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$canLogin, \PDO::PARAM_INT],
             [$isGravatarAllowed, \PDO::PARAM_INT],
         ];
-        $this->prepare($this->writeConnectionMock, $sql, $this->createWriteStatement($values));
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
 
         $entity = new User($nextId, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);
         $this->sut->add($entity);
@@ -69,8 +71,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
 
         $this->sut->setIdGenerator(MockIdGeneratorFactory::create($this, $uugId0, $uugId1));
 
-        $sql0   = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
-        $values = [
+        $sql0      = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
+        $values    = [
             [$nextId, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
             [$email, \PDO::PARAM_STR],
@@ -79,15 +81,26 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$canLogin, \PDO::PARAM_INT],
             [$isGravatarAllowed, \PDO::PARAM_INT],
         ];
-        $this->prepare($this->writeConnectionMock, $sql0, $this->createWriteStatement($values), 0);
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement, 0);
 
-        $sql1    = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values1 = [[$uugId0, \PDO::PARAM_STR], [$nextId, \PDO::PARAM_STR], [$userGroups[0]->getId(), \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql1, $this->createWriteStatement($values1), 1);
+        $sql1       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values1    = [
+            [$uugId0, \PDO::PARAM_STR],
+            [$nextId, \PDO::PARAM_STR],
+            [$userGroups[0]->getId(), \PDO::PARAM_STR],
+        ];
+        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
-        $sql2    = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values2 = [[$uugId1, \PDO::PARAM_STR], [$nextId, \PDO::PARAM_STR], [$userGroups[1]->getId(), \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql2, $this->createWriteStatement($values2), 2);
+        $sql2       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values2    = [
+            [$uugId1, \PDO::PARAM_STR],
+            [$nextId, \PDO::PARAM_STR],
+            [$userGroups[1]->getId(), \PDO::PARAM_STR],
+        ];
+        $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
 
         $entity = new User(
             $nextId,
@@ -114,12 +127,14 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql0    = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
-        $values0 = [[$id, \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql0, $this->createWriteStatement($values0), 0);
+        $sql0       = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
+        $values0    = [[$id, \PDO::PARAM_STR]];
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1 = 'UPDATE users AS users SET deleted = ?, email = ?, username = ?, password = ? WHERE (id = ?)'; // phpcs:ignore
-        $this->prepare($this->writeConnectionMock, $sql1, $this->createWriteStatementWithAny(), 1);
+        $sql1       = 'UPDATE users AS users SET deleted = ?, email = ?, username = ?, password = ? WHERE (id = ?)'; // phpcs:ignore
+        $statement1 = MockStatementFactory::createWriteStatementWithAny($this);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $entity = new User($id, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);
         $this->sut->delete($entity);
@@ -150,7 +165,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             ],
         ];
 
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getAll();
 
@@ -182,7 +198,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             ],
         ];
 
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getById($id);
 
@@ -214,7 +231,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             ],
         ];
 
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getByUsername($username);
 
@@ -246,7 +264,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             ],
         ];
 
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getByEmail($email);
 
@@ -278,7 +297,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             ],
         ];
 
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->find($username);
 
@@ -310,7 +330,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             ],
         ];
 
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($values, $expectedData));
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->find($email);
 
@@ -327,8 +348,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql0    = 'UPDATE users AS users SET username = ?, email = ?, password = ?, user_language_id = ?, can_login = ?, is_gravatar_allowed = ? WHERE (id = ?)'; // phpcs:ignore
-        $values0 = [
+        $sql0       = 'UPDATE users AS users SET username = ?, email = ?, password = ?, user_language_id = ?, can_login = ?, is_gravatar_allowed = ? WHERE (id = ?)'; // phpcs:ignore
+        $values0    = [
             [$username, \PDO::PARAM_STR],
             [$email, \PDO::PARAM_STR],
             [$password, \PDO::PARAM_STR],
@@ -337,11 +358,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$isGravatarAllowed, \PDO::PARAM_INT],
             [$id, \PDO::PARAM_STR],
         ];
-        $this->prepare($this->writeConnectionMock, $sql0, $this->createWriteStatement($values0), 0);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1    = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
-        $values1 = [[$id, \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql1, $this->createWriteStatement($values1), 1);
+        $sql1       = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
+        $values1    = [[$id, \PDO::PARAM_STR]];
+        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $entity = new User($id, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);
         $this->sut->update($entity);
@@ -365,8 +388,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
 
         $this->sut->setIdGenerator(MockIdGeneratorFactory::create($this, $uugId0, $uugId1));
 
-        $sql0    = 'UPDATE users AS users SET username = ?, email = ?, password = ?, user_language_id = ?, can_login = ?, is_gravatar_allowed = ? WHERE (id = ?)'; // phpcs:ignore
-        $values0 = [
+        $sql0       = 'UPDATE users AS users SET username = ?, email = ?, password = ?, user_language_id = ?, can_login = ?, is_gravatar_allowed = ? WHERE (id = ?)'; // phpcs:ignore
+        $values0    = [
             [$username, \PDO::PARAM_STR],
             [$email, \PDO::PARAM_STR],
             [$password, \PDO::PARAM_STR],
@@ -375,19 +398,23 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$isGravatarAllowed, \PDO::PARAM_INT],
             [$id, \PDO::PARAM_STR],
         ];
-        $this->prepare($this->writeConnectionMock, $sql0, $this->createWriteStatement($values0), 0);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1    = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
-        $values1 = [[$id, \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql1, $this->createWriteStatement($values1), 1);
+        $sql1       = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
+        $values1    = [[$id, \PDO::PARAM_STR]];
+        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
-        $sql2    = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values2 = [[$uugId0, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR], [$userGroups[0]->getId(), \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql2, $this->createWriteStatement($values2), 2);
+        $sql2       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values2    = [[$uugId0, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR], [$userGroups[0]->getId(), \PDO::PARAM_STR]];
+        $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
 
-        $sql3    = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values3 = [[$uugId1, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR], [$userGroups[1]->getId(), \PDO::PARAM_STR]];
-        $this->prepare($this->writeConnectionMock, $sql3, $this->createWriteStatement($values3), 3);
+        $sql3       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values3    = [[$uugId1, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR], [$userGroups[1]->getId(), \PDO::PARAM_STR]];
+        $statement3 = MockStatementFactory::createWriteStatement($this, $values3);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql3, $statement3, 3);
 
         $entity = new User(
             $id,

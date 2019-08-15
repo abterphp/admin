@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Databases\Queries;
 
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
+use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class LoginThrottleTest extends QueryTestCase
 {
@@ -30,8 +31,8 @@ class LoginThrottleTest extends QueryTestCase
             [$username, \PDO::PARAM_STR],
         ];
         $returnValue  = 2;
-
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadColumnStatement($valuesToBind, $returnValue));
+        $statement    = MockStatementFactory::createReadColumnStatement($this, $valuesToBind, $returnValue);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->isLoginAllowed($ipHash, $username, $maxFailureCount);
 
@@ -50,8 +51,8 @@ class LoginThrottleTest extends QueryTestCase
             [$username, \PDO::PARAM_STR],
         ];
         $returnValue  = 14;
-
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadColumnStatement($valuesToBind, $returnValue));
+        $statement    = MockStatementFactory::createReadColumnStatement($this, $valuesToBind, $returnValue);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->isLoginAllowed($ipHash, $username, $maxFailureCount);
 
@@ -68,8 +69,8 @@ class LoginThrottleTest extends QueryTestCase
             [$ipHash, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
         ];
-
-        $this->prepare($this->writeConnectionMock, $sql, $this->createWriteStatement($valuesToBind));
+        $statement    = MockStatementFactory::createWriteStatement($this, $valuesToBind);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->clear($ipHash, $username);
 

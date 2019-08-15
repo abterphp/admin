@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Databases\Queries;
 
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
+use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class AdminResourceAuthLoaderTest extends QueryTestCase
 {
@@ -31,8 +32,8 @@ class AdminResourceAuthLoaderTest extends QueryTestCase
                 'v1' => $adminResourceIdentifier,
             ],
         ];
-
-        $this->prepare($this->readConnectionMock, $sql, $this->createReadStatement($valuesToBind, $returnValues));
+        $statement    = MockStatementFactory::createReadStatement($this, $valuesToBind, $returnValues);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->loadAll();
 

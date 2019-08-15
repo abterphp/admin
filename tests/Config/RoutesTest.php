@@ -219,4 +219,24 @@ class RoutesTest extends TestCase
 
         $this->assertSame($presetValue, $actualResult);
     }
+
+    public function testGetLoginFailurePathContainsAdminPath()
+    {
+        $adminBasePath = $this->sut->getAdminBasePath();
+
+        $actualResult = $this->sut->getLoginFailurePath();
+
+        $this->assertNotEmpty($adminBasePath);
+        $this->assertStringContainsString($adminBasePath, $actualResult);
+    }
+
+    public function testGetLoginSuccessPathContainsAdminPath()
+    {
+        $adminBasePath = $this->sut->getAdminBasePath();
+
+        $actualResult = $this->sut->getLoginSuccessPath();
+
+        $this->assertNotEmpty($adminBasePath);
+        $this->assertStringContainsString($adminBasePath, $actualResult);
+    }
 }
