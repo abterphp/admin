@@ -30,8 +30,7 @@ class User extends ValidatorFactory
             ->required();
 
         $validator
-            ->field('user_group_ids')
-            ->required();
+            ->field('user_group_ids');
 
         $validator
             ->field('user_language_id')
