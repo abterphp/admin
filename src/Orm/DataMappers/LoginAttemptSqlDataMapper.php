@@ -10,7 +10,6 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDataMapper
 {
     /**
@@ -22,14 +21,21 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
             throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a LoginAttempt entity.');
         }
 
+        $ipAddress     = null;
+        $ipAddressType = \PDO::PARAM_NULL;
+        if ($entity->getIpAddress()) {
+            $ipAddress     = $entity->getIpAddress();
+            $ipAddressType = \PDO::PARAM_STR;
+        }
+
         $query = (new QueryBuilder())
             ->insert(
                 'login_attempts',
                 [
-                    'id'         => $entity->getId(),
-                    'ip_hash'    => $entity->getIpHash(),
-                    'username'   => $entity->getUsername(),
-                    'ip_address' => $entity->getIpAddress(),
+                    'id'         => [$entity->getId(), \PDO::PARAM_STR],
+                    'ip_hash'    => [$entity->getIpHash(), \PDO::PARAM_STR],
+                    'username'   => [$entity->getUsername(), \PDO::PARAM_STR],
+                    'ip_address' => [$ipAddress, $ipAddressType],
                 ]
             );
 
@@ -107,14 +113,21 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
             throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a LoginAttempt entity.');
         }
 
+        $ipAddress     = null;
+        $ipAddressType = \PDO::PARAM_NULL;
+        if ($entity->getIpAddress()) {
+            $ipAddress     = $entity->getIpAddress();
+            $ipAddressType = \PDO::PARAM_STR;
+        }
+
         $query = (new QueryBuilder())
             ->update(
                 'login_attempts',
                 'login_attempts',
                 [
-                    'ip_hash'    => $entity->getIpHash(),
-                    'username'   => $entity->getUsername(),
-                    'ip_address' => $entity->getIpAddress(),
+                    'ip_hash'    => [$entity->getIpHash(), \PDO::PARAM_STR],
+                    'username'   => [$entity->getUsername(), \PDO::PARAM_STR],
+                    'ip_address' => [$ipAddress, $ipAddressType],
                 ]
             )
             ->where('id = ?')
