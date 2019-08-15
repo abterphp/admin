@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Queries;
 
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use AbterPhp\Framework\TestCase\Database\QueryTestCase;
 
-class LoginThrottleTest extends SqlTestCase
+class LoginThrottleTest extends QueryTestCase
 {
-    /** @var LoginThrottle|MockObject */
+    /** @var LoginThrottle - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -75,13 +74,5 @@ class LoginThrottleTest extends SqlTestCase
         $actualResult = $this->sut->clear($ipHash, $username);
 
         $this->assertTrue($actualResult);
-    }
-
-    /**
-     * @param array  $expectedData
-     * @param object $entity
-     */
-    protected function assertEntity(array $expectedData, $entity)
-    {
     }
 }

@@ -8,14 +8,14 @@ use AbterPhp\Framework\Events\NavigationReady;
 use AbterPhp\Framework\Html\Component\Button;
 use AbterPhp\Framework\Html\Component\ButtonFactory;
 use AbterPhp\Framework\Navigation\Navigation;
-use AbterPhp\Framework\Session\MockSessionFactory;
+use AbterPhp\Framework\TestDouble\Session\MockSessionFactory;
 use Opulence\Sessions\ISession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class NavigationBuilderTest extends TestCase
 {
-    /** @var NavigationBuilder */
+    /** @var NavigationBuilder - System Under Test */
     protected $sut;
 
     /** @var array */

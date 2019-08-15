@@ -13,7 +13,7 @@ use AbterPhp\Admin\Databases\Queries\UserAuthLoader;
 class UserProvider implements CasbinAdapter
 {
     /** @var IAuthLoader */
-    protected $authQueries;
+    protected $userAuth;
 
     /**
      * UserProvider constructor.
@@ -22,7 +22,7 @@ class UserProvider implements CasbinAdapter
      */
     public function __construct(UserAuthLoader $userAuth)
     {
-        $this->authQueries = $userAuth;
+        $this->userAuth = $userAuth;
     }
 
     /**
@@ -30,7 +30,7 @@ class UserProvider implements CasbinAdapter
      */
     public function loadPolicy($model)
     {
-        $rawData = $this->authQueries->loadAll();
+        $rawData = $this->userAuth->loadAll();
 
         foreach ($rawData as $line) {
             $model->model['g']['g']->policy[] = [$line['v0'], $line['v1'], '', '', ','];

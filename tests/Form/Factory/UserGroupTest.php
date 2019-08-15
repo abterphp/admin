@@ -16,6 +16,9 @@ use PHPUnit\Framework\TestCase;
 
 class UserGroupTest extends TestCase
 {
+    /** @var UserGroup - System Under Test */
+    protected $sut;
+
     /** @var ISession|MockObject */
     protected $sessionMock;
 
@@ -24,9 +27,6 @@ class UserGroupTest extends TestCase
 
     /** @var AdminResourceRepo|MockObject */
     protected $adminResourceRepoMock;
-
-    /** @var UserGroup */
-    protected $sut;
 
     public function setUp(): void
     {

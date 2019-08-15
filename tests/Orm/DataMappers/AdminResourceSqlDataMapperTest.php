@@ -6,9 +6,9 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Orm\DataMappers\AdminResourceSqlDataMapper;
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
+use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 
-class AdminResourceSqlDataMapperTest extends SqlTestCase
+class AdminResourceSqlDataMapperTest extends DataMapperTestCase
 {
     /** @var AdminResourceSqlDataMapper */
     protected $sut;

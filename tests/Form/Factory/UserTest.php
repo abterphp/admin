@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
+    /** @var User - System Under Test */
+    protected $sut;
+
     /** @var ISession|MockObject */
     protected $sessionMock;
 
@@ -29,9 +32,6 @@ class UserTest extends TestCase
 
     /** @var UserLanguageRepo|MockObject */
     protected $userLanguageRepoMock;
-
-    /** @var User */
-    protected $sut;
 
     public function setUp(): void
     {

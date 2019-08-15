@@ -10,8 +10,9 @@ use AbterPhp\Framework\Grid\Component\Body;
 use AbterPhp\Framework\Grid\Component\Header;
 use AbterPhp\Framework\Grid\Table\Table;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class TableFactoryTest extends \PHPUnit\Framework\TestCase
+class TableFactoryTest extends TestCase
 {
     public function testCreateCallsHeaderAndBodyFactories()
     {

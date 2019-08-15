@@ -7,8 +7,9 @@ namespace AbterPhp\Admin\Grid\Factory\Table;
 use AbterPhp\Framework\Grid\Cell\Cell;
 use AbterPhp\Framework\Grid\Component\Header;
 use AbterPhp\Framework\Grid\Row\Row;
+use PHPUnit\Framework\TestCase;
 
-class HeaderFactoryTest extends \PHPUnit\Framework\TestCase
+class HeaderFactoryTest extends TestCase
 {
     public function testCreateWithoutActions()
     {

@@ -6,9 +6,9 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\DataMappers\UserLanguageSqlDataMapper;
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
+use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 
-class UserLanguageSqlDataMapperTest extends SqlTestCase
+class UserLanguageSqlDataMapperTest extends DataMapperTestCase
 {
     /** @var UserLanguageSqlDataMapper */
     protected $sut;

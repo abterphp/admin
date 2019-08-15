@@ -6,14 +6,13 @@ namespace AbterPhp\Admin\Grid\Factory;
 
 use AbterPhp\Framework\Grid\Component\Filters;
 use AbterPhp\Framework\Grid\Grid;
-use AbterPhp\Framework\I18n\ITranslator;
-use AbterPhp\Framework\I18n\MockTranslatorFactory;
 use Opulence\Routing\Urls\UrlGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class BaseFactoryTest extends \PHPUnit\Framework\TestCase
+class BaseFactoryTest extends TestCase
 {
-    /** @var BaseFactory|MockObject */
+    /** @var BaseFactory|MockObject - System Under Test */
     protected $sut;
 
     /** @var UrlGenerator|MockObject */

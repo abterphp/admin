@@ -43,10 +43,12 @@ class Routes
             return static::$loginPath;
         }
 
-        static::$loginPath = (string)Environment::getVar(static::ADMIN_LOGIN_PATH);
-        if (null === static::$loginPath) {
+        $loginPath = Environment::getVar(static::ADMIN_LOGIN_PATH);
+        if (null === $loginPath) {
             throw new Config(__CLASS__, [static::ADMIN_LOGIN_PATH]);
         }
+
+        static::$loginPath = (string)$loginPath;
 
         return static::$loginPath;
     }
@@ -68,10 +70,12 @@ class Routes
             return static::$adminBasePath;
         }
 
-        static::$adminBasePath = Environment::getVar(static::ADMIN_BASE_PATH);
-        if (null === static::$adminBasePath) {
+        $adminBasePath = Environment::getVar(static::ADMIN_BASE_PATH);
+        if (null === $adminBasePath) {
             throw new Config(__CLASS__, [static::ADMIN_BASE_PATH]);
         }
+
+        static::$adminBasePath = (string)$adminBasePath;
 
         return static::$adminBasePath;
     }
@@ -93,10 +97,12 @@ class Routes
             return static::$apiBasePath;
         }
 
-        static::$apiBasePath = Environment::getVar(static::API_BASE_PATH);
-        if (null === static::$apiBasePath) {
+        $apiBasePath = Environment::getVar(static::API_BASE_PATH);
+        if (null === $apiBasePath) {
             throw new Config(__CLASS__, [static::API_BASE_PATH]);
         }
+
+        static::$apiBasePath = (string)$apiBasePath;
 
         return static::$apiBasePath;
     }

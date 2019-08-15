@@ -8,10 +8,10 @@ use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper;
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
-use AbterPhp\Framework\Orm\MockIdGeneratorFactory;
+use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
+use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 
-class UserSqlDataMapperTest extends SqlTestCase
+class UserSqlDataMapperTest extends DataMapperTestCase
 {
     /** @var UserSqlDataMapper */
     protected $sut;

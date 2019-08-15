@@ -6,8 +6,9 @@ namespace AbterPhp\Admin\Grid\Factory;
 
 use AbterPhp\Framework\Grid\Pagination\Options;
 use AbterPhp\Framework\Grid\Pagination\Pagination;
+use PHPUnit\Framework\TestCase;
 
-class PaginationFactoryTest extends \PHPUnit\Framework\TestCase
+class PaginationFactoryTest extends TestCase
 {
     /** @var PaginationFactory */
     protected $sut;

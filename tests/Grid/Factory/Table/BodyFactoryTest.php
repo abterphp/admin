@@ -6,8 +6,9 @@ namespace AbterPhp\Admin\Grid\Factory\Table;
 
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Component\Body;
+use PHPUnit\Framework\TestCase;
 
-class BodyFactoryTest extends \PHPUnit\Framework\TestCase
+class BodyFactoryTest extends TestCase
 {
     public function testCreate()
     {

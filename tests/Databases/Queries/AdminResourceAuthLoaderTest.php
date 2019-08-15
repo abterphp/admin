@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Queries;
 
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
+use AbterPhp\Framework\TestCase\Database\QueryTestCase;
 
-class AdminResourceAuthLoaderTest extends SqlTestCase
+class AdminResourceAuthLoaderTest extends QueryTestCase
 {
-    /** @var AdminResourceAuthLoader */
+    /** @var AdminResourceAuthLoader - System Under Test */
     protected $sut;
 
     public function setUp(): void
@@ -37,13 +37,5 @@ class AdminResourceAuthLoaderTest extends SqlTestCase
         $actualResult = $this->sut->loadAll();
 
         $this->assertEquals($returnValues, $actualResult);
-    }
-
-    /**
-     * @param array  $expectedData
-     * @param object $entity
-     */
-    protected function assertEntity(array $expectedData, $entity)
-    {
     }
 }

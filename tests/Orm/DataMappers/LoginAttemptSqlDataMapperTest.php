@@ -6,9 +6,9 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 
 use AbterPhp\Admin\Domain\Entities\LoginAttempt;
 use AbterPhp\Admin\Orm\DataMappers\LoginAttemptSqlDataMapper;
-use AbterPhp\Framework\Orm\DataMappers\SqlTestCase;
+use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 
-class LoginAttemptSqlDataMapperTest extends SqlTestCase
+class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
 {
     /** @var LoginAttemptSqlDataMapper */
     protected $sut;

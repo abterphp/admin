@@ -9,8 +9,9 @@ use AbterPhp\Framework\Grid\Grid;
 use AbterPhp\Framework\Grid\Pagination\Pagination;
 use AbterPhp\Framework\Grid\Table\Table;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class GridFactoryTest extends \PHPUnit\Framework\TestCase
+class GridFactoryTest extends TestCase
 {
     public function testCreate()
     {
