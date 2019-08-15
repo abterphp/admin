@@ -28,7 +28,7 @@ class SessionInitializer
      */
     public function initialize(User $user)
     {
-        if ($this->session->has(Session::USER_ID) && $this->session->get(Session::USER_ID) != $user->getId()) {
+        if ($this->session->has(Session::USER_ID) && $this->session->get(Session::USER_ID) === $user->getId()) {
             return;
         }
 

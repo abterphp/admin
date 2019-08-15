@@ -97,10 +97,8 @@ class Login
      */
     public function login(string $username, string $password, string $ipAddress): ?Entity
     {
-        $ipHash = $this->getHash($ipAddress);
-
         $user = $this->userRepo->find($username);
-        if (!$user || !$user->getPassword()) {
+        if (!$user || !$user->getPassword() || !$user->canLogin()) {
             return null;
         }
 
@@ -109,13 +107,15 @@ class Login
             return null;
         }
 
-        if ($user && $this->loginThrottle->clear($ipHash, $username)) {
-            return $user;
-        }
-        
-        $this->logFailure($ipHash, $username, $ipAddress);
+        $ipHash = $this->getHash($ipAddress);
 
-        return null;
+        if (!$this->loginThrottle->clear($ipHash, $username)) {
+            $this->logFailure($ipHash, $username, $ipAddress);
+
+            return null;
+        }
+
+        return $user;
     }
 
     /**
@@ -129,7 +129,7 @@ class Login
     {
         $ipAddress = $this->loginLogIp ? $ipAddress : null;
 
-        $loginAttempt = new LoginAttempt(0, $ipHash, $username, $ipAddress);
+        $loginAttempt = new LoginAttempt('', $ipHash, $username, $ipAddress);
         $this->loginAttemptRepo->add($loginAttempt);
         $this->unitOfWork->commit();
     }

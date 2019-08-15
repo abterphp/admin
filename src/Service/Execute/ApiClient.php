@@ -90,9 +90,10 @@ class ApiClient extends RepoServiceAbstract
             ->setAdminResources($adminResources);
 
         if ($secret) {
-            $secret = $this->crypto->prepareSecret($secret);
+            $preparedSecret = $this->crypto->prepareSecret($secret);
+            $hashedSecret = $this->crypto->hashCrypt($preparedSecret);
 
-            $entity->setSecret($this->crypto->hashCrypt($secret));
+            $entity->setSecret($hashedSecret);
         }
 
         return $entity;
