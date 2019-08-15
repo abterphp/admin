@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Authorization;
 
+use AbterPhp\Admin\Databases\Queries\IAuthLoader;
 use Casbin\Exceptions\CasbinException;
 use Casbin\Model\Model;
 use Casbin\Persist\Adapter as CasbinAdapter;
-use AbterPhp\Framework\Databases\Queries\IAuthLoader;
 use AbterPhp\Admin\Databases\Queries\UserAuthLoader;
 
 class UserProvider implements CasbinAdapter
