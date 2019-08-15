@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Queries;
 
-use AbterPhp\Framework\Databases\Queries\IAuthLoader;
+use AbterPhp\Admin\Exception\Database;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
@@ -26,9 +26,9 @@ class AdminResourceAuthLoader implements IAuthLoader
     }
 
     /**
-     * @return array|bool
+     * @return array
      */
-    public function loadAll()
+    public function loadAll(): array
     {
         $query = (new QueryBuilder())
             ->select('ug.identifier AS v0', 'ar.identifier AS v1')
@@ -41,7 +41,7 @@ class AdminResourceAuthLoader implements IAuthLoader
         $statement  = $connection->prepare($query->getSql());
         $statement->bindValues($query->getParameters());
         if (!$statement->execute()) {
-            return true;
+            throw new Database($statement->errorInfo());
         }
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

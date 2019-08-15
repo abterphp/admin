@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Queries;
 
+use AbterPhp\Admin\Exception\Database;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
@@ -46,7 +47,7 @@ class LoginThrottle
         $statement  = $connection->prepare($query->getSql());
         $statement->bindValues($query->getParameters());
         if (!$statement->execute()) {
-            return false;
+            throw new Database($statement->errorInfo());
         }
 
         return $statement->fetchColumn() < $maxFailureCount;

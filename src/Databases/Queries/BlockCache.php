@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Queries;
 
+use AbterPhp\Admin\Exception\Database;
 use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\QueryBuilders\Conditions\ConditionFactory;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
@@ -38,8 +39,8 @@ class BlockCache
         $query      = (new QueryBuilder())
             ->select('COUNT(*) AS count')
             ->from('blocks')
+            ->leftJoin('block_layouts', 'layouts', 'layouts.id = blocks.layout_id')
             ->where('blocks.deleted = 0')
-            ->leftJoin('block_layouts', 'layouts', 'layouts.id = blocks.layout')
             ->andWhere($conditions->in('blocks.identifier', $identifiers))
             ->andWhere('blocks.updated_at > ? OR layouts.updated_at > ?')
             ->addUnnamedPlaceholderValue($cacheTime, \PDO::PARAM_STR)
@@ -49,9 +50,9 @@ class BlockCache
         $statement  = $connection->prepare($query->getSql());
         $statement->bindValues($query->getParameters());
         if (!$statement->execute()) {
-            return true;
+            throw new Database($statement->errorInfo());
         }
 
-        return $statement->fetchColumn() > 0;
+        return (int)$statement->fetchColumn() > 0;
     }
 }
