@@ -11,7 +11,6 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 {
     /**
@@ -23,6 +22,8 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
             throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
         }
 
+        $revokedAtTye = $entity->getRevokedAt() === null ? \PDO::PARAM_NULL : \PDO::PARAM_STR;
+
         $query = (new QueryBuilder())
             ->insert(
                 'tokens',
@@ -30,6 +31,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
                     'id'            => [$entity->getId(), \PDO::PARAM_STR],
                     'api_client_id' => [$entity->getApiClientId(), \PDO::PARAM_STR],
                     'expires_at'    => [$entity->getExpiresAt(), \PDO::PARAM_STR],
+                    'revoked_at'    => [$entity->getRevokedAt(), $revokedAtTye],
                 ]
             );
 
@@ -86,10 +88,10 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      */
     public function getById($id): ?Entity
     {
-        $query = $this->getBaseQuery()->andWhere('tokens.id = :user_id');
+        $query = $this->getBaseQuery()->andWhere('tokens.id = :token_id');
 
         $sql    = $query->getSql();
-        $params = ['user_id' => [$id, \PDO::PARAM_STR]];
+        $params = ['token_id' => [$id, \PDO::PARAM_STR]];
 
         return $this->read($sql, $params, self::VALUE_TYPE_ENTITY, true);
     }
@@ -121,14 +123,16 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
             throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
         }
 
+        $revokedAtTye = $entity->getRevokedAt() === null ? \PDO::PARAM_NULL : \PDO::PARAM_STR;
+
         $query = (new QueryBuilder())
             ->update(
                 'tokens',
                 'tokens',
                 [
-                    'id'            => [$entity->getId(), \PDO::PARAM_STR],
                     'api_client_id' => [$entity->getApiClientId(), \PDO::PARAM_STR],
                     'expires_at'    => [$entity->getExpiresAt(), \PDO::PARAM_STR],
+                    'revoked_at'    => [$entity->getRevokedAt(), $revokedAtTye],
                 ]
             )
             ->where('id = ?')
@@ -153,7 +157,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 
         $expiresAt = new DateTimeImmutable($data['expires_at']);
         $revokedAt = null;
-        if ($revokedAt) {
+        if (null !== $data['revoked_at']) {
             $revokedAt = new DateTimeImmutable($data['revoked_at']);
         }
 

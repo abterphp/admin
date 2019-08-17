@@ -113,12 +113,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
             throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a LoginAttempt entity.');
         }
 
-        $ipAddress     = null;
-        $ipAddressType = \PDO::PARAM_NULL;
-        if ($entity->getIpAddress()) {
-            $ipAddress     = $entity->getIpAddress();
-            $ipAddressType = \PDO::PARAM_STR;
-        }
+        $ipAddressType = $entity->getIpAddress() === null ? \PDO::PARAM_NULL : \PDO::PARAM_STR;
 
         $query = (new QueryBuilder())
             ->update(
@@ -127,7 +122,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
                 [
                     'ip_hash'    => [$entity->getIpHash(), \PDO::PARAM_STR],
                     'username'   => [$entity->getUsername(), \PDO::PARAM_STR],
-                    'ip_address' => [$ipAddress, $ipAddressType],
+                    'ip_address' => [$entity->getIpAddress(), $ipAddressType],
                 ]
             )
             ->where('id = ?')

@@ -29,14 +29,14 @@ class Token implements IStringerEntity
      *
      * @param string                 $id
      * @param string                 $apiClientId
-     * @param DateTimeImmutable|null $expiresAt
+     * @param DateTimeImmutable      $expiresAt
      * @param DateTimeImmutable|null $revokedAt
      * @param string[]               $adminResources
      */
     public function __construct(
         string $id,
         string $apiClientId,
-        ?DateTimeImmutable $expiresAt,
+        DateTimeImmutable $expiresAt,
         ?DateTimeImmutable $revokedAt,
         array $adminResources = []
     ) {
@@ -82,17 +82,17 @@ class Token implements IStringerEntity
     }
 
     /**
-     * @return DateTimeImmutable|null
+     * @return DateTimeImmutable
      */
-    public function getExpiresAt(): ?DateTimeImmutable
+    public function getExpiresAt(): DateTimeImmutable
     {
         return $this->expiresAt;
     }
 
     /**
-     * @param DateTimeImmutable|null $expiresAt
+     * @param DateTimeImmutable $expiresAt
      */
-    public function setExpiresAt(?DateTimeImmutable $expiresAt): Token
+    public function setExpiresAt(DateTimeImmutable $expiresAt): Token
     {
         $this->expiresAt = $expiresAt;
 

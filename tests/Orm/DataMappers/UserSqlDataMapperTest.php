@@ -10,6 +10,7 @@ use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper;
 use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class UserSqlDataMapperTest extends DataMapperTestCase
@@ -426,6 +427,42 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             $userLanguage,
             $userGroups
         );
+        $this->sut->update($entity);
+    }
+
+    public function testAddThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
+        $this->sut->add($entity);
+    }
+
+    public function testDeleteThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
+        $this->sut->delete($entity);
+    }
+
+    public function testUpdateThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
         $this->sut->update($entity);
     }
 

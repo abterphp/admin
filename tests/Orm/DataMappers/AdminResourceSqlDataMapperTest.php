@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Orm\DataMappers\AdminResourceSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class AdminResourceSqlDataMapperTest extends DataMapperTestCase
@@ -104,6 +105,28 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $this->assertEntity($expectedData[0], $actualResult);
     }
 
+    public function testGetByUserId()
+    {
+        $userId      = '81704325-5d93-4987-8425-8a80062db406';
+        $id0         = '24bd4165-1229-4a6e-a679-76bf90743ee1';
+        $identifier0 = 'foo';
+        $id1         = '51eac0fc-2b26-4231-9559-469e59fae694';
+        $identifier1 = 'bar';
+
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar INNER JOIN user_groups_admin_resources AS ugar ON ugar.admin_resource_id = ar.id INNER JOIN user_groups AS ug ON ug.id = ugar.user_group_id INNER JOIN users_user_groups AS uug ON uug.user_group_id = ug.id WHERE (ar.deleted = 0) AND (uug.user_id = :user_id) GROUP BY ar.id'; // phpcs:ignore
+        $values       = ['user_id' => [$userId, \PDO::PARAM_STR]];
+        $expectedData = [
+            ['id' => $id0, 'identifier' => $identifier0],
+            ['id' => $id1, 'identifier' => $identifier1],
+        ];
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getByUserId($userId);
+
+        $this->assertCollection($expectedData, $actualResult);
+    }
+
     public function testUpdate()
     {
         $id         = '91693481-276e-495b-82a1-33209c47ca09';
@@ -114,6 +137,42 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $statement = MockStatementFactory::createWriteStatement($this, $values);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new AdminResource($id, $identifier);
+
+        $this->sut->update($entity);
+    }
+
+    public function testAddThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
+        $this->sut->add($entity);
+    }
+
+    public function testDeleteThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
+        $this->sut->delete($entity);
+    }
+
+    public function testUpdateThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
 
         $this->sut->update($entity);
     }

@@ -14,8 +14,6 @@ use Opulence\QueryBuilders\MySql\SelectQuery;
 
 class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapper
 {
-    const ADMIN_RESOURCE_IDS = 'admin_resource_ids';
-
     use IdGeneratorUserTrait;
 
     /**

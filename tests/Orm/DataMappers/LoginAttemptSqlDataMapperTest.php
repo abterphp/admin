@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 use AbterPhp\Admin\Domain\Entities\LoginAttempt;
 use AbterPhp\Admin\Orm\DataMappers\LoginAttemptSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
 class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
@@ -142,6 +143,42 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
         $statement = MockStatementFactory::createWriteStatement($this, $values);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new LoginAttempt($id, $ipHash, $username);
+
+        $this->sut->update($entity);
+    }
+
+    public function testAddThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
+        $this->sut->add($entity);
+    }
+
+    public function testDeleteThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
+
+        $this->sut->delete($entity);
+    }
+
+    public function testUpdateThrowsExceptionIfCalledWithInvalidEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entity = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
+            ->getMock();
 
         $this->sut->update($entity);
     }
