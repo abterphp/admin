@@ -16,9 +16,9 @@ use Opulence\Sessions\Session;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class UserTest extends TestCase
+class ProfileTest extends TestCase
 {
-    /** @var User - System Under Test */
+    /** @var Profile - System Under Test */
     protected $sut;
 
     /** @var ISession|MockObject */
@@ -55,7 +55,7 @@ class UserTest extends TestCase
             ->setMethods(['getAll'])
             ->getMock();
 
-        $this->sut = new User(
+        $this->sut = new Profile(
             $this->sessionMock,
             $this->translatorMock,
             $this->userGroupRepoMock,
@@ -109,7 +109,7 @@ class UserTest extends TestCase
         $form = (string)$this->sut->create($action, $method, $showUrl, $entityStub);
 
         $this->assertStringContainsString($action, $form);
-        $this->assertStringContainsString($showUrl, $form);
+        $this->assertStringNotContainsString($showUrl, $form);
         $this->assertStringContainsString('CSRF', $form);
         $this->assertStringContainsString('POST', $form);
         $this->assertStringContainsString('username', $form);
@@ -119,6 +119,7 @@ class UserTest extends TestCase
         $this->assertStringContainsString('raw_password', $form);
         $this->assertStringContainsString('raw_password_confirmed', $form);
         $this->assertStringContainsString('can_login', $form);
+        $this->assertStringContainsString('type="hidden" id="can_login"', $form);
         $this->assertStringContainsString('is_gravatar_allowed', $form);
         $this->assertStringContainsString('user_group_ids', $form);
         $this->assertStringContainsString('user_language_id', $form);

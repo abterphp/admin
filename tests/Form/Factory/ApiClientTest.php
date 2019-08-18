@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Form\Factory;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
-use AbterPhp\Admin\Domain\Entities\UserGroup as Entity;
+use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Admin\Orm\AdminResourceRepo;
+use AbterPhp\Framework\Html\Component\ButtonFactory;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Http\Requests\RequestMethods;
 use Opulence\Sessions\ISession;
@@ -14,9 +15,9 @@ use Opulence\Sessions\Session;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class UserGroupTest extends TestCase
+class ApiClientTest extends TestCase
 {
-    /** @var UserGroup - System Under Test */
+    /** @var ApiClient - System Under Test */
     protected $sut;
 
     /** @var ISession|MockObject */
@@ -28,24 +29,37 @@ class UserGroupTest extends TestCase
     /** @var AdminResourceRepo|MockObject */
     protected $adminResourceRepoMock;
 
+    /** @var ButtonFactory|MockObject */
+    protected $buttonFactoryMock;
+
     public function setUp(): void
     {
         $this->sessionMock = $this->getMockBuilder(Session::class)
-            ->setMethods(['get'])
+            ->onlyMethods(['get'])
             ->getMock();
         $this->sessionMock->expects($this->any())->method('get')->willReturnArgument(0);
 
         $this->translatorMock = $this->getMockBuilder(ITranslator::class)
-            ->setMethods(['translate', 'canTranslate'])
+            ->onlyMethods(['translate', 'canTranslate'])
             ->getMock();
         $this->translatorMock->expects($this->any())->method('translate')->willReturnArgument(0);
 
         $this->adminResourceRepoMock = $this->getMockBuilder(AdminResourceRepo::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAll'])
+            ->onlyMethods(['getByUserId'])
             ->getMock();
 
-        $this->sut = new UserGroup($this->sessionMock, $this->translatorMock, $this->adminResourceRepoMock);
+        $this->buttonFactoryMock = $this->getMockBuilder(ButtonFactory::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['createFromUrl', 'createFromName', 'createSimple', 'createWithIcon'])
+            ->getMock();
+
+        $this->sut = new ApiClient(
+            $this->sessionMock,
+            $this->translatorMock,
+            $this->adminResourceRepoMock,
+            $this->buttonFactoryMock
+        );
     }
 
     public function testCreate()
@@ -54,8 +68,9 @@ class UserGroupTest extends TestCase
         $method            = RequestMethods::POST;
         $showUrl           = 'bar';
         $entityId          = '26f69be3-fa57-4ad1-8c58-5f4631040ece';
-        $identifier        = 'blah';
-        $name              = 'zorros';
+        $userId            = '3c1c312b-c6c1-40a5-a957-5830ecde8a5a';
+        $description       = 'foo';
+        $secret            = 'bar';
         $allAdminResources = [
             new AdminResource('8a42e773-975d-41bd-9061-57ee6c381e68', 'ar-21'),
             new AdminResource('5180d59e-3b79-4c3b-8877-7df8086a8879', 'ar-47'),
@@ -66,10 +81,10 @@ class UserGroupTest extends TestCase
 
         $this->adminResourceRepoMock
             ->expects($this->any())
-            ->method('getAll')
+            ->method('getByUserId')
             ->willReturn($allAdminResources);
 
-        $entityStub = new Entity($entityId, $identifier, $name, $adminResources);
+        $entityStub = new Entity($entityId, $userId, $description, $secret, $adminResources);
 
         $form = (string)$this->sut->create($action, $method, $showUrl, $entityStub);
 
@@ -77,8 +92,8 @@ class UserGroupTest extends TestCase
         $this->assertStringContainsString($showUrl, $form);
         $this->assertStringContainsString('CSRF', $form);
         $this->assertStringContainsString('POST', $form);
-        $this->assertStringContainsString('identifier', $form);
-        $this->assertStringContainsString('name', $form);
+        $this->assertStringContainsString('description', $form);
+        $this->assertStringContainsString('secret', $form);
         $this->assertStringContainsString('admin_resource_ids', $form);
         $this->assertStringContainsString('selected', $form);
         $this->assertStringContainsString('button', $form);
@@ -91,7 +106,7 @@ class UserGroupTest extends TestCase
     {
         $entityMock = $this->getMockBuilder(Entity::class)
             ->disableOriginalConstructor()
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'getId',
                     'getIdentifier',

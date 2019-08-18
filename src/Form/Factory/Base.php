@@ -48,7 +48,7 @@ abstract class Base implements IFormFactory
      *
      * @return $this
      */
-    public function createForm(
+    protected function createForm(
         string $action,
         string $method,
         bool $isMultipart = false,
