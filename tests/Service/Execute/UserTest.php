@@ -273,4 +273,23 @@ class UserTest extends TestCase
 
         $this->assertSame(['foo' => ['foo error']], $result);
     }
+
+    public function testValidateCreatesOnlyOneValidator()
+    {
+        $postData = ['foo' => 'bar'];
+
+        $validatorMock = $this->getMockBuilder(IValidator::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['field', 'isValid', 'getErrors'])
+            ->getMock();
+        $validatorMock->expects($this->any())->method('isValid')->with($postData)->willReturn(true);
+        $validatorMock->expects($this->any())->method('getErrors');
+
+        $this->validatorFactoryMock->expects($this->once())->method('createValidator')->willReturn($validatorMock);
+
+        $firstRun  = $this->sut->validateForm($postData);
+        $secondRun = $this->sut->validateForm($postData);
+
+        $this->assertSame($firstRun, $secondRun);
+    }
 }
