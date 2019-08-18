@@ -10,6 +10,7 @@ use AbterPhp\Admin\Orm\AdminResourceRepo;
 use AbterPhp\Framework\Html\Component\ButtonFactory;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Http\Requests\RequestMethods;
+use Opulence\Orm\IEntity;
 use Opulence\Sessions\ISession;
 use Opulence\Sessions\Session;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -97,6 +98,18 @@ class ApiClientTest extends TestCase
         $this->assertStringContainsString('admin_resource_ids', $form);
         $this->assertStringContainsString('selected', $form);
         $this->assertStringContainsString('button', $form);
+    }
+
+    public function testCreateThrowsExceptionIfWrongEntityIsProvided()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entityStub = $this->getMockBuilder(IEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getId', 'setId'])
+            ->getMock();
+
+        $this->sut->create('foo', 'bar', '/baz', $entityStub);
     }
 
     /**

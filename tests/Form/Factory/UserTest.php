@@ -11,6 +11,7 @@ use AbterPhp\Admin\Orm\UserGroupRepo;
 use AbterPhp\Admin\Orm\UserLanguageRepo;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Http\Requests\RequestMethods;
+use Opulence\Orm\IEntity;
 use Opulence\Sessions\ISession;
 use Opulence\Sessions\Session;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -124,6 +125,18 @@ class UserTest extends TestCase
         $this->assertStringContainsString('user_language_id', $form);
         $this->assertStringContainsString('selected', $form);
         $this->assertStringContainsString('button', $form);
+    }
+
+    public function testCreateThrowsExceptionIfWrongEntityIsProvided()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $entityStub = $this->getMockBuilder(IEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getId', 'setId'])
+            ->getMock();
+
+        $this->sut->create('foo', 'bar', '/baz', $entityStub);
     }
 
     /**
