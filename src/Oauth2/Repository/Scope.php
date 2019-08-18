@@ -86,7 +86,6 @@ class Scope implements ScopeRepositoryInterface
         $userIdentifier = null
     ) {
         $scopeIds = [];
-        /** @var Entity $scope */
         foreach ($scopes as $scope) {
             $scopeIds[] = $scope->getIdentifier();
         }
@@ -96,7 +95,7 @@ class Scope implements ScopeRepositoryInterface
         }
 
         $finalScopes = [];
-        foreach ($this->checkScopes($clientEntity->getIdentifier(), ...$scopeIds) as $scopeData) {
+        foreach ($this->checkScopes($clientEntity->getIdentifier(), $scopeIds) as $scopeData) {
             $finalScopes[] = new Entity($scopeData['admin_resource_id']);
         }
 
@@ -104,12 +103,12 @@ class Scope implements ScopeRepositoryInterface
     }
 
     /**
-     * @param string $clientId
-     * @param string ...$scopeIds
+     * @param string   $clientId
+     * @param string[] $scopeIds
      *
-     * @return string[]
+     * @return string[][]
      */
-    protected function checkScopes(string $clientId, string ...$scopeIds): array
+    protected function checkScopes(string $clientId, array $scopeIds): array
     {
         $scopeIdIn = [];
         foreach ($scopeIds as $scopeId) {
