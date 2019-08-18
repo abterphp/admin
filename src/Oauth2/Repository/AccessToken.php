@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Repository;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Oauth2\Entity\AccessToken as Entity;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -14,7 +15,6 @@ use Opulence\Orm\Ids\Generators\UuidV4Generator;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class AccessToken implements AccessTokenRepositoryInterface
 {
     /** @var UuidV4Generator */
@@ -68,21 +68,27 @@ class AccessToken implements AccessTokenRepositoryInterface
      */
     protected function persistToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        $data = [
-            'id'            => $accessTokenEntity->getIdentifier(),
-            'api_client_id' => $accessTokenEntity->getClient()->getName(),
-            'expires_at'    => $accessTokenEntity->getExpiryDateTime()->format('Y-m-d H:i:s'),
+        $tokenId    = $accessTokenEntity->getIdentifier();
+        $clientName = $accessTokenEntity->getClient()->getName();
+        $expiresAt  = $accessTokenEntity->getExpiryDateTime()->format('Y-m-d H:i:s');
+
+        $columnNamesToValues = [
+            'id'            => [$tokenId, \PDO::PARAM_STR],
+            'api_client_id' => [$clientName, \PDO::PARAM_STR],
+            'expires_at'    => [$expiresAt, \PDO::PARAM_STR],
         ];
 
-        $query = (new QueryBuilder())->insert('tokens', $data);
+        $query = (new QueryBuilder())->insert('tokens', $columnNamesToValues);
 
         $sql    = $query->getSql();
-        $params = array_values($data);
+        $params = $query->getParameters();
 
         $connection = $this->connectionPool->getWriteConnection();
         $statement  = $connection->prepare($sql);
         $statement->bindValues($params);
-        $statement->execute();
+        if (!$statement->execute()) {
+            throw new Database($statement->errorInfo());
+        }
     }
 
     /**
@@ -92,23 +98,27 @@ class AccessToken implements AccessTokenRepositoryInterface
     protected function persistTokenScope(AccessTokenEntityInterface $accessTokenEntity, ScopeEntityInterface $scope)
     {
         // @phan-suppress-next-line PhanTypeMismatchArgument
-        $id = $this->uuidGenerator->generate(null);
+        $scopeId         = $this->uuidGenerator->generate(null);
+        $tokenId         = $accessTokenEntity->getIdentifier();
+        $adminResourceId = $scope->getIdentifier();
 
-        $data = [
-            'id'                => $id,
-            'token_id'          => $accessTokenEntity->getIdentifier(),
-            'admin_resource_id' => $scope->getIdentifier(),
+        $columnNamesToValues = [
+            'id'                => [$scopeId, \PDO::PARAM_STR],
+            'token_id'          => [$tokenId, \PDO::PARAM_STR],
+            'admin_resource_id' => [$adminResourceId, \PDO::PARAM_STR],
         ];
 
-        $query = (new QueryBuilder())->insert('tokens_admin_resources', $data);
+        $query = (new QueryBuilder())->insert('tokens_admin_resources', $columnNamesToValues);
 
         $sql    = $query->getSql();
-        $params = array_values($data);
+        $params = $query->getParameters();
 
         $connection = $this->connectionPool->getWriteConnection();
         $statement  = $connection->prepare($sql);
         $statement->bindValues($params);
-        $statement->execute();
+        if (!$statement->execute()) {
+            throw new Database($statement->errorInfo());
+        }
     }
 
     /**

@@ -77,7 +77,6 @@ class Client implements ClientRepositoryInterface
      */
     protected function query(string $clientId)
     {
-        // TODO: Implement getClientEntity() method.
         $query = (new QueryBuilder())
             ->select('ac.secret')
             ->from('api_clients', 'ac')
@@ -85,7 +84,7 @@ class Client implements ClientRepositoryInterface
             ->andWhere('ac.id = :clientId');
 
         $sql    = $query->getSql();
-        $params = ['clientId' => $clientId];
+        $params = ['clientId' => [$clientId, \PDO::PARAM_STR]];
 
         $connection = $this->connectionPool->getReadConnection();
         $statement  = $connection->prepare($sql);

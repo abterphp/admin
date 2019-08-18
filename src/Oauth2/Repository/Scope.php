@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Repository;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Oauth2\Entity\Scope as Entity;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -13,7 +14,6 @@ use Opulence\QueryBuilders\Conditions\ConditionFactory;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class Scope implements ScopeRepositoryInterface
 {
     /** @var ConnectionPool */
@@ -54,16 +54,16 @@ class Scope implements ScopeRepositoryInterface
             ->select('ar.id')
             ->from('admin_resources', 'ar')
             ->where('ar.deleted = 0')
-            ->andWhere('ar.identifier = :id');
+            ->andWhere('ar.identifier = :identifier');
 
         $sql    = $query->getSql();
-        $params = ['id' => $clientId];
+        $params = ['identifier' => [$clientId, \PDO::PARAM_STR]];
 
         $connection = $this->connectionPool->getReadConnection();
         $statement  = $connection->prepare($sql);
         $statement->bindValues($params);
         if (!$statement->execute()) {
-            return false;
+            throw new Database($statement->errorInfo());
         }
 
         return $statement->fetch(\PDO::FETCH_ASSOC);
@@ -72,7 +72,7 @@ class Scope implements ScopeRepositoryInterface
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
-     * @param array                 $scopes
+     * @param Entity[]              $scopes
      * @param string                $grantType
      * @param ClientEntityInterface $clientEntity
      * @param null                  $userIdentifier
@@ -91,6 +91,10 @@ class Scope implements ScopeRepositoryInterface
             $scopeIds[] = $scope->getIdentifier();
         }
 
+        if (empty($scopeIds)) {
+            return [];
+        }
+
         $finalScopes = [];
         foreach ($this->checkScopes($clientEntity->getIdentifier(), ...$scopeIds) as $scopeData) {
             $finalScopes[] = new Entity($scopeData['admin_resource_id']);
@@ -103,9 +107,9 @@ class Scope implements ScopeRepositoryInterface
      * @param string $clientId
      * @param string ...$scopeIds
      *
-     * @return array|bool
+     * @return string[]
      */
-    protected function checkScopes(string $clientId, string ...$scopeIds)
+    protected function checkScopes(string $clientId, string ...$scopeIds): array
     {
         $scopeIdIn = [];
         foreach ($scopeIds as $scopeId) {
@@ -126,7 +130,7 @@ class Scope implements ScopeRepositoryInterface
         $statement  = $connection->prepare($sql);
         $statement->bindValues($params);
         if (!$statement->execute()) {
-            return false;
+            throw new Database($statement->errorInfo());
         }
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
