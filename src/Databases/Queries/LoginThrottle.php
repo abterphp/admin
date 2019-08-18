@@ -57,10 +57,9 @@ class LoginThrottle
      * @param string $ipHash
      * @param string $username
      *
-     * @return bool
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
-    public function clear(string $ipHash, string $username): bool
+    public function clear(string $ipHash, string $username): void
     {
         $query = (new QueryBuilder())
             ->delete('login_attempts')
@@ -77,6 +76,8 @@ class LoginThrottle
         $statement  = $connection->prepare($sql);
         $statement->bindValues($params);
 
-        return $statement->execute();
+        if (!$statement->execute()) {
+            throw new Database($statement->errorInfo());
+        }
     }
 }

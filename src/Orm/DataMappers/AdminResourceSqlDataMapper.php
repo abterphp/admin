@@ -160,7 +160,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      *
      * @return Entity
      */
-    protected function loadEntity(array $hash)
+    protected function loadEntity(array $hash): Entity
     {
         return new Entity(
             $hash['id'],

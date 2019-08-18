@@ -271,10 +271,6 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      */
     protected function loadEntity(array $data): Entity
     {
-        if (empty($data['id'])) {
-            throw new \RuntimeException();
-        }
-
         $userLanguage = new UserLanguage(
             $data['user_language_id'],
             $data['user_language_identifier'],
@@ -308,10 +304,6 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
         $ids         = explode(',', $data['user_group_ids']);
         $identifiers = explode(',', $data['user_group_identifiers']);
         $names       = explode(',', $data['user_group_names']);
-
-        if (count($ids) !== count($identifiers) || count($ids) !== count($names)) {
-            throw new \LogicException();
-        }
 
         $userGroups = [];
         foreach ($ids as $idx => $userGroupId) {

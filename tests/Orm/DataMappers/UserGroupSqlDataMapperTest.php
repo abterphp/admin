@@ -112,11 +112,56 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
 
         $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) GROUP BY ug.id'; // phpcs:ignore
         $values       = [];
-        $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
+        $expectedData = [
+            [
+                'id'                 => $id,
+                'identifier'         => $identifier,
+                'name'               => $name,
+                'admin_resource_ids' => 'b7853a53-6187-429a-828e-638cdd9e1381,704ab848-4ac6-460d-b31c-aeafc9faa0ab',
+                // phpcs:ignore
+            ],
+        ];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
         MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
 
         $actualResult = $this->sut->getAll();
+
+        $this->assertCollection($expectedData, $actualResult);
+    }
+
+    public function testGetPage()
+    {
+        $id         = 'bde8a749-b409-43c6-a061-c6a7d2dce6a0';
+        $identifier = 'foo';
+        $name       = 'bar';
+
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) GROUP BY ug.id LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $values       = [];
+        $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
+        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getPage(0, 10, [], [], []);
+
+        $this->assertCollection($expectedData, $actualResult);
+    }
+
+    public function testGetPageWithOrdersAndConditions()
+    {
+        $id         = 'bde8a749-b409-43c6-a061-c6a7d2dce6a0';
+        $identifier = 'foo';
+        $name       = 'bar';
+
+        $orders     = ['ug.name ASC'];
+        $conditions = ['ug.name = \'abc\'', 'abc.name = \'bca\''];
+
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) AND (ug.name = \'abc\') AND (abc.name = \'bca\') GROUP BY ug.id ORDER BY ug.name ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $values       = [];
+        $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
+        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getPage(0, 10, $orders, $conditions, []);
 
         $this->assertCollection($expectedData, $actualResult);
     }
@@ -266,5 +311,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $this->assertInstanceOf(UserGroup::class, $entity);
         $this->assertEquals($expectedData['id'], $entity->getId());
         $this->assertSame($expectedData['identifier'], $entity->getIdentifier());
+        $this->assertSame($expectedData['name'], $entity->getName());
+
+        if (!array_key_exists('admin_resource_ids', $expectedData)) {
+            return;
+        }
+
+        $ids = [];
+        foreach ($entity->getAdminResources() as $resource) {
+            $ids[] = $resource->getId();
+        }
+        $this->assertSame($expectedData['admin_resource_ids'], implode(',', $ids));
     }
 }

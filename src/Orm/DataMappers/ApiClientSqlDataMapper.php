@@ -166,7 +166,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
      *
      * @return Entity
      */
-    protected function loadEntity(array $hash)
+    protected function loadEntity(array $hash): Entity
     {
         $adminResources = $this->loadAdminResources($hash);
 

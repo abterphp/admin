@@ -151,10 +151,6 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      */
     protected function loadEntity(array $data): Entity
     {
-        if (empty($data['id'])) {
-            throw new \RuntimeException();
-        }
-
         $expiresAt = new DateTimeImmutable($data['expires_at']);
         $revokedAt = null;
         if (null !== $data['revoked_at']) {

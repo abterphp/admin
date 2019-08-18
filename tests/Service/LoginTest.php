@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Service;
 use AbterPhp\Admin\Databases\Queries\LoginThrottle;
 use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Orm\LoginAttemptRepo;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Framework\Crypto\Crypto;
@@ -170,7 +171,7 @@ class LoginTest extends TestCase
 
         $this->userRepoMock->expects($this->any())->method('find')->willReturn($user);
         $this->cryptoMock->expects($this->any())->method('verifySecret')->willReturn(true);
-        $this->loginThrottleMock->expects($this->any())->method('clear')->willReturn(false);
+        $this->loginThrottleMock->expects($this->any())->method('clear')->willThrowException(new Database());
         $this->loginAttemptRepoMock->expects($this->atLeastOnce())->method('add');
         $this->unitOfWorkMock->expects($this->atLeastOnce())->method('commit');
 
@@ -196,8 +197,7 @@ class LoginTest extends TestCase
         $this->loginThrottleMock
             ->expects($this->once())
             ->method('clear')
-            ->with($ipHash, $username)
-            ->willReturn(true);
+            ->with($ipHash, $username);
 
         $actualResult = $sut->login($username, $password, $ipAddress);
 

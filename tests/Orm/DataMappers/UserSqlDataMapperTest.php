@@ -174,6 +174,114 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $this->assertCollection($expectedData, $actualResult);
     }
 
+    public function testGetAllWithRelated()
+    {
+        $id                   = '85cc9880-4d86-4ffb-8289-98843c0e97eb';
+        $username             = 'foo';
+        $email                = 'foo@example.com';
+        $password             = '';
+        $userLanguage         = new UserLanguage('a6fe61fd-4e03-4ec2-b066-e7d26fbdade3', 'baz', 'Baz');
+        $canLogin             = true;
+        $isGravatarAllowed    = true;
+        $userGroupIds         = 'd6aae5b8-b34d-409b-9085-e02947e32b8e,aaad5aa6-7044-432d-ae28-2017376a1a55';
+        $userGroupIdentifiers = 'ug-1,ug-2';
+        $userGroupNames       = 'UG #1,UG #2';
+
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) GROUP BY users.id'; // phpcs:ignore
+        $values       = [];
+        $expectedData = [
+            [
+                'id'                       => $id,
+                'username'                 => $username,
+                'email'                    => $email,
+                'password'                 => $password,
+                'user_language_id'         => $userLanguage->getId(),
+                'user_language_identifier' => $userLanguage->getIdentifier(),
+                'can_login'                => $canLogin,
+                'is_gravatar_allowed'      => $isGravatarAllowed,
+                'user_group_ids'           => $userGroupIds,
+                'user_group_identifiers'   => $userGroupIdentifiers,
+                'user_group_names'         => $userGroupNames,
+            ],
+        ];
+
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getAll();
+
+        $this->assertCollection($expectedData, $actualResult);
+    }
+
+    public function testGetPage()
+    {
+        $id                = '85cc9880-4d86-4ffb-8289-98843c0e97eb';
+        $username          = 'foo';
+        $email             = 'foo@example.com';
+        $password          = '';
+        $userLanguage      = new UserLanguage('a6fe61fd-4e03-4ec2-b066-e7d26fbdade3', 'baz', 'Baz');
+        $canLogin          = true;
+        $isGravatarAllowed = true;
+
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) GROUP BY users.id LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $values       = [];
+        $expectedData = [
+            [
+                'id'                       => $id,
+                'username'                 => $username,
+                'email'                    => $email,
+                'password'                 => $password,
+                'user_language_id'         => $userLanguage->getId(),
+                'user_language_identifier' => $userLanguage->getIdentifier(),
+                'can_login'                => $canLogin,
+                'is_gravatar_allowed'      => $isGravatarAllowed,
+            ],
+        ];
+
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getPage(0, 10, [], [], []);
+
+        $this->assertCollection($expectedData, $actualResult);
+    }
+
+    public function testGetPageWithOrdersAndConditions()
+    {
+        $id                = '85cc9880-4d86-4ffb-8289-98843c0e97eb';
+        $username          = 'foo';
+        $email             = 'foo@example.com';
+        $password          = '';
+        $userLanguage      = new UserLanguage('a6fe61fd-4e03-4ec2-b066-e7d26fbdade3', 'baz', 'Baz');
+        $canLogin          = true;
+        $isGravatarAllowed = true;
+
+        $orders     = ['ac.description ASC'];
+        $conditions = ['ac.description LIKE \'abc%\'', 'abc.description LIKE \'%bca\''];
+
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY users.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $values       = [];
+        $expectedData = [
+            [
+                'id'                       => $id,
+                'username'                 => $username,
+                'email'                    => $email,
+                'password'                 => $password,
+                'user_language_id'         => $userLanguage->getId(),
+                'user_language_identifier' => $userLanguage->getIdentifier(),
+                'can_login'                => $canLogin,
+                'is_gravatar_allowed'      => $isGravatarAllowed,
+            ],
+        ];
+
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getPage(0, 10, $orders, $conditions, []);
+
+        $this->assertCollection($expectedData, $actualResult);
+    }
+
     public function testGetById()
     {
         $id                = 'a83be8c1-fb9a-471f-9284-133487837c46';
@@ -339,6 +447,40 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $this->assertEntity($expectedData[0], $actualResult);
     }
 
+    public function testGetByClientId()
+    {
+        $id                = '0496d1d1-a750-4c91-822e-03a0fd6718b7';
+        $username          = 'foo';
+        $email             = 'foo@example.com';
+        $password          = '';
+        $userLanguage      = new UserLanguage('8b9543ad-17e8-4e54-af17-e8a8b271a70e', 'baz', 'Baz');
+        $canLogin          = true;
+        $isGravatarAllowed = true;
+        $clientId          = '063b730f-3458-49dc-b60e-8171cefacabf';
+
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 INNER JOIN api_clients AS ac ON ac.user_id = users.id AND ac.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (ac.id = :client_id) GROUP BY users.id'; // phpcs:ignore
+        $values       = ['client_id' => [$clientId, \PDO::PARAM_STR]];
+        $expectedData = [
+            [
+                'id'                       => $id,
+                'username'                 => $username,
+                'email'                    => $email,
+                'password'                 => $password,
+                'user_language_id'         => $userLanguage->getId(),
+                'user_language_identifier' => $userLanguage->getIdentifier(),
+                'can_login'                => $canLogin,
+                'is_gravatar_allowed'      => $isGravatarAllowed,
+            ],
+        ];
+
+        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getByClientId($clientId);
+
+        $this->assertEntity($expectedData[0], $actualResult);
+    }
+
     public function testUpdateWithoutRelated()
     {
         $id                = '76b408bc-d061-4bc7-8e03-8892317e4c78';
@@ -481,5 +623,28 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $this->assertSame($expectedData['user_language_identifier'], $entity->getUserLanguage()->getIdentifier());
         $this->assertSame($expectedData['can_login'], $entity->canLogin());
         $this->assertSame($expectedData['is_gravatar_allowed'], $entity->isGravatarAllowed());
+
+        $this->assertUserGroups($expectedData, $entity);
+    }
+
+    /**
+     * @param array $expectedData
+     * @param User  $entity
+     */
+    protected function assertUserGroups(array $expectedData, $entity)
+    {
+        if (empty($expectedData['user_group_ids'])) {
+            return;
+        }
+
+        $ugIds         = explode(',', $expectedData['user_group_ids']);
+        $ugIdentifiers = explode(',', $expectedData['user_group_identifiers']);
+        $ugNames       = explode(',', $expectedData['user_group_names']);
+
+        foreach ($entity->getUserGroups() as $idx => $ug) {
+            $this->assertSame($ugIds[$idx], $ug->getId());
+            $this->assertSame($ugIdentifiers[$idx], $ug->getIdentifier());
+            $this->assertSame($ugNames[$idx], $ug->getName());
+        }
     }
 }

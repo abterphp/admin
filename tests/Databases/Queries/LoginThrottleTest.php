@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Databases\Queries;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 
@@ -59,6 +60,28 @@ class LoginThrottleTest extends QueryTestCase
         $this->assertFalse($actualResult);
     }
 
+    public function testIsLoginAllowedThrowsExceptionIfQueryFails()
+    {
+        $errorInfo = ['FOO123', 1, 'near AS v0, ar.identifier: hello'];
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($errorInfo[1]);
+
+        $ipHash          = 'foo';
+        $username        = 'bar';
+        $maxFailureCount = 11;
+
+        $sql          = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $valuesToBind = [
+            [$ipHash, \PDO::PARAM_STR],
+            [$username, \PDO::PARAM_STR],
+        ];
+        $statement    = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $this->sut->isLoginAllowed($ipHash, $username, $maxFailureCount);
+    }
+
     public function testClear()
     {
         $ipHash   = 'foo';
@@ -72,8 +95,27 @@ class LoginThrottleTest extends QueryTestCase
         $statement    = MockStatementFactory::createWriteStatement($this, $valuesToBind);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
 
-        $actualResult = $this->sut->clear($ipHash, $username);
+        $this->sut->clear($ipHash, $username);
+    }
 
-        $this->assertTrue($actualResult);
+    public function testClearThrowsExceptionIfQueryFails()
+    {
+        $errorInfo = ['FOO123', 1, 'near AS v0, ar.identifier: hello'];
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($errorInfo[1]);
+
+        $ipHash   = 'foo';
+        $username = 'bar';
+
+        $sql          = 'DELETE FROM login_attempts WHERE (login_attempts.ip_hash = ?) AND (login_attempts.username = ?) AND (login_attempts.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $valuesToBind = [
+            [$ipHash, \PDO::PARAM_STR],
+            [$username, \PDO::PARAM_STR],
+        ];
+        $statement    = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+
+        $this->sut->clear($ipHash, $username);
     }
 }

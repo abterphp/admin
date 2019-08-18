@@ -15,7 +15,7 @@ class Token implements IStringerEntity
     /** @var string */
     protected $apiClientId;
 
-    /** @var DateTimeImmutable|null */
+    /** @var DateTimeImmutable */
     protected $expiresAt;
 
     /** @var DateTimeImmutable|null */

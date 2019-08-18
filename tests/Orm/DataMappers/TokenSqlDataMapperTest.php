@@ -109,6 +109,30 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $this->assertCollection($expectedData, $actualResult);
     }
 
+    public function testGetByClientId()
+    {
+        $apiClientId = '33a9ef7e-3d84-4bd0-9b38-59b5cb7d5245';
+
+        $id0          = '24bd4165-1229-4a6e-a679-76bf90743ee1';
+        $apiClientId0 = $apiClientId;
+        $expiresAt0   = '2019-08-18 00:22:03';
+        $revokedAt0   = null;
+
+        $sql          = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted = 0) AND (tokens.api_client_id = :api_client_id)'; // phpcs:ignore
+        $values       = [
+            'api_client_id' => [$apiClientId, \PDO::PARAM_STR],
+        ];
+        $expectedData = [
+            ['id' => $id0, 'api_client_id' => $apiClientId0, 'expires_at' => $expiresAt0, 'revoked_at' => $revokedAt0],
+        ];
+        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+
+        $actualResult = $this->sut->getByClientId($apiClientId);
+
+        $this->assertEntity($expectedData[0], $actualResult);
+    }
+
     public function testGetById()
     {
         $id          = '4b72daf8-81a9-400f-b865-28306d1c1646';

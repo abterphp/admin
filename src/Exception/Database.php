@@ -13,15 +13,14 @@ class Database extends RuntimeException
      * Database constructor.
      *
      * @param array          $errorInfo
-     * @param int            $code
      * @param Throwable|null $previous
      */
     public function __construct(
         array $errorInfo = [],
-        int $code = 0,
         Throwable $previous = null
     ) {
         $message = isset($errorInfo[2]) ? $errorInfo[2] : print_r($errorInfo, true);
+        $code    = isset($errorInfo[1]) ? $errorInfo[1] : 0;
 
         parent::__construct($message, $code, $previous);
     }

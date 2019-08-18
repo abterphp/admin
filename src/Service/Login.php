@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Service;
 use AbterPhp\Admin\Databases\Queries\LoginThrottle;
 use AbterPhp\Admin\Domain\Entities\LoginAttempt;
 use AbterPhp\Admin\Domain\Entities\User as Entity;
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Orm\LoginAttemptRepo;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Framework\Crypto\Crypto;
@@ -109,7 +110,9 @@ class Login
 
         $ipHash = $this->getHash($ipAddress);
 
-        if (!$this->loginThrottle->clear($ipHash, $username)) {
+        try {
+            $this->loginThrottle->clear($ipHash, $username);
+        } catch (Database $e) {
             $this->logFailure($ipHash, $username, $ipAddress);
 
             return null;

@@ -133,7 +133,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
 
         $sql    = $query->getSql();
         $params = [
-            'identifier' => $identifier,
+            'identifier' => [$identifier, \PDO::PARAM_STR],
         ];
 
         return $this->read($sql, $params, self::VALUE_TYPE_ENTITY, true);
@@ -176,7 +176,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      *
      * @return Entity
      */
-    protected function loadEntity(array $hash)
+    protected function loadEntity(array $hash): Entity
     {
         return new Entity(
             $hash['id'],

@@ -181,7 +181,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      *
      * @return Entity
      */
-    protected function loadEntity(array $hash)
+    protected function loadEntity(array $hash): Entity
     {
         $adminResources = $this->getAdminResources($hash);
 
@@ -202,10 +202,6 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
     {
         if (empty($hash[static::ADMIN_RESOURCE_IDS])) {
             return [];
-        }
-
-        if (is_array($hash[static::ADMIN_RESOURCE_IDS])) {
-            return $hash[static::ADMIN_RESOURCE_IDS];
         }
 
         $adminResources = [];

@@ -141,7 +141,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
      *
      * @return Entity
      */
-    protected function loadEntity(array $hash)
+    protected function loadEntity(array $hash): Entity
     {
         return new Entity(
             $hash['id'],
