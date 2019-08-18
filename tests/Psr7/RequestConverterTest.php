@@ -10,11 +10,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class RequestConverterTest extends TestCase
 {
-    /** @var RequestConverter */
+    /** @var RequestConverter - System Under Test */
     protected $sut;
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new RequestConverter();
     }
 

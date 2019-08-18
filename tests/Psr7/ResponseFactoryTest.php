@@ -10,11 +10,13 @@ use Opulence\Http\Responses\ResponseHeaders;
 
 class ResponseFactoryTest extends TestCase
 {
-    /** @var ResponseFactory */
+    /** @var ResponseFactory - System Under Test */
     protected $sut;
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new ResponseFactory();
     }
 

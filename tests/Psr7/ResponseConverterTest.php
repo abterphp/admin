@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Psr7;
 
 use Nyholm\Psr7\Response;
-use Opulence\Http\Requests\Request;
-use Opulence\Http\Requests\RequestHeaders;
 use PHPUnit\Framework\TestCase;
 
 class ResponseConverterTest extends TestCase
 {
-    /** @var ResponseConverter */
+    /** @var ResponseConverter - System Under Test */
     protected $sut;
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->sut = new ResponseConverter();
     }
 
