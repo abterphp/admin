@@ -21,7 +21,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "abterphp/framework": "dev-master"
+    "abterphp/framework": "dev-master",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.1",
