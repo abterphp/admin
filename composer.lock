@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c04ce440820a2e5d251264bf8b38a68f",
+    "content-hash": "938c83ac009964656282b35e331cbdf4",
     "packages": [
         {
             "name": "abterphp/framework",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "0996e82cdb559f6cf958363b5a5bf143697ccfe1"
+                "reference": "8bd42ca953c18dd54fdd73dcb7658821e951bdd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/0996e82cdb559f6cf958363b5a5bf143697ccfe1",
-                "reference": "0996e82cdb559f6cf958363b5a5bf143697ccfe1",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/8bd42ca953c18dd54fdd73dcb7658821e951bdd5",
+                "reference": "8bd42ca953c18dd54fdd73dcb7658821e951bdd5",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2019-08-15T15:46:37+00:00"
+            "time": "2019-08-18T22:11:32+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -2517,19 +2517,23 @@
         },
         {
             "name": "netresearch/jsonmapper",
-            "version": "v1.5.2",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweiske/jsonmapper.git",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c"
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
+                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-spl": "*",
                 "php": ">=5.6"
             },
             "require-dev": {
@@ -2555,7 +2559,7 @@
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
-            "time": "2019-08-04T19:56:28+00:00"
+            "time": "2019-08-15T19:41:25+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -2599,16 +2603,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.2.10",
+            "version": "2.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "a19dc65091abb4c87374a998912fcc9ae7de41d0"
+                "reference": "ce6cb621d473df36e0d71d9f8c2b2e421135204f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/a19dc65091abb4c87374a998912fcc9ae7de41d0",
-                "reference": "a19dc65091abb4c87374a998912fcc9ae7de41d0",
+                "url": "https://api.github.com/repos/phan/phan/zipball/ce6cb621d473df36e0d71d9f8c2b2e421135204f",
+                "reference": "ce6cb621d473df36e0d71d9f8c2b2e421135204f",
                 "shasum": ""
             },
             "require": {
@@ -2664,7 +2668,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-08-12T23:40:39+00:00"
+            "time": "2019-08-18T19:08:45+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4696,6 +4700,8 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-json": "*"
+    },
     "platform-dev": []
 }
