@@ -49,7 +49,7 @@ class HeaderFactory
      *
      * @return Cells
      */
-    public function createCells(bool $hasActions): Cells
+    protected function createCells(bool $hasActions): Cells
     {
         $cells = new Cells();
         foreach ($this->headers as $group => $content) {

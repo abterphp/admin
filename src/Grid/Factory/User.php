@@ -8,7 +8,7 @@ use AbterPhp\Admin\Constant\Routes;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
-use AbterPhp\Admin\Grid\Factory\Table\User as Table;
+use AbterPhp\Admin\Grid\Factory\Table\User as TableFactory;
 use AbterPhp\Admin\Grid\Filters\User as Filters;
 use Opulence\Routing\Urls\UrlGenerator;
 
@@ -25,14 +25,14 @@ class User extends BaseFactory
      *
      * @param UrlGenerator      $urlGenerator
      * @param PaginationFactory $paginationFactory
-     * @param Table             $tableFactory
+     * @param TableFactory      $tableFactory
      * @param GridFactory       $gridFactory
      * @param Filters           $filters
      */
     public function __construct(
         UrlGenerator $urlGenerator,
         PaginationFactory $paginationFactory,
-        Table $tableFactory,
+        TableFactory $tableFactory,
         GridFactory $gridFactory,
         Filters $filters
     ) {
