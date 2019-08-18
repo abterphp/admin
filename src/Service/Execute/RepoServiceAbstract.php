@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Admin\Http\Service\Execute;
+namespace AbterPhp\Admin\Service\Execute;
 
 use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;

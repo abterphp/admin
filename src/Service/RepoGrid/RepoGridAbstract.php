@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Admin\Http\Service\RepoGrid;
+namespace AbterPhp\Admin\Service\RepoGrid;
 
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Grid\Factory\IBase as GridFactory;

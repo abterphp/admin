@@ -6,7 +6,6 @@ namespace AbterPhp\Admin\Service\Execute;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\UserGroup as Entity;
-use AbterPhp\Admin\Http\Service\Execute\RepoServiceAbstract;
 use AbterPhp\Admin\Orm\UserGroupRepo as GridRepo;
 use AbterPhp\Admin\Validation\Factory\UserGroup as ValidatorFactory;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;

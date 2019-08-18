@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Service\RepoGrid;
 
 use AbterPhp\Admin\Grid\Factory\User as GridFactory;
-use AbterPhp\Admin\Http\Service\RepoGrid\RepoGridAbstract;
 use AbterPhp\Admin\Orm\UserRepo as Repo;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use Casbin\Enforcer;
