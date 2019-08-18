@@ -52,7 +52,7 @@ class LoginTest extends TestCase
 
         $this->loginThrottleMock = $this->getMockBuilder(LoginThrottle::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['clear'])
+            ->onlyMethods(['clear', 'isLoginAllowed'])
             ->getMock();
 
         $this->cryptoMock = $this->getMockBuilder(Crypto::class)
@@ -84,6 +84,53 @@ class LoginTest extends TestCase
             $loginMaxAttempts,
             $loginLogIp
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function isLoginAllowedProvider(): array
+    {
+        return [
+            [0, false, 'foo', '127.0.0.1', true],
+            [0, false, 'foo', '127.0.0.1', false],
+            [0, true, 'foo', '127.0.0.1', true],
+            [0, true, 'foo', '127.0.0.1', false],
+        ];
+    }
+
+    /**
+     * @dataProvider isLoginAllowedProvider
+     *
+     * @param int    $maxAttempts
+     * @param bool   $logIp
+     * @param string $username
+     * @param string $ipAddress
+     * @param bool   $expectedResult
+     *
+     * @throws \Opulence\Orm\OrmException
+     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     */
+    public function testIsLoginAllowed(
+        int $maxAttempts,
+        bool $logIp,
+        string $username,
+        string $ipAddress,
+        bool $expectedResult
+    ) {
+        $sut = $this->createSut($maxAttempts, $logIp);
+
+        $ipHash = $sut->getHash($ipAddress);
+
+        $this->loginThrottleMock
+            ->expects($this->once())
+            ->method('isLoginAllowed')
+            ->with($ipHash, $username, $maxAttempts)
+            ->willReturn($expectedResult);
+
+        $actualResult = $sut->isLoginAllowed($username, $ipAddress);
+
+        $this->assertSame($expectedResult, $actualResult);
     }
 
     public function testLoginReturnsNullIfUserIsNotFoundByUsername()

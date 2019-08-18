@@ -217,9 +217,7 @@ class User implements IStringerEntity
     public function setUserGroups(array $userGroups): User
     {
         foreach ($userGroups as $userGroup) {
-            if (!($userGroup instanceof UserGroup)) {
-                throw new \InvalidArgumentException();
-            }
+            assert($userGroup instanceof UserGroup, new \InvalidArgumentException());
         }
 
         $this->userGroups = $userGroups;

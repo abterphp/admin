@@ -113,9 +113,7 @@ class UserGroup implements IStringerEntity
     public function setAdminResources(array $adminResources): UserGroup
     {
         foreach ($adminResources as $adminResource) {
-            if (!($adminResource instanceof AdminResource)) {
-                throw new \InvalidArgumentException();
-            }
+            assert($adminResource instanceof AdminResource, new \InvalidArgumentException());
         }
 
         $this->adminResources = $adminResources;

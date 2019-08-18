@@ -195,6 +195,19 @@ class ApiClientTest extends TestCase
         $this->assertTrue($actualResult);
     }
 
+    public function testUpdateThrowsExceptionWhenCalledWithWrongEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        /** @var IStringerEntity|MockObject $entityStub */
+        $entityStub = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getId', 'setId', 'toJSON', '__toString'])
+            ->getMock();
+
+        $this->sut->update($entityStub, [], []);
+    }
+
     public function testDelete()
     {
         $id     = 'foo';

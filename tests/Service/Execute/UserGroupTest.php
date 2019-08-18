@@ -89,7 +89,7 @@ class UserGroupTest extends TestCase
         $name       = 'Bar 123';
         $identifier = 'bar-123';
         $postData   = [
-            'name'       => $name,
+            'name' => $name,
         ];
 
         $this->gridRepoMock->expects($this->once())->method('add');
@@ -105,6 +105,29 @@ class UserGroupTest extends TestCase
         $this->assertSame($name, $actualResult->getName());
     }
 
+    public function testCreateWithResources()
+    {
+        $name       = 'Bar 123';
+        $identifier = 'bar-123';
+        $postData   = [
+            'name'               => $name,
+            'admin_resource_ids' => ['ccbe55db-2f8d-4fd0-a74e-31fe8111ab3c', '5302a228-9d4a-4167-8c84-d60404d1247e'],
+        ];
+
+        $this->gridRepoMock->expects($this->once())->method('add');
+        $this->eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch');
+        $this->unitOfWorkMock->expects($this->once())->method('commit');
+
+        /** @var IStringerEntity|Entity $actualResult */
+        $actualResult = $this->sut->create($postData, []);
+
+        $this->assertInstanceOf(Entity::class, $actualResult);
+        $this->assertEmpty($actualResult->getId());
+        $this->assertSame($identifier, $actualResult->getIdentifier());
+        $this->assertSame($name, $actualResult->getName());
+        $this->assertCount(2, $actualResult->getAdminResources());
+    }
+
     public function testUpdate()
     {
         $id     = 'foo';
@@ -113,7 +136,7 @@ class UserGroupTest extends TestCase
         $name       = 'Bar 123';
         $identifier = 'bar-123';
         $postData   = [
-            'name'       => $name,
+            'name' => $name,
         ];
 
         $this->gridRepoMock->expects($this->never())->method('add');
@@ -127,6 +150,19 @@ class UserGroupTest extends TestCase
         $this->assertSame($id, $entity->getId());
         $this->assertSame($identifier, $entity->getIdentifier());
         $this->assertSame($name, $entity->getName());
+    }
+
+    public function testUpdateThrowsExceptionWhenCalledWithWrongEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        /** @var IStringerEntity|MockObject $entityStub */
+        $entityStub = $this->getMockBuilder(IStringerEntity::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getId', 'setId', 'toJSON', '__toString'])
+            ->getMock();
+
+        $this->sut->update($entityStub, [], []);
     }
 
     public function testDelete()

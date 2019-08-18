@@ -204,6 +204,6 @@ abstract class ApiAbstract extends Controller
      */
     protected function getUserIdentifier(): string
     {
-        return $this->request->getHeaders()->get('xxx-user-username');
+        return (string)$this->request->getHeaders()->get('xxx-user-username');
     }
 }

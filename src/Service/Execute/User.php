@@ -82,9 +82,7 @@ class User extends RepoServiceAbstract
      */
     protected function fillEntity(IStringerEntity $entity, array $postData, array $fileData): IStringerEntity
     {
-        if (!($entity instanceof Entity)) {
-            return $entity;
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
         $username          = isset($postData['username']) ? (string)$postData['username'] : '';
         $email             = isset($postData['email']) ? (string)$postData['email'] : '';

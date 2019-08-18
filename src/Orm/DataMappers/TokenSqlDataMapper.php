@@ -18,9 +18,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      */
     public function add($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $revokedAtTye = $entity->getRevokedAt() === null ? \PDO::PARAM_NULL : \PDO::PARAM_STR;
 
@@ -119,9 +117,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      */
     public function update($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a Token entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $revokedAtTye = $entity->getRevokedAt() === null ? \PDO::PARAM_NULL : \PDO::PARAM_STR;
 

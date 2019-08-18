@@ -61,9 +61,7 @@ class UserGroup extends RepoServiceAbstract
      */
     protected function fillEntity(IStringerEntity $entity, array $postData, array $fileData): IStringerEntity
     {
-        if (!($entity instanceof Entity)) {
-            return $entity;
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
         $name = isset($postData['name']) ? (string)$postData['name'] : '';
 

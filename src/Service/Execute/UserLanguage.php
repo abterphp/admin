@@ -60,9 +60,7 @@ class UserLanguage extends RepoServiceAbstract
      */
     protected function fillEntity(IStringerEntity $entity, array $postData, array $fileData): IStringerEntity
     {
-        if (!($entity instanceof Entity)) {
-            return $entity;
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
         $name       = isset($postData['name']) ? (string)$postData['name'] : '';
         $identifier = isset($postData['identifier']) ? (string)$postData['identifier'] : $name;

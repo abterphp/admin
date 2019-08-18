@@ -62,9 +62,7 @@ class User extends Base
      */
     public function create(string $action, string $method, string $showUrl, ?IEntity $entity = null): IForm
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(IFormFactory::ERR_MSG_ENTITY_MISSING);
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $this->createForm($action, $method)
             ->addDefaultElements()
