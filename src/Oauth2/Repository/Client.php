@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Repository;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Oauth2\Entity\Client as Entity;
 use AbterPhp\Framework\Crypto\Crypto;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -73,9 +74,9 @@ class Client implements ClientRepositoryInterface
     /**
      * @param string $clientId
      *
-     * @return array|bool
+     * @return array
      */
-    protected function query(string $clientId)
+    protected function query(string $clientId): array
     {
         $query = (new QueryBuilder())
             ->select('ac.secret')
@@ -90,7 +91,7 @@ class Client implements ClientRepositoryInterface
         $statement  = $connection->prepare($sql);
         $statement->bindValues($params);
         if (!$statement->execute()) {
-            return false;
+            throw new Database($statement->errorInfo());
         }
 
         return $statement->fetch(\PDO::FETCH_ASSOC);

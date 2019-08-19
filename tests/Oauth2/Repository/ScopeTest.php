@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Repository;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Oauth2\Entity\Scope as Entity;
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
@@ -86,12 +87,60 @@ class ScopeTest extends QueryTestCase
             [$scopeIdentifier0, \PDO::PARAM_STR],
             [$scopeIdentifier1, \PDO::PARAM_STR],
         ];
-        $rows0          = [
+        $rows0         = [
             ['admin_resource_id' => $arId0],
             ['admin_resource_id' => $arId1],
             ['admin_resource_id' => $arId2],
         ];
         $statement0    = MockStatementFactory::createReadStatement($this, $valuesToBind0, $rows0);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $actualResult = $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);
+
+        $this->assertCount(3, $actualResult);
+        $this->assertSame($arId0, $actualResult[0]->getIdentifier());
+        $this->assertSame($arId1, $actualResult[1]->getIdentifier());
+        $this->assertSame($arId2, $actualResult[2]->getIdentifier());
+    }
+
+    public function testFinalizeScopesWithScopesThrowsExceptionOnFailure()
+    {
+        $expectedCode    = 17;
+        $expectedMessage = 'Foo is great before: FROM api_clients AS ac';
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($expectedCode);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $clientIdentifier = 'quix';
+        $grantType        = 'foo';
+
+        $scopeIdentifier0 = 'bar';
+        $scopeIdentifier1 = 'baz';
+        $scopes           = [
+            $this->createScopeStub($scopeIdentifier0),
+            $this->createScopeStub($scopeIdentifier1),
+        ];
+
+        $arId0 = 'cfa57635-bed4-4f59-a7c8-091fb0c05964';
+        $arId1 = 'ddd844f3-6894-4049-821d-3ed461e2e970';
+        $arId2 = '3966099c-84ff-48cf-9d65-794519651fe5';
+
+        /** @var ClientEntityInterface|MockObject $clientEntityMock */
+        $clientEntityMock = $this->getMockBuilder(ClientEntityInterface::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getIdentifier', 'getName', 'getRedirectUri'])
+            ->getMock();
+        $clientEntityMock->expects($this->any())->method('getIdentifier')->willReturn($clientIdentifier);
+
+        $sql0          = 'SELECT acar.admin_resource_id FROM api_clients_admin_resources AS acar WHERE (acar.api_client_id = ?) AND (acar.admin_resource_id IN (?,?))'; // phpcs:ignore
+        $valuesToBind0 = [
+            [$clientIdentifier, \PDO::PARAM_STR],
+            [$scopeIdentifier0, \PDO::PARAM_STR],
+            [$scopeIdentifier1, \PDO::PARAM_STR],
+        ];
+        $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
+        $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
         MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
 
         $actualResult = $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);

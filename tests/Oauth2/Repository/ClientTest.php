@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Repository;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Oauth2\Entity\Client as Entity;
 use AbterPhp\Framework\Crypto\Crypto;
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
@@ -112,6 +113,37 @@ class ClientTest extends QueryTestCase
             'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
         ];
         $statement0    = MockStatementFactory::createReadRowStatement($this, $valuesToBind0, $clientData);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $actualResult = $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
+
+        $this->assertNull($actualResult);
+    }
+
+    public function testGetClientEntityThrowsExceptionOnDbFailure()
+    {
+        $expectedCode    = 17;
+        $expectedMessage = 'Foo is great before: FROM api_clients AS ac';
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($expectedCode);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $clientSecret       = 'client-secret-0';
+        $mustValidateSecret = false;
+        $secretsMatch       = true;
+
+        $clientIdentifier = 'client-0';
+        $grantType        = 'grant-type-0';
+
+        $this->cryptoMock->expects($this->any())->method('verifySecret')->willReturn($secretsMatch);
+
+        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted = 0) AND (ac.id = :clientId)'; // phpcs:ignore
+        $valuesToBind0 = [
+            'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
+        ];
+        $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
+        $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
         MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
 
         $actualResult = $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);

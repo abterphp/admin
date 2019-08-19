@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Oauth2\Repository;
 
+use AbterPhp\Admin\Exception\Database;
 use AbterPhp\Admin\Oauth2\Entity\AccessToken as Entity;
 use AbterPhp\Framework\TestCase\Database\QueryTestCase;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
@@ -69,6 +70,34 @@ class AccessTokenTest extends QueryTestCase
         $this->sut->persistNewAccessToken($accessTokenEntityMock);
     }
 
+    public function testPersistNewAccessTokenDbFailureThrowsException()
+    {
+        $expectedCode    = 17;
+        $expectedMessage = 'Foo is great before: FROM api_clients AS ac';
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($expectedCode);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $tokenId    = 'foo';
+        $clientName = 'bar';
+        $expiresAt  = new \DateTime();
+
+        $accessTokenEntityMock = $this->createAccessTokenStub($tokenId, $clientName, $expiresAt, []);
+
+        $sql0          = 'INSERT INTO tokens (id, api_client_id, expires_at) VALUES (?, ?, ?)'; // phpcs:ignore
+        $valuesToBind0 = [
+            [$tokenId, \PDO::PARAM_STR],
+            [$clientName, \PDO::PARAM_STR],
+            [$expiresAt->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
+        ];
+        $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
+        $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
+
+        $this->sut->persistNewAccessToken($accessTokenEntityMock);
+    }
+
     public function testPersistNewAccessTokenWithScopes()
     {
         $tokenId    = 'foo';
@@ -117,6 +146,54 @@ class AccessTokenTest extends QueryTestCase
         ];
         $statement2    = MockStatementFactory::createWriteStatement($this, $valuesToBind2);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
+
+        $this->sut->persistNewAccessToken($accessTokenEntityMock);
+    }
+
+    public function testPersistNewAccessTokenWithScopesDbFailureThrowsException()
+    {
+        $expectedCode    = 17;
+        $expectedMessage = 'Foo is great before: FROM api_clients AS ac';
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($expectedCode);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $tokenId    = 'foo';
+        $clientName = 'bar';
+        $expiresAt  = new \DateTime();
+
+        $scopeId0 = '0c4554ca-c379-46ab-9389-bfc84790bb46';
+
+        $scopeIdentifier0 = 'scope-0';
+
+        $scope0 = $this->createScopeStub($scopeId0, $scopeIdentifier0, 0);
+
+        $accessTokenEntityMock = $this->createAccessTokenStub(
+            $tokenId,
+            $clientName,
+            $expiresAt,
+            [$scope0]
+        );
+
+        $sql0          = 'INSERT INTO tokens (id, api_client_id, expires_at) VALUES (?, ?, ?)'; // phpcs:ignore
+        $valuesToBind0 = [
+            [$tokenId, \PDO::PARAM_STR],
+            [$clientName, \PDO::PARAM_STR],
+            [$expiresAt->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
+        ];
+        $statement0    = MockStatementFactory::createWriteStatement($this, $valuesToBind0);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
+
+        $sql1          = 'INSERT INTO tokens_admin_resources (id, token_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
+        $valuesToBind1 = [
+            [$scopeId0, \PDO::PARAM_STR],
+            [$tokenId, \PDO::PARAM_STR],
+            [$scopeIdentifier0, \PDO::PARAM_STR],
+        ];
+        $errorInfo1    = ['FOO', $expectedCode, $expectedMessage];
+        $statement1    = MockStatementFactory::createErrorStatement($this, $valuesToBind1, $errorInfo1);
+        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $this->sut->persistNewAccessToken($accessTokenEntityMock);
     }
