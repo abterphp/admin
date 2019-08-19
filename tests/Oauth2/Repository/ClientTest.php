@@ -146,8 +146,6 @@ class ClientTest extends QueryTestCase
         $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
         MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
 
-        $actualResult = $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
-
-        $this->assertNull($actualResult);
+        $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
     }
 }

@@ -42,6 +42,29 @@ class ScopeTest extends QueryTestCase
         $this->assertInstanceOf(ScopeEntityInterface::class, $actualResult);
     }
 
+    public function testGetScopeEntityByIdentifierThrowsExceptionOnFailure()
+    {
+        $expectedCode    = 17;
+        $expectedMessage = 'Foo is great before: FROM api_clients AS ac';
+
+        $this->expectException(Database::class);
+        $this->expectExceptionCode($expectedCode);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $id         = 'c9f0176b-d6f2-4f31-802f-67ad253f9fe7';
+        $identifier = 'foo';
+
+        $sql0          = 'SELECT ar.id FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.identifier = :identifier)'; // phpcs:ignore
+        $valuesToBind0 = [
+            'identifier' => [$identifier, \PDO::PARAM_STR],
+        ];
+        $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
+        $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
+        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->sut->getScopeEntityByIdentifier($identifier);
+    }
+
     public function testFinalizeScopesWithoutScopes()
     {
         $grantType = 'foo';
@@ -143,12 +166,7 @@ class ScopeTest extends QueryTestCase
         $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
         MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
 
-        $actualResult = $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);
-
-        $this->assertCount(3, $actualResult);
-        $this->assertSame($arId0, $actualResult[0]->getIdentifier());
-        $this->assertSame($arId1, $actualResult[1]->getIdentifier());
-        $this->assertSame($arId2, $actualResult[2]->getIdentifier());
+        $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);
     }
 
     /**
