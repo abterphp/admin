@@ -11,6 +11,7 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Constant\View;
 use AbterPhp\Framework\Navigation\Navigation;
+use Opulence\Environments\Environment;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Sessions\ISession;
 use Opulence\Views\Factories\IViewBuilder;
@@ -25,7 +26,7 @@ class AdminBuilder implements IViewBuilder
     protected $session;
 
     /** @var AssetManager */
-    protected $assets;
+    protected $assetManager;
 
     /** @var IEventDispatcher */
     protected $eventDispatcher;
@@ -40,23 +41,47 @@ class AdminBuilder implements IViewBuilder
      * AdminBuilder constructor.
      *
      * @param ISession         $session
-     * @param AssetManager     $assets
+     * @param AssetManager     $assetManager
      * @param IEventDispatcher $eventDispatcher
      * @param Navigation|null  $primaryNav
      * @param Navigation|null  $navbar
      */
     public function __construct(
         ISession $session,
-        AssetManager $assets,
+        AssetManager $assetManager,
         IEventDispatcher $eventDispatcher,
         ?Navigation $primaryNav,
         ?Navigation $navbar
     ) {
         $this->session         = $session;
-        $this->assets          = $assets;
+        $this->assetManager    = $assetManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->primaryNav      = $primaryNav;
         $this->navbar          = $navbar;
+    }
+
+    /**
+     * @param Navigation|null $navigation
+     *
+     * @return AdminBuilder
+     */
+    public function setPrimeNav(?Navigation $navigation): self
+    {
+        $this->primaryNav = $navigation;
+
+        return $this;
+    }
+
+    /**
+     * @param Navigation|null $navigation
+     *
+     * @return AdminBuilder
+     */
+    public function setNavbar(?Navigation $navigation): self
+    {
+        $this->navbar = $navigation;
+
+        return $this;
     }
 
     /**
@@ -64,10 +89,10 @@ class AdminBuilder implements IViewBuilder
      */
     public function build(IView $view): IView
     {
-        $this->assets->addJs(View::ASSET_HEADER, '/admin-assets/vendor/jquery/jquery.min.js');
-        $this->assets->addJs(View::ASSET_HEADER, '/admin-assets/js/navigation.js');
+        $this->assetManager->addJs(View::ASSET_HEADER, '/admin-assets/vendor/jquery/jquery.min.js');
+        $this->assetManager->addJs(View::ASSET_HEADER, '/admin-assets/js/navigation.js');
 
-        $view->setVar('env', getenv(Env::ENV_NAME));
+        $view->setVar('env', Environment::getVar(Env::ENV_NAME));
         $view->setVar('title', 'Admin');
         $view->setVar('username', $this->session->get(Session::USERNAME));
         $view->setVar('primaryNav', $this->primaryNav);
@@ -83,7 +108,7 @@ class AdminBuilder implements IViewBuilder
 
         $this->eventDispatcher->dispatch(Event::ADMIN_READY, new AdminReady($view));
 
-        $this->assets->addJs(View::ASSET_FOOTER, '/admin-assets/js/alerts.js');
+        $this->assetManager->addJs(View::ASSET_FOOTER, '/admin-assets/js/alerts.js');
 
         return $view;
     }
