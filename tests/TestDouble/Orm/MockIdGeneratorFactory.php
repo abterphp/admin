@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AbterPhp\Admin\TestDouble\Orm;
 
 use Opulence\Orm\Ids\Generators\IIdGenerator;

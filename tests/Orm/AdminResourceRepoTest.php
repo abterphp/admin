@@ -5,49 +5,38 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource as Entity;
+use AbterPhp\Admin\Orm\DataMappers\AdminResourceSqlDataMapper;
+use AbterPhp\Admin\TestCase\Orm\RepoTestCase;
 use Opulence\Orm\DataMappers\IDataMapper;
 use Opulence\Orm\IEntityRegistry;
-use Opulence\Orm\IUnitOfWork;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
-class AdminResourceRepoTest extends TestCase
+class AdminResourceRepoTest extends RepoTestCase
 {
     /** @var AdminResourceRepo - System Under Test */
     protected $sut;
 
-    /** @var string */
-    protected $className = 'Foo';
-
-    /** @var IDataMapper|MockObject */
+    /** @var AdminResourceSqlDataMapper|MockObject */
     protected $dataMapperMock;
-
-    /** @var IUnitOfWork|MockObject */
-    protected $unitOfWorkMock;
 
     public function setUp(): void
     {
-        $this->dataMapperMock = $this->getMockBuilder(IDataMapper::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['add', 'delete', 'getAll', 'getById', 'update', 'getByIdentifier', 'getByUserId'])
-            ->getMock();
-
-        $this->unitOfWorkMock = $this->getMockBuilder(IUnitOfWork::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'commit',
-                'detach',
-                'dispose',
-                'getEntityRegistry',
-                'registerDataMapper',
-                'scheduleForDeletion',
-                'scheduleForInsertion',
-                'scheduleForUpdate',
-                'setConnection',
-            ])
-            ->getMock();
+        parent::setUp();
 
         $this->sut = new AdminResourceRepo($this->className, $this->dataMapperMock, $this->unitOfWorkMock);
+    }
+
+    /**
+     * @return AdminResourceSqlDataMapper|MockObject
+     */
+    protected function createDataMapperMock(): IDataMapper
+    {
+        /** @var AdminResourceSqlDataMapper|MockObject $mock */
+        $mock = $this->getMockBuilder(AdminResourceSqlDataMapper::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $mock;
     }
 
     public function testGetAll()

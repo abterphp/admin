@@ -5,49 +5,38 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm;
 
 use AbterPhp\Admin\Domain\Entities\UserLanguage as Entity;
+use AbterPhp\Admin\Orm\DataMappers\UserLanguageSqlDataMapper;
+use AbterPhp\Admin\TestCase\Orm\RepoTestCase;
 use Opulence\Orm\DataMappers\IDataMapper;
 use Opulence\Orm\IEntityRegistry;
-use Opulence\Orm\IUnitOfWork;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
-class UserLanguageRepoTest extends TestCase
+class UserLanguageRepoTest extends RepoTestCase
 {
     /** @var UserLanguageRepo - System Under Test */
     protected $sut;
 
-    /** @var string */
-    protected $className = 'Foo';
-
-    /** @var IDataMapper|MockObject */
+    /** @var UserLanguageSqlDataMapper|MockObject */
     protected $dataMapperMock;
-
-    /** @var IUnitOfWork|MockObject */
-    protected $unitOfWorkMock;
 
     public function setUp(): void
     {
-        $this->dataMapperMock = $this->getMockBuilder(IDataMapper::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['add', 'delete', 'getAll', 'getById', 'update', 'getByIdentifier', 'getPage'])
-            ->getMock();
-
-        $this->unitOfWorkMock = $this->getMockBuilder(IUnitOfWork::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'commit',
-                'detach',
-                'dispose',
-                'getEntityRegistry',
-                'registerDataMapper',
-                'scheduleForDeletion',
-                'scheduleForInsertion',
-                'scheduleForUpdate',
-                'setConnection',
-            ])
-            ->getMock();
+        parent::setUp();
 
         $this->sut = new UserLanguageRepo($this->className, $this->dataMapperMock, $this->unitOfWorkMock);
+    }
+
+    /**
+     * @return UserLanguageSqlDataMapper|MockObject
+     */
+    protected function createDataMapperMock(): IDataMapper
+    {
+        /** @var UserLanguageSqlDataMapper|MockObject $mock */
+        $mock = $this->getMockBuilder(UserLanguageSqlDataMapper::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $mock;
     }
 
     public function testGetAll()
