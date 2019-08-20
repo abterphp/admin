@@ -55,9 +55,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      */
     public function delete($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a User entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $rand     = rand(0, PHP_INT_MAX);
         $username = sprintf('deleted-%d', $rand);

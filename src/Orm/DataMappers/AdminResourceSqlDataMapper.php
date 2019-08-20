@@ -41,9 +41,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      */
     public function delete($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects an AdminResource entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $query = (new QueryBuilder())
             ->update('admin_resources', 'admin_resources', ['deleted' => [1, \PDO::PARAM_INT]])

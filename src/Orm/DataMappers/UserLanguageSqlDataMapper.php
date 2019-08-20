@@ -42,9 +42,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      */
     public function delete($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a UserLanguage entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $query = (new QueryBuilder())
             ->update('user_languages', 'user_languages', ['deleted' => [1, \PDO::PARAM_INT]])

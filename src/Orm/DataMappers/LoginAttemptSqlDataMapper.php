@@ -52,9 +52,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
      */
     public function delete($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a LoginAttempt entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $query = (new QueryBuilder())
             ->delete('login_attempts', 'login_attempts')

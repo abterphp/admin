@@ -49,9 +49,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      */
     public function delete($entity)
     {
-        if (!($entity instanceof Entity)) {
-            throw new \InvalidArgumentException(__CLASS__ . ':' . __FUNCTION__ . ' expects a UserGroup entity.');
-        }
+        assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $this->deleteAdminResources($entity);
 
