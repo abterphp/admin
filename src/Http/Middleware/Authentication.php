@@ -18,7 +18,7 @@ class Authentication extends Session
     // $next consists of the next middleware in the pipeline
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$this->session->get(SessionConstants::USERNAME)) {
+        if (!$this->session->has(SessionConstants::USERNAME)) {
             return new RedirectResponse(RoutesConfig::getLoginPath(), ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
         }
 
