@@ -53,7 +53,9 @@ class SecurityTest extends TestCase
             return $responseStub;
         };
 
-        $this->sut->handle($requestStub, $next);
+        $actualResult = $this->sut->handle($requestStub, $next);
+
+        $this->assertSame($responseStub, $actualResult);
     }
 
     public function testHandleSkipsChecksIfNotInProduction()
@@ -67,7 +69,9 @@ class SecurityTest extends TestCase
             return $responseStub;
         };
 
-        $this->sut->handle($requestStub, $next);
+        $actualResult = $this->sut->handle($requestStub, $next);
+
+        $this->assertSame($responseStub, $actualResult);
     }
 
     public function testHandleRunsChecksIfInProduction()
@@ -81,7 +85,9 @@ class SecurityTest extends TestCase
             return $responseStub;
         };
 
-        $this->sut->handle($requestStub, $next);
+        $actualResult = $this->sut->handle($requestStub, $next);
+
+        $this->assertSame($responseStub, $actualResult);
     }
 
     /**
@@ -152,6 +158,8 @@ class SecurityTest extends TestCase
             return $responseStub;
         };
 
-        $this->sut->handle($requestStub, $next);
+        $actualResult = $this->sut->handle($requestStub, $next);
+
+        $this->assertSame($responseStub, $actualResult);
     }
 }
