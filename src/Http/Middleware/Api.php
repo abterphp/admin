@@ -24,8 +24,14 @@ use Psr\Log\LoggerInterface;
 
 class Api implements IMiddleware
 {
+    const ATTRIBUTE_USER_ID = 'oauth_user_id';
+    const ATTRIBUTE_CLIENT_ID = 'oauth_client_id';
+
+    const HEADER_USER_ID       = 'xxx-user-id';
+    const HEADER_USER_USERNAME = 'xxx-user-username';
+
     /** @var ResourceServer */
-    protected $server;
+    protected $resourceServer;
 
     /** @var RequestConverter */
     protected $requestConverter;
@@ -48,7 +54,7 @@ class Api implements IMiddleware
     /**
      * Api constructor.
      *
-     * @param ResourceServer    $server
+     * @param ResourceServer    $resourceServer
      * @param RequestConverter  $requestConverter
      * @param ResponseFactory   $responseFactory
      * @param ResponseConverter $responseConverter
@@ -57,7 +63,7 @@ class Api implements IMiddleware
      * @param EnvReader         $envReader
      */
     public function __construct(
-        ResourceServer $server,
+        ResourceServer $resourceServer,
         RequestConverter $requestConverter,
         ResponseFactory $responseFactory,
         ResponseConverter $responseConverter,
@@ -65,7 +71,7 @@ class Api implements IMiddleware
         LoggerInterface $logger,
         EnvReader $envReader
     ) {
-        $this->server = $server;
+        $this->resourceServer = $resourceServer;
 
         $this->requestConverter  = $requestConverter;
         $this->responseFactory   = $responseFactory;
@@ -82,7 +88,7 @@ class Api implements IMiddleware
         $psr7Request = $this->requestConverter->toPsr($request);
 
         try {
-            $psr7Request = $this->server->validateAuthenticatedRequest($psr7Request);
+            $psr7Request = $this->resourceServer->validateAuthenticatedRequest($psr7Request);
         } catch (OAuthServerException $e) {
             return $this->createResponse($e);
         } catch (Exception $e) {
@@ -90,7 +96,7 @@ class Api implements IMiddleware
         }
 
         try {
-            $user = $this->getUserByClientId($psr7Request);
+            $user = $this->getUser($psr7Request);
             if (null === $user) {
                 throw new Exception('Unexpected user retrieval error');
             }
@@ -101,8 +107,8 @@ class Api implements IMiddleware
         // This is a workaround as Opulence request doesn't have a straight-forward way of storing internal data
         $headers = $request->getHeaders();
 
-        $headers['xxx-user-id']       = $user->getId();
-        $headers['xxx-user-username'] = $user->getUsername();
+        $headers[static::HEADER_USER_ID]       = $user->getId();
+        $headers[static::HEADER_USER_USERNAME] = $user->getUsername();
 
         return $next($request);
     }
@@ -135,24 +141,49 @@ class Api implements IMiddleware
      * @return User|null
      * @throws OrmException
      */
-    protected function getUserByClientId(ServerRequestInterface $psr7Request): ?User
+    protected function getUser(ServerRequestInterface $psr7Request): ?User
     {
-        $userId = $psr7Request->getAttribute('oauth_user_id');
-        if ($userId) {
-            $user = $this->userRepo->getById($userId);
-
-            if ($user instanceof User) {
-                return $user;
-            }
-        }
-
-        $clientId = $psr7Request->getAttribute('oauth_client_id');
-
-        $user = $this->userRepo->getByClientId($clientId);
-        if ($user instanceof User) {
+        $user = $this->getUserByUserId($psr7Request);
+        if ($user) {
             return $user;
         }
 
-        return null;
+        return $this->getUserByClientId($psr7Request);
+    }
+
+    /**
+     * @param ServerRequestInterface $psr7Request
+     *
+     * @return User|null
+     * @throws OrmException
+     */
+    protected function getUserByUserId(ServerRequestInterface $psr7Request): ?User
+    {
+        $userId = $psr7Request->getAttribute(static::ATTRIBUTE_USER_ID);
+        if (!$userId) {
+            return null;
+        }
+
+        $user = $this->userRepo->getById($userId);
+
+        return $user;
+    }
+
+    /**
+     * @param ServerRequestInterface $psr7Request
+     *
+     * @return User|null
+     * @throws OrmException
+     */
+    protected function getUserByClientId(ServerRequestInterface $psr7Request): ?User
+    {
+        $clientId = $psr7Request->getAttribute(static::ATTRIBUTE_CLIENT_ID);
+        if (!$clientId) {
+            return null;
+        }
+
+        $user = $this->userRepo->getByClientId($clientId);
+
+        return $user;
     }
 }
