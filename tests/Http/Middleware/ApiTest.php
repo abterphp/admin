@@ -33,12 +33,6 @@ class ApiTest extends TestCase
     /** @var MockObject|RequestConverter */
     protected $requestConverterMock;
 
-    /** @var MockObject|ResponseFactory */
-    protected $responseFactoryMock;
-
-    /** @var MockObject|ResponseConverter */
-    protected $responseConverter;
-
     /** @var MockObject|UserRepo */
     protected $userRepoMock;
 
@@ -60,16 +54,6 @@ class ApiTest extends TestCase
             ->onlyMethods(['toPsr'])
             ->getMock();
 
-        $this->responseFactoryMock = $this->getMockBuilder(ResponseFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->responseConverter = $this->getMockBuilder(ResponseConverter::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
         $this->userRepoMock = $this->getMockBuilder(UserRepo::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getById', 'getByClientId'])
@@ -88,8 +72,6 @@ class ApiTest extends TestCase
         $this->sut = new Api(
             $this->resourceServerMock,
             $this->requestConverterMock,
-            $this->responseFactoryMock,
-            $this->responseConverter,
             $this->userRepoMock,
             $this->loggerMock,
             $this->envReaderMock

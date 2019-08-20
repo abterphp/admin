@@ -7,8 +7,6 @@ namespace AbterPhp\Admin\Http\Middleware;
 use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Admin\Psr7\RequestConverter;
-use AbterPhp\Admin\Psr7\ResponseConverter;
-use AbterPhp\Admin\Psr7\ResponseFactory;
 use AbterPhp\Framework\Config\EnvReader;
 use AbterPhp\Framework\Constant\Env;
 use Closure;
@@ -36,12 +34,6 @@ class Api implements IMiddleware
     /** @var RequestConverter */
     protected $requestConverter;
 
-    /** @var ResponseFactory */
-    protected $responseFactory;
-
-    /** @var ResponseConverter */
-    protected $responseConverter;
-
     /** @var UserRepo */
     protected $userRepo;
 
@@ -56,8 +48,6 @@ class Api implements IMiddleware
      *
      * @param ResourceServer    $resourceServer
      * @param RequestConverter  $requestConverter
-     * @param ResponseFactory   $responseFactory
-     * @param ResponseConverter $responseConverter
      * @param UserRepo          $userRepo
      * @param LoggerInterface   $logger
      * @param EnvReader         $envReader
@@ -65,8 +55,6 @@ class Api implements IMiddleware
     public function __construct(
         ResourceServer $resourceServer,
         RequestConverter $requestConverter,
-        ResponseFactory $responseFactory,
-        ResponseConverter $responseConverter,
         UserRepo $userRepo,
         LoggerInterface $logger,
         EnvReader $envReader
@@ -74,8 +62,6 @@ class Api implements IMiddleware
         $this->resourceServer = $resourceServer;
 
         $this->requestConverter  = $requestConverter;
-        $this->responseFactory   = $responseFactory;
-        $this->responseConverter = $responseConverter;
         $this->userRepo          = $userRepo;
         $this->logger            = $logger;
         $this->problemBaseUrl    = $envReader->get(Env::API_PROBLEM_BASE_URL);

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Http\Middleware;
 
 use AbterPhp\Admin\Config\Routes as RoutesConfig;
+use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Exception\Security as SecurityException;
 use Opulence\Cache\ICacheBridge;
+use Opulence\Environments\Environment;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -62,7 +64,10 @@ class SecurityTest extends TestCase
     {
         $this->cacheBridgeMock->expects($this->never())->method('has');
 
-        $requestStub  = new Request([], [], [], [], [], ['ENV_NAME' => 'staging'], null);
+        $env          = [
+            Env::ENV_NAME => Environment::STAGING,
+        ];
+        $requestStub  = new Request([], [], [], [], [], $env, null);
         $responseStub = new Response();
 
         $next = function () use ($responseStub) {
@@ -78,7 +83,10 @@ class SecurityTest extends TestCase
     {
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
 
-        $requestStub  = new Request([], [], [], [], [], ['ENV_NAME' => 'production'], null);
+        $env          = [
+            Env::ENV_NAME => Environment::PRODUCTION,
+        ];
+        $requestStub  = new Request([], [], [], [], [], $env, null);
         $responseStub = new Response();
 
         $next = function () use ($responseStub) {
@@ -125,7 +133,10 @@ class SecurityTest extends TestCase
 
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(false);
 
-        $env          = ['ENV_NAME' => 'production', 'OAUTH2_PRIVATE_KEY_PASSWORD' => $oauth2PrivateKeyPassword];
+        $env          = [
+            Env::ENV_NAME                    => Environment::PRODUCTION,
+            Env::OAUTH2_PRIVATE_KEY_PASSWORD => $oauth2PrivateKeyPassword,
+        ];
         $requestStub  = new Request([], [], [], [], [], $env, null);
         $responseStub = new Response();
 
@@ -138,9 +149,9 @@ class SecurityTest extends TestCase
 
     public function testHandleSetsSessionIfChecksWereRun()
     {
-        $loginPath = '/foo';
-        $adminBasePath = '/bar';
-        $apiBasePath = '/baz';
+        $loginPath                = '/foo';
+        $adminBasePath            = '/bar';
+        $apiBasePath              = '/baz';
         $oauth2PrivateKeyPassword = 'quix';
 
         RoutesConfig::setLoginPath($loginPath);
@@ -150,7 +161,10 @@ class SecurityTest extends TestCase
         $this->cacheBridgeMock->expects($this->any())->method('has')->willReturn(false);
         $this->cacheBridgeMock->expects($this->once())->method('set')->willReturn(true);
 
-        $env          = ['ENV_NAME' => 'production', 'OAUTH2_PRIVATE_KEY_PASSWORD' => $oauth2PrivateKeyPassword];
+        $env          = [
+            Env::ENV_NAME                    => Environment::PRODUCTION,
+            Env::OAUTH2_PRIVATE_KEY_PASSWORD => $oauth2PrivateKeyPassword,
+        ];
         $requestStub  = new Request([], [], [], [], [], $env, null);
         $responseStub = new Response();
 
