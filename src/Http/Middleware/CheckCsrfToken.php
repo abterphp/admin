@@ -79,15 +79,24 @@ class CheckCsrfToken implements IMiddleware
      */
     protected function writeToResponse(Response $response): Response
     {
+        $sessionValue = $this->session->get(CsrfTokenChecker::TOKEN_INPUT_NAME);
+
+        $lifetime   = Config::get('sessions', 'xsrfcookie.lifetime');
+        $expiration = time() + $lifetime;
+
+        $path     = Config::get('sessions', 'cookie.path');
+        $domain   = Config::get('sessions', 'cookie.domain');
+        $isSecure = Config::get('sessions', 'cookie.isSecure');
+
         // Add an XSRF cookie for JavaScript frameworks to use
         $response->getHeaders()->setCookie(
             new Cookie(
                 'XSRF-TOKEN',
-                $this->session->get(CsrfTokenChecker::TOKEN_INPUT_NAME),
-                time() + Config::get('sessions', 'xsrfcookie.lifetime'),
-                Config::get('sessions', 'cookie.path'),
-                Config::get('sessions', 'cookie.domain'),
-                Config::get('sessions', 'cookie.isSecure'),
+                $sessionValue,
+                $expiration,
+                $path,
+                $domain,
+                $isSecure,
                 false
             )
         );
