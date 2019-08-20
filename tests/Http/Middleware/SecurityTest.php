@@ -1,0 +1,157 @@
+<?php
+
+declare(strict_types=1);
+
+namespace AbterPhp\Admin\Http\Middleware;
+
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
+use AbterPhp\Framework\Exception\Security as SecurityException;
+use Opulence\Cache\ICacheBridge;
+use Opulence\Http\Requests\Request;
+use Opulence\Http\Responses\Response;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+
+class SecurityTest extends TestCase
+{
+    /** @var Security - System Under Test */
+    protected $sut;
+
+    /** @var MockObject|ICacheBridge */
+    protected $cacheBridgeMock;
+
+    public function setUp(): void
+    {
+        $this->cacheBridgeMock = $this->getMockBuilder(ICacheBridge::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(
+                [
+                    'decrement',
+                    'delete',
+                    'flush',
+                    'get',
+                    'has',
+                    'increment',
+                    'set',
+                ]
+            )
+            ->getMock();
+
+        $this->sut = new Security(
+            $this->cacheBridgeMock
+        );
+    }
+
+    public function testHandleRunsChecksIfNoEnvironmentNameIsSet()
+    {
+        $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
+
+        $requestStub  = new Request([], [], [], [], [], [], null);
+        $responseStub = new Response();
+
+        $next = function () use ($responseStub) {
+            return $responseStub;
+        };
+
+        $this->sut->handle($requestStub, $next);
+    }
+
+    public function testHandleSkipsChecksIfNotInProduction()
+    {
+        $this->cacheBridgeMock->expects($this->never())->method('has');
+
+        $requestStub  = new Request([], [], [], [], [], ['ENV_NAME' => 'staging'], null);
+        $responseStub = new Response();
+
+        $next = function () use ($responseStub) {
+            return $responseStub;
+        };
+
+        $this->sut->handle($requestStub, $next);
+    }
+
+    public function testHandleRunsChecksIfInProduction()
+    {
+        $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
+
+        $requestStub  = new Request([], [], [], [], [], ['ENV_NAME' => 'production'], null);
+        $responseStub = new Response();
+
+        $next = function () use ($responseStub) {
+            return $responseStub;
+        };
+
+        $this->sut->handle($requestStub, $next);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function checksThrowSecurityExceptionProvider(): array
+    {
+        return [
+            [Security::TEST_LOGIN_PATH, '/bar', '/baz', 'quix'],
+            ['/foo', Security::TEST_ADMIN_BASE_PATH, '/baz', 'quix'],
+            ['/foo', '/bar', Security::TEST_API_BASE_PATH, 'quix'],
+            ['/foo', '/bar', '/baz', Security::TEST_OAUTH2_PRIVATE_KEY_PASSWORD],
+        ];
+    }
+
+    /**
+     * @dataProvider checksThrowSecurityExceptionProvider
+     *
+     * @param string $loginPath
+     * @param string $adminBasePath
+     * @param string $apiBasePath
+     * @param string $oauth2PrivateKeyPassword
+     */
+    public function testHandleChecksThrowSecurityExceptionOnFailure(
+        string $loginPath,
+        string $adminBasePath,
+        string $apiBasePath,
+        string $oauth2PrivateKeyPassword
+    ) {
+        $this->expectException(SecurityException::class);
+
+        RoutesConfig::setLoginPath($loginPath);
+        RoutesConfig::setAdminBasePath($adminBasePath);
+        RoutesConfig::setApiBasePath($apiBasePath);
+
+        $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(false);
+
+        $env          = ['ENV_NAME' => 'production', 'OAUTH2_PRIVATE_KEY_PASSWORD' => $oauth2PrivateKeyPassword];
+        $requestStub  = new Request([], [], [], [], [], $env, null);
+        $responseStub = new Response();
+
+        $next = function () use ($responseStub) {
+            return $responseStub;
+        };
+
+        $this->sut->handle($requestStub, $next);
+    }
+
+    public function testHandleSetsSessionIfChecksWereRun()
+    {
+        $loginPath = '/foo';
+        $adminBasePath = '/bar';
+        $apiBasePath = '/baz';
+        $oauth2PrivateKeyPassword = 'quix';
+
+        RoutesConfig::setLoginPath($loginPath);
+        RoutesConfig::setAdminBasePath($adminBasePath);
+        RoutesConfig::setApiBasePath($apiBasePath);
+
+        $this->cacheBridgeMock->expects($this->any())->method('has')->willReturn(false);
+        $this->cacheBridgeMock->expects($this->once())->method('set')->willReturn(true);
+
+        $env          = ['ENV_NAME' => 'production', 'OAUTH2_PRIVATE_KEY_PASSWORD' => $oauth2PrivateKeyPassword];
+        $requestStub  = new Request([], [], [], [], [], $env, null);
+        $responseStub = new Response();
+
+        $next = function () use ($responseStub) {
+            return $responseStub;
+        };
+
+        $this->sut->handle($requestStub, $next);
+    }
+}
