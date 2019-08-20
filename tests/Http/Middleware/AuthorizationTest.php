@@ -41,10 +41,7 @@ class AuthorizationTest extends TestCase
     {
         $this->sessionMock = MockSessionFactory::create($this, $this->sessionDataStub);
 
-        $this->enforcerMock = $this->getMockBuilder(Enforcer::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['enforce'])
-            ->getMock();
+        $this->enforcerMock = $this->createMock(Enforcer::class);
 
         $this->sut = new Authorization(
             $this->sessionMock,

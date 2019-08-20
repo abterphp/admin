@@ -32,31 +32,11 @@ class BaseFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createFromName'])
-            ->getMock();
-
-        $this->paginationFactoryMock = $this->getMockBuilder(PaginationFactory::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
-
-        $this->tableFactoryMock = $this->getMockBuilder(TableFactory::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
-
-        $this->gridFactoryMock = $this->getMockBuilder(GridFactory::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
-
-        $this->filtersMock = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['setParams', 'getUrl'])
-            ->getMock();
-
+        $this->urlGeneratorMock      = $this->createMock(UrlGenerator::class);
+        $this->paginationFactoryMock = $this->createMock(PaginationFactory::class);
+        $this->tableFactoryMock      = $this->createMock(TableFactory::class);
+        $this->gridFactoryMock       = $this->createMock(GridFactory::class);
+        $this->filtersMock           = $this->createMock(Filters::class);
 
         $this->sut = $this->getMockForAbstractClass(
             BaseFactory::class,
@@ -65,7 +45,7 @@ class BaseFactoryTest extends TestCase
                 $this->paginationFactoryMock,
                 $this->tableFactoryMock,
                 $this->gridFactoryMock,
-                $this->filtersMock
+                $this->filtersMock,
             ]
         );
     }

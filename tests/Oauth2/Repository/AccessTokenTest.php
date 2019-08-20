@@ -26,10 +26,7 @@ class AccessTokenTest extends QueryTestCase
     {
         parent::setUp();
 
-        $this->uuidGeneratorMock = $this->getMockBuilder(UuidV4Generator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['generate'])
-            ->getMock();
+        $this->uuidGeneratorMock = $this->createMock(UuidV4Generator::class);
 
         $this->sut = new AccessToken($this->uuidGeneratorMock, $this->connectionPoolMock);
     }
@@ -37,10 +34,7 @@ class AccessTokenTest extends QueryTestCase
     public function testGetNewToken()
     {
         /** @var ClientEntityInterface|MockObject $clientEntityStub */
-        $clientEntityStub = $this->getMockBuilder(ClientEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier', 'getName', 'getRedirectUri'])
-            ->getMock();
+        $clientEntityStub = $this->createMock(ClientEntityInterface::class);
 
         $scopes         = [];
         $userIdentifier = null;
@@ -209,10 +203,7 @@ class AccessTokenTest extends QueryTestCase
     {
         $this->uuidGeneratorMock->expects($this->at($at))->method('generate')->willReturn($scopeId);
 
-        $scope = $this->getMockBuilder(ScopeEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier', 'jsonSerialize'])
-            ->getMock();
+        $scope = $this->createMock(ScopeEntityInterface::class);
         $scope->expects($this->any())->method('getIdentifier')->willReturn($identifier);
 
         return $scope;
@@ -232,29 +223,11 @@ class AccessTokenTest extends QueryTestCase
         \DateTime $expiresAt,
         array $scopes
     ): AccessTokenEntityInterface {
-        $clientStub = $this->getMockBuilder(ClientEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier', 'getName', 'getRedirectUri'])
-            ->getMock();
+        $clientStub = $this->createMock(ClientEntityInterface::class);
         $clientStub->expects($this->any())->method('getName')->willReturn($clientName);
 
         /** @var AccessTokenEntityInterface|MockObject $accessTokenEntityMock */
-        $accessTokenEntityMock = $this->getMockBuilder(AccessTokenEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'convertToJWT',
-                'getIdentifier',
-                'setIdentifier',
-                'getExpiryDateTime',
-                'setExpiryDateTime',
-                'setUserIdentifier',
-                'getUserIdentifier',
-                'getClient',
-                'setClient',
-                'addScope',
-                'getScopes',
-            ])
-            ->getMock();
+        $accessTokenEntityMock = $this->createMock(AccessTokenEntityInterface::class);
 
         $accessTokenEntityMock->expects($this->any())->method('getIdentifier')->willReturn($tokenId);
         $accessTokenEntityMock->expects($this->any())->method('getClient')->willReturn($clientStub);

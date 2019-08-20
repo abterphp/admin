@@ -34,7 +34,6 @@ class StubRulesFactory
     {
         $rulesFactoryMock = $testCase->getMockBuilder(RulesFactory::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['createRules'])
             ->getMock();
 
         $rulesMock = static::createRules($testCase, $rules);
@@ -60,22 +59,13 @@ class StubRulesFactory
         $rules = $rules ?: static::createDefaultRules();
 
         /** @var RuleExtensionRegistry|MockObject $ruleExtensionRegistryStub */
-        $ruleExtensionRegistryStub = $testCase->getMockBuilder(RuleExtensionRegistry::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['hasRule', 'getRule'])
-            ->getMock();
+        $ruleExtensionRegistryStub = $testCase->getMockBuilder(RuleExtensionRegistry::class)->getMock();
 
         /** @var ErrorTemplateRegistry|MockObject $errorTemplateRegistryStub */
-        $errorTemplateRegistryStub = $testCase->getMockBuilder(ErrorTemplateRegistry::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $errorTemplateRegistryStub = $testCase->getMockBuilder(ErrorTemplateRegistry::class)->getMock();
 
         /** @var ICompiler|MockObject $compilerStub */
-        $compilerStub = $testCase->getMockBuilder(ICompiler::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $compilerStub = $testCase->getMockBuilder(ICompiler::class)->getMock();
 
         $rulesStub = new Rules($ruleExtensionRegistryStub, $errorTemplateRegistryStub, $compilerStub);
 

@@ -36,25 +36,15 @@ class ProfileTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(Session::class)
-            ->setMethods(['get'])
-            ->getMock();
+        $this->sessionMock = $this->createMock(Session::class);
         $this->sessionMock->expects($this->any())->method('get')->willReturnArgument(0);
 
-        $this->translatorMock = $this->getMockBuilder(ITranslator::class)
-            ->setMethods(['translate', 'canTranslate'])
-            ->getMock();
+        $this->translatorMock = $this->createMock(ITranslator::class);
         $this->translatorMock->expects($this->any())->method('translate')->willReturnArgument(0);
 
-        $this->userGroupRepoMock = $this->getMockBuilder(UserGroupRepo::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAll'])
-            ->getMock();
+        $this->userGroupRepoMock = $this->createMock(UserGroupRepo::class);
 
-        $this->userLanguageRepoMock = $this->getMockBuilder(UserLanguageRepo::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAll'])
-            ->getMock();
+        $this->userLanguageRepoMock = $this->createMock(UserLanguageRepo::class);
 
         $this->sut = new Profile(
             $this->sessionMock,
@@ -132,10 +122,7 @@ class ProfileTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entityStub = $this->getMockBuilder(IEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getId', 'setId'])
-            ->getMock();
+        $entityStub = $this->createMock(IEntity::class);
 
         $this->sut->create('foo', 'bar', '/baz', $entityStub);
     }
@@ -145,20 +132,7 @@ class ProfileTest extends TestCase
      */
     protected function createMockEntity()
     {
-        $entityMock = $this->getMockBuilder(Entity::class)
-            ->disableOriginalConstructor()
-            ->setMethods(
-                [
-                    'getId',
-                    'getUsername',
-                    'getEmail',
-                    'canLogin',
-                    'isGravatarAllowed',
-                    'getUserGroups',
-                    'getUserLanguage',
-                ]
-            )
-            ->getMock();
+        $entityMock = $this->createMock(Entity::class);
 
         return $entityMock;
     }

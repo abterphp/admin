@@ -25,10 +25,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         parent::setUp();
 
-        $this->idGeneratorMock = $this->getMockBuilder(IIdGenerator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['generate', 'getEmptyValue', 'isPostInsert'])
-            ->getMock();
+        $this->idGeneratorMock = $this->createMock(IIdGenerator::class);
 
         $this->sut = new ApiClientSqlDataMapper($this->readConnectionMock, $this->writeConnectionMock);
 
@@ -364,10 +361,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->add($entity);
     }
@@ -376,10 +370,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->delete($entity);
     }
@@ -388,10 +379,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entity);
     }

@@ -18,22 +18,13 @@ class GridFactoryTest extends TestCase
         $sut = new GridFactory();
 
         /** @var Table|MockObject $tableMock */
-        $tableMock = $this->getMockBuilder(Table::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['__toString'])
-            ->getMock();
+        $tableMock = $this->createMock(Table::class);
 
         /** @var Pagination|MockObject $paginationMock */
-        $paginationMock = $this->getMockBuilder(Pagination::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['__toString'])
-            ->getMock();
+        $paginationMock = $this->createMock(Pagination::class);
 
         /** @var Filters|MockObject $filtersMock */
-        $filtersMock = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['__toString'])
-            ->getMock();
+        $filtersMock = $this->createMock(Filters::class);
 
         $grid = $sut->create($tableMock, $paginationMock, $filtersMock, null);
 

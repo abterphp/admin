@@ -23,22 +23,7 @@ class HtmlErrorBuilderTest extends TestCase
     public function testBuildWorks()
     {
         /** @var IView|MockObject $viewMock */
-        $viewMock = $this->getMockBuilder(IView::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'getContents',
-                'getDelimiters',
-                'getPath',
-                'getVar',
-                'getVars',
-                'hasVar',
-                'setContents',
-                'setDelimiters',
-                'setPath',
-                'setVar',
-                'setVars',
-            ])
-            ->getMock();
+        $viewMock = $this->createMock(IView::class);
 
         $actualResult = $this->sut->build($viewMock);
 

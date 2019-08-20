@@ -20,38 +20,9 @@ class LastGridPageTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(ISession::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'ageFlashData',
-                    'delete',
-                    'flash',
-                    'flush',
-                    'get',
-                    'getAll',
-                    'getId',
-                    'getName',
-                    'has',
-                    'hasStarted',
-                    'reflash',
-                    'regenerateId',
-                    'set',
-                    'setId',
-                    'setMany',
-                    'setName',
-                    'start',
-                    'offsetExists',
-                    'offsetGet',
-                    'offsetSet',
-                    'offsetUnset',
-                ]
-            )
-            ->getMock();
+        $this->sessionMock = $this->createMock(ISession::class);
 
-        $this->sut = new LastGridPage(
-            $this->sessionMock
-        );
+        $this->sut = new LastGridPage($this->sessionMock);
     }
 
     public function testHandleDoesNotModifySessionIfResponseIsError()

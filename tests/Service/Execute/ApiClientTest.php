@@ -40,40 +40,11 @@ class ApiClientTest extends TestCase
     {
         parent::setUp();
 
-        $this->gridRepoMock = $this->getMockBuilder(GridRepo::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['add', 'delete', 'getById', 'getPage'])
-            ->getMock();
-
-        $this->validatorFactoryMock = $this->getMockBuilder(ValidatorFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['createValidator'])
-            ->getMock();
-
-        $this->unitOfWorkMock = $this->getMockBuilder(IUnitOfWork::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'commit',
-                'detach',
-                'dispose',
-                'getEntityRegistry',
-                'registerDataMapper',
-                'scheduleForDeletion',
-                'scheduleForInsertion',
-                'scheduleForUpdate',
-                'setConnection',
-            ])
-            ->getMock();
-
-        $this->eventDispatcherMock = $this->getMockBuilder(IEventDispatcher::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['dispatch'])
-            ->getMock();
-
-        $this->cryptoMock = $this->getMockBuilder(Crypto::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['prepareSecret', 'hashCrypt'])
-            ->getMock();
+        $this->gridRepoMock         = $this->createMock(GridRepo::class);
+        $this->validatorFactoryMock = $this->createMock(ValidatorFactory::class);
+        $this->unitOfWorkMock       = $this->createMock(IUnitOfWork::class);
+        $this->eventDispatcherMock  = $this->createMock(IEventDispatcher::class);
+        $this->cryptoMock           = $this->createMock(Crypto::class);
 
         $this->sut = new ApiClient(
             $this->gridRepoMock,
@@ -200,10 +171,7 @@ class ApiClientTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         /** @var IStringerEntity|MockObject $entityStub */
-        $entityStub = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getId', 'setId', 'toJSON', '__toString'])
-            ->getMock();
+        $entityStub = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entityStub, [], []);
     }
@@ -259,10 +227,7 @@ class ApiClientTest extends TestCase
     {
         $postData = ['foo' => 'bar'];
 
-        $validatorMock = $this->getMockBuilder(IValidator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['field', 'isValid', 'getErrors'])
-            ->getMock();
+        $validatorMock = $this->createMock(IValidator::class);
         $validatorMock->expects($this->once())->method('isValid')->with($postData)->willReturn(true);
         $validatorMock->expects($this->never())->method('getErrors');
 
@@ -280,10 +245,7 @@ class ApiClientTest extends TestCase
         $errorsStub        = new ErrorCollection();
         $errorsStub['foo'] = ['foo error'];
 
-        $validatorMock = $this->getMockBuilder(IValidator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['field', 'isValid', 'getErrors'])
-            ->getMock();
+        $validatorMock = $this->createMock(IValidator::class);
         $validatorMock->expects($this->once())->method('isValid')->with($postData)->willReturn(false);
         $validatorMock->expects($this->once())->method('getErrors')->willReturn($errorsStub);
 
@@ -298,10 +260,7 @@ class ApiClientTest extends TestCase
     {
         $postData = ['foo' => 'bar'];
 
-        $validatorMock = $this->getMockBuilder(IValidator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['field', 'isValid', 'getErrors'])
-            ->getMock();
+        $validatorMock = $this->createMock(IValidator::class);
         $validatorMock->expects($this->any())->method('isValid')->with($postData)->willReturn(true);
         $validatorMock->expects($this->any())->method('getErrors');
 

@@ -71,10 +71,7 @@ class ScopeTest extends QueryTestCase
         $scopes    = [];
 
         /** @var ClientEntityInterface|MockObject $clientEntityMock */
-        $clientEntityMock = $this->getMockBuilder(ClientEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier', 'getName', 'getRedirectUri'])
-            ->getMock();
+        $clientEntityMock = $this->createMock(ClientEntityInterface::class);
 
         $actualResult = $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);
 
@@ -98,10 +95,7 @@ class ScopeTest extends QueryTestCase
         $arId2 = '3966099c-84ff-48cf-9d65-794519651fe5';
 
         /** @var ClientEntityInterface|MockObject $clientEntityMock */
-        $clientEntityMock = $this->getMockBuilder(ClientEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier', 'getName', 'getRedirectUri'])
-            ->getMock();
+        $clientEntityMock = $this->createMock(ClientEntityInterface::class);
         $clientEntityMock->expects($this->any())->method('getIdentifier')->willReturn($clientIdentifier);
 
         $sql0          = 'SELECT acar.admin_resource_id FROM api_clients_admin_resources AS acar WHERE (acar.api_client_id = ?) AND (acar.admin_resource_id IN (?,?))'; // phpcs:ignore
@@ -150,10 +144,7 @@ class ScopeTest extends QueryTestCase
         $arId2 = '3966099c-84ff-48cf-9d65-794519651fe5';
 
         /** @var ClientEntityInterface|MockObject $clientEntityMock */
-        $clientEntityMock = $this->getMockBuilder(ClientEntityInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier', 'getName', 'getRedirectUri'])
-            ->getMock();
+        $clientEntityMock = $this->createMock(ClientEntityInterface::class);
         $clientEntityMock->expects($this->any())->method('getIdentifier')->willReturn($clientIdentifier);
 
         $sql0          = 'SELECT acar.admin_resource_id FROM api_clients_admin_resources AS acar WHERE (acar.api_client_id = ?) AND (acar.admin_resource_id IN (?,?))'; // phpcs:ignore
@@ -176,10 +167,7 @@ class ScopeTest extends QueryTestCase
      */
     protected function createScopeStub(string $identifier): Entity
     {
-        $scopeStub = $this->getMockBuilder(Entity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getIdentifier'])
-            ->getMock();
+        $scopeStub = $this->createMock(Entity::class);
         $scopeStub->expects($this->any())->method('getIdentifier')->willReturn($identifier);
 
         return $scopeStub;

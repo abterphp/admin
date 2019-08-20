@@ -17,27 +17,17 @@ class TableFactoryTest extends TestCase
     public function testCreateCallsHeaderAndBodyFactories()
     {
         /** @var Header|MockObject $headerMock */
-        $headerMock = $this->getMockBuilder(Header::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $headerMock = $this->createMock(Header::class);
 
         /** @var Body|MockObject $headerMock */
-        $bodyMock = $this->getMockBuilder(Body::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $bodyMock = $this->createMock(Body::class);
 
         /** @var HeaderFactory|MockObject $headerFactoryMock */
-        $headerFactoryMock = $this->getMockBuilder(HeaderFactory::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
+        $headerFactoryMock = $this->createMock(HeaderFactory::class);
         $headerFactoryMock->expects($this->once())->method('create')->willReturn($headerMock);
 
         /** @var BodyFactory|MockObject $bodyFactoryMock */
-        $bodyFactoryMock = $this->getMockBuilder(BodyFactory::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
+        $bodyFactoryMock = $this->createMock(BodyFactory::class);
         $bodyFactoryMock->expects($this->once())->method('create')->willReturn($bodyMock);
 
         $sut = new TableFactory($headerFactoryMock, $bodyFactoryMock);

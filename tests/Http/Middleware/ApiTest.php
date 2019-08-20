@@ -44,30 +44,11 @@ class ApiTest extends TestCase
 
     public function setUp(): void
     {
-        $this->resourceServerMock = $this->getMockBuilder(ResourceServer::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['validateAuthenticatedRequest'])
-            ->getMock();
-
-        $this->requestConverterMock = $this->getMockBuilder(RequestConverter::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['toPsr'])
-            ->getMock();
-
-        $this->userRepoMock = $this->getMockBuilder(UserRepo::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getById', 'getByClientId'])
-            ->getMock();
-
-        $this->loggerMock = $this->getMockBuilder(LoggerInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug', 'log'])
-            ->getMock();
-
-        $this->envReaderMock = $this->getMockBuilder(EnvReader::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->resourceServerMock   = $this->createMock(ResourceServer::class);
+        $this->requestConverterMock = $this->createMock(RequestConverter::class);
+        $this->userRepoMock         = $this->createMock(UserRepo::class);
+        $this->loggerMock           = $this->createMock(LoggerInterface::class);
+        $this->envReaderMock        = $this->createMock(EnvReader::class);
 
         $this->sut = new Api(
             $this->resourceServerMock,

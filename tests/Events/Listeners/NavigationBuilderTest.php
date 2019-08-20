@@ -33,10 +33,7 @@ class NavigationBuilderTest extends TestCase
     {
         $this->sessionMock = MockSessionFactory::create($this, $this->sessionData);
 
-        $this->buttonFactoryMock = $this->getMockBuilder(ButtonFactory::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $this->buttonFactoryMock = $this->createMock(ButtonFactory::class);
 
         $this->sut = new NavigationBuilder($this->sessionMock, $this->buttonFactoryMock);
     }
@@ -44,10 +41,7 @@ class NavigationBuilderTest extends TestCase
     public function testHandleWithoutMatchingIntent()
     {
         /** @var Navigation|MockObject $navigationMock */
-        $navigationMock = $this->getMockBuilder(Navigation::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $navigationMock = $this->createMock(Navigation::class);
 
         $event = new NavigationReady($navigationMock);
 
@@ -59,10 +53,7 @@ class NavigationBuilderTest extends TestCase
     public function testHandleWithMatchingIntent()
     {
         /** @var Navigation|MockObject $navigationMock */
-        $navigationMock = $this->getMockBuilder(Navigation::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $navigationMock = $this->createMock(Navigation::class);
 
         $event = new NavigationReady($navigationMock);
 

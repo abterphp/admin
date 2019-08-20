@@ -40,40 +40,11 @@ class LoginTest extends TestCase
      */
     public function createSut(int $loginMaxAttempts, bool $loginLogIp): Login
     {
-        $this->userRepoMock = $this->getMockBuilder(UserRepo::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['find'])
-            ->getMock();
-
-        $this->loginAttemptRepoMock = $this->getMockBuilder(LoginAttemptRepo::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['add'])
-            ->getMock();
-
-        $this->loginThrottleMock = $this->getMockBuilder(LoginThrottle::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['clear', 'isLoginAllowed'])
-            ->getMock();
-
-        $this->cryptoMock = $this->getMockBuilder(Crypto::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['verifySecret'])
-            ->getMock();
-
-        $this->unitOfWorkMock = $this->getMockBuilder(IUnitOfWork::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'commit',
-                'detach',
-                'dispose',
-                'getEntityRegistry',
-                'registerDataMapper',
-                'scheduleForDeletion',
-                'scheduleForInsertion',
-                'scheduleForUpdate',
-                'setConnection',
-            ])
-            ->getMock();
+        $this->userRepoMock         = $this->createMock(UserRepo::class);
+        $this->loginAttemptRepoMock = $this->createMock(LoginAttemptRepo::class);
+        $this->loginThrottleMock    = $this->createMock(LoginThrottle::class);
+        $this->cryptoMock           = $this->createMock(Crypto::class);
+        $this->unitOfWorkMock       = $this->createMock(IUnitOfWork::class);
 
         return new Login(
             $this->userRepoMock,

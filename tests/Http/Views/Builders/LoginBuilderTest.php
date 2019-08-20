@@ -25,15 +25,9 @@ class LoginBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->assetManagerMock = $this->getMockBuilder(AssetManager::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['addJs'])
-            ->getMock();
+        $this->assetManagerMock = $this->createMock(AssetManager::class);
 
-        $this->eventDispatcherMock = $this->getMockBuilder(IEventDispatcher::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['dispatch'])
-            ->getMock();
+        $this->eventDispatcherMock = $this->createMock(IEventDispatcher::class);
 
         $this->sut = new LoginBuilder(
             $this->assetManagerMock,
@@ -44,22 +38,7 @@ class LoginBuilderTest extends TestCase
     public function testBuildWorks()
     {
         /** @var IView|MockObject $viewMock */
-        $viewMock = $this->getMockBuilder(IView::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'getContents',
-                'getDelimiters',
-                'getPath',
-                'getVar',
-                'getVars',
-                'hasVar',
-                'setContents',
-                'setDelimiters',
-                'setPath',
-                'setVar',
-                'setVars',
-            ])
-            ->getMock();
+        $viewMock = $this->createMock(IView::class);
 
         $this->eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch');
 

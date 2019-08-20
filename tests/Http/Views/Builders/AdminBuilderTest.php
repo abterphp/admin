@@ -36,44 +36,9 @@ class AdminBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->sessionMock = $this->getMockBuilder(ISession::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'ageFlashData',
-                    'delete',
-                    'flash',
-                    'flush',
-                    'get',
-                    'getAll',
-                    'getId',
-                    'getName',
-                    'has',
-                    'hasStarted',
-                    'reflash',
-                    'regenerateId',
-                    'set',
-                    'setId',
-                    'setMany',
-                    'setName',
-                    'start',
-                    'offsetExists',
-                    'offsetGet',
-                    'offsetSet',
-                    'offsetUnset',
-                ]
-            )
-            ->getMock();
-
-        $this->assetManagerMock = $this->getMockBuilder(AssetManager::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['addJs'])
-            ->getMock();
-
-        $this->eventDispatcherMock = $this->getMockBuilder(IEventDispatcher::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['dispatch'])
-            ->getMock();
+        $this->sessionMock         = $this->createMock(ISession::class);
+        $this->assetManagerMock    = $this->createMock(AssetManager::class);
+        $this->eventDispatcherMock = $this->createMock(IEventDispatcher::class);
 
         $this->sut = new AdminBuilder(
             $this->sessionMock,
@@ -87,22 +52,7 @@ class AdminBuilderTest extends TestCase
     public function testBuildWorksWithoutNavigation()
     {
         /** @var IView|MockObject $viewMock */
-        $viewMock = $this->getMockBuilder(IView::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'getContents',
-                'getDelimiters',
-                'getPath',
-                'getVar',
-                'getVars',
-                'hasVar',
-                'setContents',
-                'setDelimiters',
-                'setPath',
-                'setVar',
-                'setVars',
-            ])
-            ->getMock();
+        $viewMock = $this->createMock(IView::class);
 
         $this->eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch');
 
@@ -114,28 +64,10 @@ class AdminBuilderTest extends TestCase
     public function testBuildWorksWithNavigation()
     {
         /** @var IView|MockObject $viewMock */
-        $viewMock = $this->getMockBuilder(IView::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'getContents',
-                'getDelimiters',
-                'getPath',
-                'getVar',
-                'getVars',
-                'hasVar',
-                'setContents',
-                'setDelimiters',
-                'setPath',
-                'setVar',
-                'setVars',
-            ])
-            ->getMock();
+        $viewMock = $this->createMock(IView::class);
 
         /** @var Navigation|MockObject $navBarStub */
-        $navBarStub = $this->getMockBuilder(Navigation::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $navBarStub = $this->createMock(Navigation::class);
 
         $this->sut->setNavbar($navBarStub)->setPrimeNav($navBarStub);
 

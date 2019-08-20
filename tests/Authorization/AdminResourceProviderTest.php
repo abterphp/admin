@@ -19,10 +19,7 @@ class AdminResourceProviderTest extends TestCase
 
     public function setUp(): void
     {
-        $this->authLoaderMock = $this->getMockBuilder(AdminResourceAuthLoader::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['loadAll'])
-            ->getMock();
+        $this->authLoaderMock = $this->createMock(AdminResourceAuthLoader::class);
 
         $this->sut = new AdminResourceProvider($this->authLoaderMock);
     }

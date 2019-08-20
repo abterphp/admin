@@ -23,10 +23,8 @@ class ClientTest extends QueryTestCase
     {
         parent::setUp();
 
-        $this->cryptoMock = $this->getMockBuilder(Crypto::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['verifySecret'])
-            ->getMock();
+        $this->cryptoMock = $this->createMock(Crypto::class);
+        $this->cryptoMock->expects($this->any())->method('prepareSecret')->willReturnArgument(0);
 
         $this->sut = new Client($this->cryptoMock, $this->connectionPoolMock);
     }

@@ -20,7 +20,6 @@ class MockIdGeneratorFactory
     {
         /** @var IIdGenerator $idGeneratorMock */
         $idGeneratorMock = $testCase->getMockBuilder(IIdGenerator::class)
-            ->setMethods(['generate', 'getEmptyValue', 'isPostInsert'])
             ->getMock();
 
         foreach ($ids as $idx => $returnValue) {

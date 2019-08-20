@@ -32,9 +32,7 @@ class ApiClientRepoTest extends RepoTestCase
     protected function createDataMapperMock(): IDataMapper
     {
         /** @var ApiClientSqlDataMapper|MockObject $mock */
-        $mock = $this->getMockBuilder(ApiClientSqlDataMapper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mock = $this->createMock(ApiClientSqlDataMapper::class);
 
         return $mock;
     }
@@ -132,26 +130,8 @@ class ApiClientRepoTest extends RepoTestCase
      */
     protected function createEntityRegistryStub(?Entity $entity): MockObject
     {
-        $entityRegistry = $this->getMockBuilder(IEntityRegistry::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'clear',
-                'clearAggregateRoots',
-                'deregisterEntity',
-                'getClassName',
-                'getEntities',
-                'getEntity',
-                'getEntityState',
-                'getObjectHashId',
-                'isRegistered',
-                'registerAggregateRootCallback',
-                'registerEntity',
-                'runAggregateRootCallbacks',
-                'setState',
-            ])
-            ->getMock();
+        $entityRegistry = $this->createMock(IEntityRegistry::class);
 
-        $entityRegistry->expects($this->any())->method('registerEntity');
         $entityRegistry->expects($this->any())->method('getEntity')->willReturn($entity);
 
         return $entityRegistry;

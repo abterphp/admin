@@ -26,39 +26,9 @@ class AuthenticationTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(ISession::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'ageFlashData',
-                    'delete',
-                    'flash',
-                    'flush',
-                    'get',
-                    'getAll',
-                    'getId',
-                    'getName',
-                    'has',
-                    'hasStarted',
-                    'reflash',
-                    'regenerateId',
-                    'set',
-                    'setId',
-                    'setMany',
-                    'setName',
-                    'start',
-                    'offsetExists',
-                    'offsetGet',
-                    'offsetSet',
-                    'offsetUnset',
-                ]
-            )
-            ->getMock();
+        $this->sessionMock = $this->createMock(ISession::class);
 
-        $this->sessionHandlerMock = $this->getMockBuilder(SessionHandlerInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['close', 'destroy', 'gc', 'open', 'read', 'write'])
-            ->getMock();
+        $this->sessionHandlerMock = $this->createMock(SessionHandlerInterface::class);
 
         $this->sut = new Authentication(
             $this->sessionMock,

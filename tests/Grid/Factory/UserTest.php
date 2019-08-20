@@ -37,30 +37,11 @@ class UserTest extends TestCase
 
     public function setUp(): void
     {
-        $this->urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->paginationFactoryMock = $this->getMockBuilder(PaginationFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
-
-        $this->tableFactoryMock = $this->getMockBuilder(TableFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
-
-        $this->gridFactoryMock = $this->getMockBuilder(GridFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->filtersMock = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
+        $this->urlGeneratorMock      = $this->createMock(UrlGenerator::class);
+        $this->paginationFactoryMock = $this->createMock(PaginationFactory::class);
+        $this->tableFactoryMock      = $this->createMock(TableFactory::class);
+        $this->gridFactoryMock       = $this->createMock(GridFactory::class);
+        $this->filtersMock           = $this->createMock(Filters::class);
 
         $this->sut = new User(
             $this->urlGeneratorMock,

@@ -39,27 +39,11 @@ class ApiClientTest extends TestCase
     {
         parent::setUp();
 
-        $this->enforcerMock = $this->getMockBuilder(Enforcer::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->repoMock = $this->getMockBuilder(Repo::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getPage'])
-            ->getMock();
-
-        $this->foundRowsMock = $this->getMockBuilder(FoundRows::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['get'])
-            ->getMock();
-
-        $this->gridFactoryMock = $this->getMockBuilder(GridFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['createGrid'])
-            ->getMock();
-
-        $this->sessionMock = MockSessionFactory::create($this, ['foo' => 'bar']);
+        $this->enforcerMock    = $this->createMock(Enforcer::class);
+        $this->repoMock        = $this->createMock(Repo::class);
+        $this->foundRowsMock   = $this->createMock(FoundRows::class);
+        $this->gridFactoryMock = $this->createMock(GridFactory::class);
+        $this->sessionMock     = MockSessionFactory::create($this, ['foo' => 'bar']);
 
         $this->sut = new ApiClient(
             $this->enforcerMock,
@@ -75,72 +59,10 @@ class ApiClientTest extends TestCase
         $baseUrl = '/foo';
 
         /** @var Collection|MockObject $query */
-        $queryStub = $this->getMockBuilder(Collection::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getAll', 'get'])
-            ->getMock();
+        $queryStub = $this->createMock(Collection::class);
 
         /** @var IGrid|MockObject $query */
-        $gridStub = $this->getMockBuilder(IGrid::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'getPageSize',
-                'getSortConditions',
-                'getWhereConditions',
-                'getSqlParams',
-                'setTotalCount',
-                'setEntities',
-                // component
-                'find',
-                'findFirstChild',
-                'collect',
-                'insertBefore',
-                'insertAfter',
-                'replace',
-                'remove',
-                // tag
-                'setTag',
-                'getAttributes',
-                'hasAttribute',
-                'getAttribute',
-                'unsetAttribute',
-                'unsetAttributeValue',
-                'setAttributes',
-                'addAttributes',
-                'setAttribute',
-                'appendToAttributes',
-                'appendToAttribute',
-                'appendToClass',
-                // node container
-                'getNodes',
-                'getDescendantNodes',
-                'getExtendedNodes',
-                'getExtendedDescendantNodes',
-                // node
-                'setContent',
-                'hasIntent',
-                'getIntents',
-                'setIntent',
-                'addIntent',
-                'setTranslator',
-                'getTranslator',
-                'isMatch',
-                '__toString',
-                // array
-                'offsetExists',
-                'offsetGet',
-                'offsetSet',
-                'offsetUnset',
-                // countable
-                'count',
-                // iterator
-                'current',
-                'next',
-                'key',
-                'valid',
-                'rewind',
-            ])
-            ->getMock();
+        $gridStub = $this->createMock(IGrid::class);
 
         $this->gridFactoryMock
             ->expects($this->any())

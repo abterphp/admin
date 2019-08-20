@@ -37,35 +37,12 @@ class ApiClientTest extends TestCase
 
     public function setUp(): void
     {
-        $this->urlGeneratorMock = $this->getMockBuilder(UrlGenerator::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->paginationFactoryMock = $this->getMockBuilder(PaginationFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
-
-        $this->tableFactoryMock = $this->getMockBuilder(TableFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
-
-        $this->gridFactoryMock = $this->getMockBuilder(GridFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->filtersMock = $this->getMockBuilder(Filters::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-
-        $this->encrypterMock = $this->getMockBuilder(IEncrypter::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['decrypt', 'encrypt', 'setSecret'])
-            ->getMock();
+        $this->urlGeneratorMock      = $this->createMock(UrlGenerator::class);
+        $this->paginationFactoryMock = $this->createMock(PaginationFactory::class);
+        $this->tableFactoryMock      = $this->createMock(TableFactory::class);
+        $this->gridFactoryMock       = $this->createMock(GridFactory::class);
+        $this->filtersMock           = $this->createMock(Filters::class);
+        $this->encrypterMock         = $this->createMock(IEncrypter::class);
 
         $this->sut = new ApiClient(
             $this->urlGeneratorMock,

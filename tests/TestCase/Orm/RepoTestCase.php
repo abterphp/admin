@@ -35,9 +35,7 @@ abstract class RepoTestCase extends TestCase
     protected function createDataMapperMock(): IDataMapper
     {
         /** @var IDataMapper|MockObject $mock */
-        $mock = $this->getMockBuilder(IDataMapper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mock = $this->createMock(IDataMapper::class);
 
         return $mock;
     }
@@ -48,20 +46,7 @@ abstract class RepoTestCase extends TestCase
     protected function createUnitOfWorkMock(): IUnitOfWork
     {
         /** @var IUnitOfWork|MockObject $mock */
-        $mock = $this->getMockBuilder(IUnitOfWork::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([
-                'commit',
-                'detach',
-                'dispose',
-                'getEntityRegistry',
-                'registerDataMapper',
-                'scheduleForDeletion',
-                'scheduleForInsertion',
-                'scheduleForUpdate',
-                'setConnection',
-            ])
-            ->getMock();
+        $mock = $this->createMock(IUnitOfWork::class);
 
         return $mock;
     }

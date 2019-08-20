@@ -31,20 +31,13 @@ class UserGroupTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(Session::class)
-            ->setMethods(['get'])
-            ->getMock();
+        $this->sessionMock = $this->createMock(Session::class);
         $this->sessionMock->expects($this->any())->method('get')->willReturnArgument(0);
 
-        $this->translatorMock = $this->getMockBuilder(ITranslator::class)
-            ->setMethods(['translate', 'canTranslate'])
-            ->getMock();
+        $this->translatorMock = $this->createMock(ITranslator::class);
         $this->translatorMock->expects($this->any())->method('translate')->willReturnArgument(0);
 
-        $this->adminResourceRepoMock = $this->getMockBuilder(AdminResourceRepo::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAll'])
-            ->getMock();
+        $this->adminResourceRepoMock = $this->createMock(AdminResourceRepo::class);
 
         $this->sut = new UserGroup($this->sessionMock, $this->translatorMock, $this->adminResourceRepoMock);
     }
@@ -89,10 +82,7 @@ class UserGroupTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entityStub = $this->getMockBuilder(IEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getId', 'setId'])
-            ->getMock();
+        $entityStub = $this->createMock(IEntity::class);
 
         $this->sut->create('foo', 'bar', '/baz', $entityStub);
     }
@@ -102,17 +92,7 @@ class UserGroupTest extends TestCase
      */
     protected function createMockEntity()
     {
-        $entityMock = $this->getMockBuilder(Entity::class)
-            ->disableOriginalConstructor()
-            ->setMethods(
-                [
-                    'getId',
-                    'getIdentifier',
-                    'getName',
-                    'getAdminResources',
-                ]
-            )
-            ->getMock();
+        $entityMock = $this->createMock(Entity::class);
 
         return $entityMock;
     }

@@ -151,10 +151,7 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->add($entity);
     }
@@ -163,10 +160,7 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->delete($entity);
     }
@@ -175,10 +169,7 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entity = $this->getMockBuilder(IStringerEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__toString', 'toJSON', 'getId', 'setId'])
-            ->getMock();
+        $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entity);
     }

@@ -27,39 +27,8 @@ class CheckCsrfTokenTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(ISession::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'ageFlashData',
-                    'delete',
-                    'flash',
-                    'flush',
-                    'get',
-                    'getAll',
-                    'getId',
-                    'getName',
-                    'has',
-                    'hasStarted',
-                    'reflash',
-                    'regenerateId',
-                    'set',
-                    'setId',
-                    'setMany',
-                    'setName',
-                    'start',
-                    'offsetExists',
-                    'offsetGet',
-                    'offsetSet',
-                    'offsetUnset',
-                ]
-            )
-            ->getMock();
-
-        $this->csrfTokenCheckerMock = $this->getMockBuilder(CsrfTokenChecker::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['tokenIsValid'])
-            ->getMock();
+        $this->sessionMock          = $this->createMock(ISession::class);
+        $this->csrfTokenCheckerMock = $this->createMock(CsrfTokenChecker::class);
 
         $this->sut = new CheckCsrfToken(
             $this->csrfTokenCheckerMock,

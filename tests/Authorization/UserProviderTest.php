@@ -19,10 +19,7 @@ class UserProviderTest extends TestCase
 
     public function setUp(): void
     {
-        $this->authLoaderMock = $this->getMockBuilder(UserAuthLoader::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['loadAll'])
-            ->getMock();
+        $this->authLoaderMock = $this->createMock(UserAuthLoader::class);
 
         $this->sut = new UserProvider($this->authLoaderMock);
     }

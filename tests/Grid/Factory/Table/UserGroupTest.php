@@ -22,15 +22,8 @@ class UserGroupTest extends TestCase
 
     public function setUp(): void
     {
-        $this->headerFactoryMock = $this->getMockBuilder(HeaderFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
-
-        $this->bodyFactoryMock = $this->getMockBuilder(BodyFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['create'])
-            ->getMock();
+        $this->headerFactoryMock = $this->createMock(HeaderFactory::class);
+        $this->bodyFactoryMock   = $this->createMock(BodyFactory::class);
 
         $this->sut = new UserGroup($this->headerFactoryMock, $this->bodyFactoryMock);
     }

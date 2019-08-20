@@ -24,24 +24,9 @@ class SecurityTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheBridgeMock = $this->getMockBuilder(ICacheBridge::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'decrement',
-                    'delete',
-                    'flush',
-                    'get',
-                    'has',
-                    'increment',
-                    'set',
-                ]
-            )
-            ->getMock();
+        $this->cacheBridgeMock = $this->createMock(ICacheBridge::class);
 
-        $this->sut = new Security(
-            $this->cacheBridgeMock
-        );
+        $this->sut = new Security($this->cacheBridgeMock);
     }
 
     public function testHandleRunsChecksIfNoEnvironmentNameIsSet()

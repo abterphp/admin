@@ -35,25 +35,15 @@ class ApiClientTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sessionMock = $this->getMockBuilder(Session::class)
-            ->onlyMethods(['get'])
-            ->getMock();
+        $this->sessionMock = $this->createMock(Session::class);
         $this->sessionMock->expects($this->any())->method('get')->willReturnArgument(0);
 
-        $this->translatorMock = $this->getMockBuilder(ITranslator::class)
-            ->onlyMethods(['translate', 'canTranslate'])
-            ->getMock();
+        $this->translatorMock = $this->createMock(ITranslator::class);
         $this->translatorMock->expects($this->any())->method('translate')->willReturnArgument(0);
 
-        $this->adminResourceRepoMock = $this->getMockBuilder(AdminResourceRepo::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getByUserId'])
-            ->getMock();
+        $this->adminResourceRepoMock = $this->createMock(AdminResourceRepo::class);
 
-        $this->buttonFactoryMock = $this->getMockBuilder(ButtonFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['createFromUrl', 'createFromName', 'createSimple', 'createWithIcon'])
-            ->getMock();
+        $this->buttonFactoryMock = $this->createMock(ButtonFactory::class);
 
         $this->sut = new ApiClient(
             $this->sessionMock,
@@ -104,10 +94,7 @@ class ApiClientTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $entityStub = $this->getMockBuilder(IEntity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getId', 'setId'])
-            ->getMock();
+        $entityStub = $this->createMock(IEntity::class);
 
         $this->sut->create('foo', 'bar', '/baz', $entityStub);
     }
@@ -117,17 +104,7 @@ class ApiClientTest extends TestCase
      */
     protected function createMockEntity()
     {
-        $entityMock = $this->getMockBuilder(Entity::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'getId',
-                    'getIdentifier',
-                    'getName',
-                    'getAdminResources',
-                ]
-            )
-            ->getMock();
+        $entityMock = $this->createMock(Entity::class);
 
         return $entityMock;
     }
