@@ -270,7 +270,8 @@ class AccessTokenTest extends QueryTestCase
 
         $this->sut->revokeAccessToken($tokenId);
 
-        $this->markTestIncomplete();
+        // This test is expected to break if there's anything happening in AccessToken::revokeAccessToken
+        $this->assertTrue(true);
     }
 
     public function testIsAccessTokenRevoked()
