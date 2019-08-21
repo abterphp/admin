@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\Token as Entity;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use DateTimeImmutable;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
@@ -14,7 +15,7 @@ use Opulence\QueryBuilders\MySql\SelectQuery;
 class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 {
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      */
     public function add($entity)
     {
@@ -39,7 +40,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
@@ -109,7 +110,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */

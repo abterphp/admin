@@ -12,6 +12,7 @@ use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UserSqlDataMapperTest extends DataMapperTestCase
 {
@@ -576,6 +577,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->add($entity);
@@ -585,6 +587,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->delete($entity);
@@ -594,6 +597,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entity);

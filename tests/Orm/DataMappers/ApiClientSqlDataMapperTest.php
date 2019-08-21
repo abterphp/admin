@@ -361,6 +361,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->add($entity);
@@ -370,6 +371,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->delete($entity);
@@ -379,6 +381,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entity);

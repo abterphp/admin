@@ -9,6 +9,7 @@ use AbterPhp\Admin\Orm\DataMappers\LoginAttemptSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
 {
@@ -151,6 +152,7 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->add($entity);
@@ -160,6 +162,7 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->delete($entity);
@@ -169,6 +172,7 @@ class LoginAttemptSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entity);

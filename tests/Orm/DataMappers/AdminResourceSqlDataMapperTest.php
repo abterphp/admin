@@ -9,6 +9,7 @@ use AbterPhp\Admin\Orm\DataMappers\AdminResourceSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class AdminResourceSqlDataMapperTest extends DataMapperTestCase
 {
@@ -145,6 +146,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->add($entity);
@@ -154,6 +156,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->delete($entity);
@@ -163,6 +166,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @var IStringerEntity|MockObject $entity */
         $entity = $this->createMock(IStringerEntity::class);
 
         $this->sut->update($entity);

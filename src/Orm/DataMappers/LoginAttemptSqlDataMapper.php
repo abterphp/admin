@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\LoginAttempt as Entity;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -13,7 +14,7 @@ use Opulence\QueryBuilders\MySql\SelectQuery;
 class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDataMapper
 {
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      */
     public function add($entity)
     {
@@ -46,7 +47,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
@@ -99,7 +100,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */

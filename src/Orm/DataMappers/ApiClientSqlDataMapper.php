@@ -6,6 +6,7 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -17,7 +18,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
     use IdGeneratorUserTrait;
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      */
     public function add($entity)
     {
@@ -45,7 +46,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
@@ -126,7 +127,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */

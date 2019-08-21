@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\UserLanguage as Entity;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -14,7 +15,7 @@ use Opulence\QueryBuilders\MySql\SelectQuery;
 class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDataMapper
 {
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      */
     public function add($entity)
     {
@@ -36,7 +37,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
@@ -136,7 +137,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */

@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
+use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -18,7 +19,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     use IdGeneratorUserTrait;
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      */
     public function add($entity)
     {
@@ -49,7 +50,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
@@ -223,7 +224,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     }
 
     /**
-     * @param Entity $entity
+     * @param IStringerEntity $entity
      *
      * @throws \Opulence\QueryBuilders\InvalidQueryException
      */
