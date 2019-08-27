@@ -39,7 +39,7 @@ class Security implements IMiddleware
     // $next consists of the next middleware in the pipeline
     public function handle(Request $request, Closure $next): Response
     {
-        $env = $request->getEnv();
+        $env = $request->getEnv() ?: $_ENV;
         if (!empty($env[Env::ENV_NAME]) && $env[Env::ENV_NAME] !== Environment::PRODUCTION) {
             return $next($request);
         }
