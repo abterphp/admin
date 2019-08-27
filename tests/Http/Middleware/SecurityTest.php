@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Http\Middleware;
 
 use AbterPhp\Admin\Config\Routes as RoutesConfig;
+use AbterPhp\Framework\Config\EnvReader;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Exception\Security as SecurityException;
 use Opulence\Cache\ICacheBridge;
@@ -31,6 +32,8 @@ class SecurityTest extends TestCase
 
     public function testHandleRunsChecksIfNoEnvironmentNameIsSet()
     {
+        (new EnvReader())->clear(Env::ENV_NAME);
+
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
 
         $requestStub  = new Request([], [], [], [], [], [], null);
@@ -47,6 +50,8 @@ class SecurityTest extends TestCase
 
     public function testHandleSkipsChecksIfNotInProduction()
     {
+        (new EnvReader())->set(Env::ENV_NAME, Environment::STAGING);
+
         $this->cacheBridgeMock->expects($this->never())->method('has');
 
         $env          = [
@@ -54,6 +59,7 @@ class SecurityTest extends TestCase
         ];
         $requestStub  = new Request([], [], [], [], [], $env, null);
         $responseStub = new Response();
+
 
         $next = function () use ($responseStub) {
             return $responseStub;
@@ -66,6 +72,8 @@ class SecurityTest extends TestCase
 
     public function testHandleRunsChecksIfInProduction()
     {
+        (new EnvReader())->set(Env::ENV_NAME, Environment::PRODUCTION);
+
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
 
         $env          = [
@@ -110,6 +118,8 @@ class SecurityTest extends TestCase
         string $apiBasePath,
         string $oauth2PrivateKeyPassword
     ) {
+        (new EnvReader())->set(Env::ENV_NAME, Environment::PRODUCTION);
+
         $this->expectException(SecurityException::class);
 
         RoutesConfig::setLoginPath($loginPath);
