@@ -10,16 +10,16 @@ update:
 
 build:
 	./vendor/bin/phpunit
-	./vendor/bin/phpcs
-	./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
+	./vendor/bin/phpcs -p --colors src
+	./vendor/bin/phpcs -p --colors --standard=PSR12 tests
 	./vendor/bin/phpmd src text .phpmd.xml
 	PHAN_DISABLE_XDEBUG_WARN=1 ./vendor/bin/phan --color
 
 precommit:
 	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 php -l
 	./vendor/bin/phpunit
-	git diff --cached --name-only --diff-filter=ACM | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q
-	git diff --cached --name-only --diff-filter=ACM | grep Test | grep \\.php | xargs -n 1 ./vendor/bin/phpcs -q -p --colors --cache --standard=PSR12
+	./vendor/bin/phpcs -p --colors --cache src
+	./vendor/bin/phpcs -p --colors --cache --standard=PSR12 tests
 
 unit:
 	./vendor/bin/phpunit

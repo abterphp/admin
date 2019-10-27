@@ -18,9 +18,9 @@ use PHPUnit\Framework\TestCase;
 
 class AuthorizationTest extends TestCase
 {
-    const RESOURCE = 'foo';
-    const ROLE     = 'bar';
-    const USERNAME = 'baz';
+    protected const RESOURCE = 'foo';
+    protected const ROLE     = 'bar';
+    protected const USERNAME = 'baz';
 
     /** @var Authorization - System Under Test */
     protected $sut;

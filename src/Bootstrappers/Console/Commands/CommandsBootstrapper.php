@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace AbterPhp\Admin\Bootstrappers\Console\Commands;
 
 use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
