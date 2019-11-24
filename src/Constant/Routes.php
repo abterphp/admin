@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Constant;
 
-class Routes
+use AbterPhp\Framework\Constant\Routes as FrameworkRoutes;
+
+class Routes extends FrameworkRoutes
 {
     const ROUTE_403 = '403';
     const PATH_403  = '/nope';

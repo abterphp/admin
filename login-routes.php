@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Admin\Config\Routes as RoutesConfig;
+use AbterPhp\Admin\Constant\Routes as RoutesConstant;
 use Opulence\Routing\Router;
 
 /**
@@ -16,10 +17,24 @@ $router->group(
     ['controllerNamespace' => 'AbterPhp\Admin\\Http\\Controllers'],
     function (Router $router) {
         /** @see \AbterPhp\Admin\Http\Controllers\Admin\Form\Login::display() */
-        $router->get(PATH_LOGIN, 'Admin\Form\Login@display', [OPTION_NAME => Routes::ROUTE_LOGIN]);
+        $router->get(
+            RoutesConfig::getLoginPath(),
+            'Admin\Form\Login@display',
+            [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGIN]
+        );
+
         /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\Login::execute() */
-        $router->post(PATH_LOGIN, 'Admin\Execute\Login@execute', [OPTION_NAME => Routes::ROUTE_LOGIN_POST]);
+        $router->post(
+            RoutesConfig::getLoginPath(),
+            'Admin\Execute\Login@execute',
+            [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGIN_POST]
+        );
+
         /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\Logout::execute() */
-        $router->get(Routes::PATH_LOGOUT, 'Admin\Execute\Logout@execute', [OPTION_NAME => Routes::ROUTE_LOGOUT]);
+        $router->get(
+            RoutesConstant::PATH_LOGOUT,
+            'Admin\Execute\Logout@execute',
+            [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGOUT]
+        );
     }
 );
