@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Console\Commands\User;
 
-use AbterPhp\Admin\Domain\Entities\User;
+use AbterPhp\Admin\Domain\Entities\User; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Admin\Orm\UserRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\Formatters\PaddingFormatter;
 use Opulence\Console\Responses\Formatters\TableFormatter;
 use Opulence\Console\Responses\IResponse;
 
-// @phan-suppress-current-line PhanUnreferencedUseNormal
 class ListCommand extends Command
 {
     const COMMAND_NAME        = 'user:list';

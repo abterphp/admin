@@ -9,6 +9,7 @@ use AbterPhp\Admin\Orm\UserGroupRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
 
+// @phan-suppress-current-line PhanUnreferencedUseNormal
 class ListCommand extends Command
 {
     const COMMAND_NAME        = 'usergroup:list';
