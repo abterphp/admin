@@ -37,6 +37,7 @@ return [
         Console\Commands\ApiClient\Create::class,
         Console\Commands\ApiClient\Delete::class,
         Console\Commands\ApiClient\RegenerateSecret::class,
+        Console\Commands\User\ListCommand::class,
         Console\Commands\User\Create::class,
         Console\Commands\User\Delete::class,
         Console\Commands\User\UpdatePassword::class,
