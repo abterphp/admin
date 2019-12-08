@@ -62,7 +62,7 @@ class RoutesTest extends TestCase
         }
     }
 
-    public function testGetLoginPathThrowExceptionIfRelatedEnvironmentVariableDoesNotExist()
+    public function testGetLoginPathThrowsExceptionIfRelatedEnvironmentVariableDoesNotExist()
     {
         $this->newEnvironmentVariable(Routes::ADMIN_LOGIN_PATH);
 
@@ -112,6 +112,60 @@ class RoutesTest extends TestCase
         $this->sut->getLoginPath();
 
         $actualResult = $this->sut->getLoginPath();
+
+        $this->assertSame($presetValue, $actualResult);
+    }
+
+    public function testGetLogoutPathThrowsExceptionIfRelatedEnvironmentVariableDoesNotExist()
+    {
+        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH);
+
+        $this->expectException(Config::class);
+
+        $this->sut->getLogoutPath();
+    }
+
+    public function testGetLogoutPathWillReturnEnvironmentVariableValueByDefault()
+    {
+        $envValue = 'foo';
+
+        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH, $envValue);
+
+        $actualResult = $this->sut->getLogoutPath();
+
+        $this->assertSame($envValue, $actualResult);
+    }
+
+    public function testGetLogoutPathCanReturnEarlyIfAlreadyRun()
+    {
+        $envValue = 'foo';
+
+        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH, $envValue);
+
+        $this->sut->getLogoutPath();
+
+        // We're removing any environment variable already set
+        putenv(Routes::ADMIN_LOGOUT_PATH);
+        unset($_ENV[Routes::ADMIN_LOGOUT_PATH]);
+        unset($_SERVER[Routes::ADMIN_LOGOUT_PATH]);
+
+        $actualResult = $this->sut->getLogoutPath();
+
+        $this->assertSame($envValue, $actualResult);
+    }
+
+    public function testGetLogoutPathCanBePreset()
+    {
+        $envValue    = 'foo';
+        $presetValue = 'bar';
+
+        $this->sut->setLogoutPath($presetValue);
+
+        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH, $envValue);
+
+        $this->sut->getLogoutPath();
+
+        $actualResult = $this->sut->getLogoutPath();
 
         $this->assertSame($presetValue, $actualResult);
     }

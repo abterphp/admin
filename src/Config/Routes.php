@@ -10,12 +10,16 @@ use Opulence\Environments\Environment;
 
 class Routes
 {
-    const ADMIN_LOGIN_PATH = 'ADMIN_LOGIN_PATH';
-    const ADMIN_BASE_PATH  = 'ADMIN_BASE_PATH';
-    const API_BASE_PATH    = 'API_BASE_PATH';
+    const ADMIN_LOGIN_PATH  = 'ADMIN_LOGIN_PATH';
+    const ADMIN_LOGOUT_PATH = 'ADMIN_LOGOUT_PATH';
+    const ADMIN_BASE_PATH   = 'ADMIN_BASE_PATH';
+    const API_BASE_PATH     = 'API_BASE_PATH';
 
     /** @var string|null */
     protected static $loginPath;
+
+    /** @var string|null */
+    protected static $logoutPath;
 
     /** @var string|null */
     protected static $adminBasePath;
@@ -48,6 +52,33 @@ class Routes
         static::$loginPath = (string)$loginPath;
 
         return static::$loginPath;
+    }
+
+    /**
+     * @param string $logoutPath
+     */
+    public static function setLogoutPath(string $logoutPath): void
+    {
+        static::$logoutPath = $logoutPath;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getLogoutPath(): string
+    {
+        if (null !== static::$logoutPath) {
+            return static::$logoutPath;
+        }
+
+        $logoutPath = Environment::getVar(static::ADMIN_LOGOUT_PATH);
+        if (null === $logoutPath) {
+            throw new ConfigException(__CLASS__, [static::ADMIN_LOGOUT_PATH]);
+        }
+
+        static::$logoutPath = (string)$logoutPath;
+
+        return static::$logoutPath;
     }
 
     /**

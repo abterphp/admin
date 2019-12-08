@@ -32,7 +32,7 @@ $router->group(
 
         /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\Logout::execute() */
         $router->get(
-            RoutesConstant::PATH_LOGOUT,
+            RoutesConfig::getLogoutPath(),
             'Admin\Execute\Logout@execute',
             [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGOUT]
         );
