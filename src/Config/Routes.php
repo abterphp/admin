@@ -140,7 +140,7 @@ class Routes
      */
     public static function getLoginFailurePath(): string
     {
-        return static::getAdminBasePath();
+        return static::getLoginPath();
     }
 
     /**
