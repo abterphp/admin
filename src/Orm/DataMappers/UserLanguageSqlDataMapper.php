@@ -6,12 +6,12 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\UserLanguage as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDataMapper
 {
     /**
@@ -46,7 +46,11 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
         assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $query = (new QueryBuilder())
-            ->update('user_languages', 'user_languages', ['deleted' => [1, \PDO::PARAM_INT]])
+            ->update(
+                'user_languages',
+                'user_languages',
+                ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]]
+            )
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
@@ -155,7 +159,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
                 ]
             )
             ->where('id = ?')
-            ->andWhere('deleted = 0')
+            ->andWhere('deleted_at IS NULL')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
         $sql    = $query->getSql();
@@ -193,7 +197,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
                 'user_languages.name'
             )
             ->from('user_languages')
-            ->where('user_languages.deleted = 0');
+            ->where('user_languages.deleted_at IS NULL');
 
         return $query;
     }

@@ -29,7 +29,7 @@ class ScopeTest extends QueryTestCase
         $id         = 'c9f0176b-d6f2-4f31-802f-67ad253f9fe7';
         $identifier = 'foo';
 
-        $sql0          = 'SELECT ar.id FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.identifier = :identifier)'; // phpcs:ignore
+        $sql0          = 'SELECT ar.id FROM admin_resources AS ar WHERE (ar.deleted_at IS NULL) AND (ar.identifier = :identifier)'; // phpcs:ignore
         $valuesToBind0 = [
             'identifier' => [$identifier, \PDO::PARAM_STR],
         ];
@@ -54,7 +54,7 @@ class ScopeTest extends QueryTestCase
         $id         = 'c9f0176b-d6f2-4f31-802f-67ad253f9fe7';
         $identifier = 'foo';
 
-        $sql0          = 'SELECT ar.id FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.identifier = :identifier)'; // phpcs:ignore
+        $sql0          = 'SELECT ar.id FROM admin_resources AS ar WHERE (ar.deleted_at IS NULL) AND (ar.identifier = :identifier)'; // phpcs:ignore
         $valuesToBind0 = [
             'identifier' => [$identifier, \PDO::PARAM_STR],
         ];

@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -57,7 +58,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
         $this->deleteAdminResources($entity);
 
         $query = (new QueryBuilder())
-            ->update('api_clients', 'api_clients', ['deleted' => [1, \PDO::PARAM_INT]])
+            ->update('api_clients', 'api_clients', ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]])
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
@@ -145,7 +146,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
                 ]
             )
             ->where('id = ?')
-            ->andWhere('deleted = 0')
+            ->andWhere('deleted_at IS NULL')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
         $statement = $this->writeConnection->prepare($query->getSql());
@@ -214,7 +215,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
             ->from('api_clients', 'ac')
             ->leftJoin('api_clients_admin_resources', 'acar', 'acar.api_client_id = ac.id')
             ->leftJoin('admin_resources', 'ar', 'acar.admin_resource_id = ar.id')
-            ->where('ac.deleted = 0')
+            ->where('ac.deleted_at IS NULL')
             ->groupBy('ac.id');
 
         return $query;

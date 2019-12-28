@@ -53,7 +53,7 @@ class Scope implements ScopeRepositoryInterface
         $query = (new QueryBuilder())
             ->select('ar.id')
             ->from('admin_resources', 'ar')
-            ->where('ar.deleted = 0')
+            ->where('ar.deleted_at IS NULL')
             ->andWhere('ar.identifier = :identifier');
 
         $sql    = $query->getSql();

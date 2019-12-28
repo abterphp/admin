@@ -4,14 +4,14 @@
 
 CREATE TABLE `admin_resources`
 (
-    `id`         char(36)            NOT NULL,
-    `identifier` varchar(160)        NOT NULL,
-    `created_at` timestamp           NOT NULL DEFAULT current_timestamp(),
-    `updated_at` timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    `deleted`    tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `id`         char(36)     NOT NULL,
+    `identifier` varchar(160) NOT NULL,
+    `created_at` timestamp    NOT NULL DEFAULT current_timestamp(),
+    `updated_at` timestamp    NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `identifier` (`identifier`),
-    KEY `admin_resource_deleted_index` (`deleted`)
+    KEY `admin_resource_deleted_at_index` (`deleted_at`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -64,16 +64,16 @@ CREATE TABLE `login_attempts`
 
 CREATE TABLE `user_groups`
 (
-    `id`         char(36)            NOT NULL,
-    `identifier` varchar(160)        NOT NULL,
-    `name`       varchar(128)        NOT NULL,
-    `created_at` timestamp           NOT NULL DEFAULT current_timestamp(),
-    `updated_at` timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    `deleted`    tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `id`         char(36)     NOT NULL,
+    `identifier` varchar(160) NOT NULL,
+    `name`       varchar(128) NOT NULL,
+    `created_at` timestamp    NOT NULL DEFAULT current_timestamp(),
+    `updated_at` timestamp    NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `identifier` (`identifier`),
     UNIQUE KEY `uniq_name` (`name`),
-    KEY `users_deleted_index` (`deleted`)
+    KEY `users_deleted_at_index` (`deleted_at`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -105,13 +105,13 @@ CREATE TABLE `user_groups_admin_resources`
 
 CREATE TABLE `user_languages`
 (
-    `id`         char(36)            NOT NULL,
-    `identifier` varchar(8)          NOT NULL,
-    `name`       varchar(128)        NOT NULL,
-    `deleted`    tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `id`         char(36)     NOT NULL,
+    `identifier` varchar(8)   NOT NULL,
+    `name`       varchar(128) NOT NULL,
+    `deleted_at` datetime DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `identifier` (`identifier`),
-    KEY `user_languages_deleted_index` (`deleted`)
+    KEY `user_languages_deleted_at_index` (`deleted_at`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -134,11 +134,11 @@ CREATE TABLE `users`
     `is_gravatar_allowed` tinyint(1) unsigned NOT NULL DEFAULT 1,
     `created_at`          timestamp           NOT NULL DEFAULT current_timestamp(),
     `updated_at`          timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    `deleted`             tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `deleted_at`          datetime                     DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_username` (`username`),
     UNIQUE KEY `uniq_email` (`email`),
-    KEY `users_deleted_index` (`deleted`),
+    KEY `users_deleted_at_index` (`deleted_at`),
     KEY `user_language_id` (`user_language_id`),
     CONSTRAINT `u_ibfk_1` FOREIGN KEY (`user_language_id`) REFERENCES `user_languages` (`id`) ON DELETE NO ACTION
 ) ENGINE = InnoDB
@@ -150,16 +150,16 @@ CREATE TABLE `users`
 
 CREATE TABLE `users_user_groups`
 (
-    `id`            char(36)            NOT NULL,
-    `user_id`       char(36)            NOT NULL,
-    `user_group_id` char(36)            NOT NULL,
-    `created_at`    timestamp           NOT NULL DEFAULT current_timestamp(),
-    `updated_at`    timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    `deleted`       tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `id`            char(36)  NOT NULL,
+    `user_id`       char(36)  NOT NULL,
+    `user_group_id` char(36)  NOT NULL,
+    `created_at`    timestamp NOT NULL DEFAULT current_timestamp(),
+    `updated_at`    timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `deleted_at`    datetime           DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `user_id` (`user_id`),
     KEY `user_group_id` (`user_group_id`),
-    KEY `user_group_deleted_index` (`deleted`),
+    KEY `user_group_deleted_at_index` (`deleted_at`),
     CONSTRAINT `uug_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     CONSTRAINT `uug_ibfk_2` FOREIGN KEY (`user_group_id`) REFERENCES `user_groups` (`id`) ON DELETE NO ACTION
 ) ENGINE = InnoDB
@@ -171,15 +171,15 @@ CREATE TABLE `users_user_groups`
 
 CREATE TABLE `api_clients`
 (
-    `id`          char(36)            NOT NULL,
-    `user_id`     char(36)            NULL,
-    `secret`      text                NOT NULL,
-    `description` mediumtext          NOT NULL,
-    `created_at`  timestamp           NOT NULL DEFAULT current_timestamp(),
-    `updated_at`  timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    `deleted`     tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `id`          char(36)   NOT NULL,
+    `user_id`     char(36)   NULL,
+    `secret`      text       NOT NULL,
+    `description` mediumtext NOT NULL,
+    `created_at`  timestamp  NOT NULL DEFAULT current_timestamp(),
+    `updated_at`  timestamp  NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `deleted_at`  datetime            DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `users_deleted_index` (`deleted`),
+    KEY `users_deleted_at_index` (`deleted_at`),
     KEY `user_id` (`user_id`),
     CONSTRAINT `uc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
@@ -210,15 +210,15 @@ CREATE TABLE `api_clients_admin_resources`
 
 CREATE TABLE `tokens`
 (
-    `id`            varchar(120)        NOT NULL,
-    `api_client_id` char(36)            NOT NULL,
-    `expires_at`    timestamp           NOT NULL,
-    `revoked_at`    timestamp           NULL     DEFAULT NULL,
-    `created_at`    timestamp           NOT NULL DEFAULT current_timestamp(),
-    `updated_at`    timestamp           NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    `deleted`       tinyint(1) unsigned NOT NULL DEFAULT 0,
+    `id`            varchar(120) NOT NULL,
+    `api_client_id` char(36)     NOT NULL,
+    `expires_at`    timestamp    NOT NULL,
+    `revoked_at`    timestamp    NULL     DEFAULT NULL,
+    `created_at`    timestamp    NOT NULL DEFAULT current_timestamp(),
+    `updated_at`    timestamp    NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `deleted_at`    datetime              DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `tokens_deleted_index` (`deleted`),
+    KEY `tokens_deleted_at_index` (`deleted_at`),
     KEY `api_client_id` (`api_client_id`),
     CONSTRAINT `t_ibfk_1` FOREIGN KEY (`api_client_id`) REFERENCES `api_clients` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB

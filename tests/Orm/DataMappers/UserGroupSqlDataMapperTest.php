@@ -96,9 +96,8 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1       = 'UPDATE user_groups AS user_groups SET deleted = ? WHERE (id = ?)'; // phpcs:ignore
-        $values1    = [[1, \PDO::PARAM_INT], [$id, \PDO::PARAM_STR]];
-        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
+        $sql1       = 'UPDATE user_groups AS user_groups SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
+        $statement1 = MockStatementFactory::createWriteStatementWithAny($this);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $entity = new UserGroup($id, $identifier, $name);
@@ -111,7 +110,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) GROUP BY ug.id'; // phpcs:ignore
+        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) GROUP BY ug.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -136,7 +135,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) GROUP BY ug.id LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) GROUP BY ug.id LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -156,7 +155,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ug.name ASC'];
         $conditions = ['ug.name = \'abc\'', 'abc.name = \'bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) AND (ug.name = \'abc\') AND (abc.name = \'bca\') GROUP BY ug.id ORDER BY ug.name ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.name = \'abc\') AND (abc.name = \'bca\') GROUP BY ug.id ORDER BY ug.name ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -173,7 +172,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) AND (ug.id = :user_group_id) GROUP BY ug.id'; // phpcs:ignore
+        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.id = :user_group_id) GROUP BY ug.id'; // phpcs:ignore
         $values       = ['user_group_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -190,7 +189,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted = 0) AND (ug.identifier = :identifier) GROUP BY ug.id'; // phpcs:ignore
+        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.identifier = :identifier) GROUP BY ug.id'; // phpcs:ignore
         $values       = ['identifier' => [$identifier, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -207,7 +206,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql0       = 'UPDATE user_groups AS user_groups SET identifier = ?, name = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
+        $sql0       = 'UPDATE user_groups AS user_groups SET identifier = ?, name = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [[$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
@@ -235,7 +234,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
 
         $this->sut->setIdGenerator(MockIdGeneratorFactory::create($this, $ugarId0, $ugarId1));
 
-        $sql0       = 'UPDATE user_groups AS user_groups SET identifier = ?, name = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
+        $sql0       = 'UPDATE user_groups AS user_groups SET identifier = ?, name = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [[$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);

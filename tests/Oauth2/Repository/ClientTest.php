@@ -61,7 +61,7 @@ class ClientTest extends QueryTestCase
 
         $this->cryptoMock->expects($this->any())->method('verifySecret')->willReturn(true);
 
-        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted = 0) AND (ac.id = :clientId)'; // phpcs:ignore
+        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted_at IS NULL) AND (ac.id = :clientId)'; // phpcs:ignore
         $valuesToBind0 = [
             'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
         ];
@@ -106,7 +106,7 @@ class ClientTest extends QueryTestCase
 
         $this->cryptoMock->expects($this->any())->method('verifySecret')->willReturn($secretsMatch);
 
-        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted = 0) AND (ac.id = :clientId)'; // phpcs:ignore
+        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted_at IS NULL) AND (ac.id = :clientId)'; // phpcs:ignore
         $valuesToBind0 = [
             'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
         ];
@@ -136,7 +136,7 @@ class ClientTest extends QueryTestCase
 
         $this->cryptoMock->expects($this->any())->method('verifySecret')->willReturn($secretsMatch);
 
-        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted = 0) AND (ac.id = :clientId)'; // phpcs:ignore
+        $sql0          = 'SELECT ac.secret FROM api_clients AS ac WHERE (ac.deleted_at IS NULL) AND (ac.id = :clientId)'; // phpcs:ignore
         $valuesToBind0 = [
             'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
         ];

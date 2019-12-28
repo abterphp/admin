@@ -124,9 +124,8 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1       = 'UPDATE api_clients AS api_clients SET deleted = ? WHERE (id = ?)'; // phpcs:ignore
-        $values1    = [[1, \PDO::PARAM_INT], [$id, \PDO::PARAM_STR]];
-        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
+        $sql1       = 'UPDATE api_clients AS api_clients SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
+        $statement1 = MockStatementFactory::createWriteStatementWithAny($this);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $resource0 = new AdminResource($resourceId0, '');
@@ -147,7 +146,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description1 = 'bar';
         $secret1      = 'bar-secret';
 
-        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted = 0) GROUP BY ac.id'; // phpcs:ignore
+        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],
@@ -178,7 +177,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $arId10         = '';
         $arIdentifier10 = '';
 
-        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted = 0) GROUP BY ac.id'; // phpcs:ignore
+        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -217,7 +216,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description1 = 'bar';
         $secret1      = 'bar-secret';
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted = 0) GROUP BY ac.id LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],
@@ -245,7 +244,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ac.description ASC'];
         $conditions = ['ac.description LIKE \'abc%\'', 'abc.description LIKE \'%bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted = 0) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY ac.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY ac.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],
@@ -266,7 +265,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description = 'foo';
         $secret      = 'foo-secret';
 
-        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted = 0) AND (ac.id = :api_client_id) GROUP BY ac.id'; // phpcs:ignore
+        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) AND (ac.id = :api_client_id) GROUP BY ac.id'; // phpcs:ignore
         $values       = ['api_client_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'user_id' => $userId, 'description' => $description, 'secret' => $secret]];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -284,7 +283,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description = 'foo';
         $secret      = 'bar';
 
-        $sql0       = 'UPDATE api_clients AS api_clients SET description = ?, secret = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
+        $sql0       = 'UPDATE api_clients AS api_clients SET description = ?, secret = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [
             [$description, \PDO::PARAM_STR],
             [$secret, \PDO::PARAM_STR],
@@ -318,7 +317,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $this->idGeneratorMock->expects($this->at(0))->method('generate')->willReturn($acarId0);
         $this->idGeneratorMock->expects($this->at(1))->method('generate')->willReturn($acarId1);
 
-        $sql0       = 'UPDATE api_clients AS api_clients SET description = ?, secret = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
+        $sql0       = 'UPDATE api_clients AS api_clients SET description = ?, secret = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [
             [$description, \PDO::PARAM_STR],
             [$secret, \PDO::PARAM_STR],

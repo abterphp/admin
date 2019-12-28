@@ -44,9 +44,8 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '8fe2f659-dbe5-4995-9e07-f49fb018cfe7';
         $identifier = 'foo';
 
-        $sql       = 'UPDATE admin_resources AS admin_resources SET deleted = ? WHERE (id = ?)'; // phpcs:ignore
-        $values    = [[1, \PDO::PARAM_INT], [$id, \PDO::PARAM_STR]];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
+        $sql       = 'UPDATE admin_resources AS admin_resources SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
+        $statement = MockStatementFactory::createWriteStatementWithAny($this);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new AdminResource($id, $identifier);
 
@@ -60,7 +59,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id1         = '51eac0fc-2b26-4231-9559-469e59fae694';
         $identifier1 = 'bar';
 
-        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0)'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted_at IS NULL)'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'identifier' => $identifier0],
@@ -79,7 +78,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '4b72daf8-81a9-400f-b865-28306d1c1646';
         $identifier = 'foo';
 
-        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.id = :admin_resource_id)'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted_at IS NULL) AND (ar.id = :admin_resource_id)'; // phpcs:ignore
         $values       = ['admin_resource_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
         $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -95,7 +94,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '998ac138-85be-4b8f-ac7a-3fb8c249a7bf';
         $identifier = 'foo';
 
-        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted = 0) AND (ar.identifier = :identifier)'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar WHERE (ar.deleted_at IS NULL) AND (ar.identifier = :identifier)'; // phpcs:ignore
         $values       = ['identifier' => [$identifier, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier]];
         $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
@@ -114,7 +113,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id1         = '51eac0fc-2b26-4231-9559-469e59fae694';
         $identifier1 = 'bar';
 
-        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar INNER JOIN user_groups_admin_resources AS ugar ON ugar.admin_resource_id = ar.id INNER JOIN user_groups AS ug ON ug.id = ugar.user_group_id INNER JOIN users_user_groups AS uug ON uug.user_group_id = ug.id WHERE (ar.deleted = 0) AND (uug.user_id = :user_id) GROUP BY ar.id'; // phpcs:ignore
+        $sql          = 'SELECT ar.id, ar.identifier FROM admin_resources AS ar INNER JOIN user_groups_admin_resources AS ugar ON ugar.admin_resource_id = ar.id INNER JOIN user_groups AS ug ON ug.id = ugar.user_group_id INNER JOIN users_user_groups AS uug ON uug.user_group_id = ug.id WHERE (ar.deleted_at IS NULL) AND (uug.user_id = :user_id) GROUP BY ar.id'; // phpcs:ignore
         $values       = ['user_id' => [$userId, \PDO::PARAM_STR]];
         $expectedData = [
             ['id' => $id0, 'identifier' => $identifier0],
@@ -133,7 +132,7 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '91693481-276e-495b-82a1-33209c47ca09';
         $identifier = 'foo';
 
-        $sql       = 'UPDATE admin_resources AS admin_resources SET identifier = ? WHERE (id = ?) AND (deleted = 0)'; // phpcs:ignore
+        $sql       = 'UPDATE admin_resources AS admin_resources SET identifier = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values    = [[$identifier, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
         $statement = MockStatementFactory::createWriteStatement($this, $values);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);

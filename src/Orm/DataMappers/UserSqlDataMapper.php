@@ -8,12 +8,12 @@ use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
 {
     use IdGeneratorUserTrait;
@@ -68,10 +68,10 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
                 'users',
                 'users',
                 [
-                    'deleted'  => [1, \PDO::PARAM_INT],
-                    'email'    => [sprintf('%s@example.com', $username), \PDO::PARAM_STR],
-                    'username' => [$username, \PDO::PARAM_STR],
-                    'password' => ['', \PDO::PARAM_STR],
+                    'deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR],
+                    'email'      => [sprintf('%s@example.com', $username), \PDO::PARAM_STR],
+                    'username'   => [$username, \PDO::PARAM_STR],
+                    'password'   => ['', \PDO::PARAM_STR],
                 ]
             )
             ->where('id = ?')
@@ -175,7 +175,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
             ->innerJoin(
                 'api_clients',
                 'ac',
-                'ac.user_id = users.id AND ac.deleted = 0'
+                'ac.user_id = users.id AND ac.deleted_at IS NULL'
             )
             ->andWhere('ac.id = :client_id');
 
@@ -332,12 +332,12 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
             ->innerJoin(
                 'user_languages',
                 'ul',
-                'ul.id = users.user_language_id AND ul.deleted = 0'
+                'ul.id = users.user_language_id AND ul.deleted_at IS NULL'
             )
-            ->leftJoin('users_user_groups', 'uug', 'uug.user_id = users.id AND uug.deleted = 0')
-            ->leftJoin('user_groups', 'ug', 'ug.id = uug.user_group_id AND ug.deleted = 0')
+            ->leftJoin('users_user_groups', 'uug', 'uug.user_id = users.id AND uug.deleted_at IS NULL')
+            ->leftJoin('user_groups', 'ug', 'ug.id = uug.user_group_id AND ug.deleted_at IS NULL')
             ->groupBy('users.id')
-            ->where('users.deleted = 0');
+            ->where('users.deleted_at IS NULL');
 
         return $query;
     }

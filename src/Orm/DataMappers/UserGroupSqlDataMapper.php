@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\UserGroup as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
+use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
@@ -56,7 +57,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
         $this->deleteAdminResources($entity);
 
         $query = (new QueryBuilder())
-            ->update('user_groups', 'user_groups', ['deleted' => [1, \PDO::PARAM_INT]])
+            ->update('user_groups', 'user_groups', ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]])
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
@@ -161,7 +162,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
                 ]
             )
             ->where('id = ?')
-            ->andWhere('deleted = 0')
+            ->andWhere('deleted_at IS NULL')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
         $statement = $this->writeConnection->prepare($query->getSql());
@@ -223,7 +224,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
             )
             ->from('user_groups', 'ug')
             ->leftJoin('user_groups_admin_resources', 'ugar', 'ugar.user_group_id = ug.id')
-            ->where('ug.deleted = 0')
+            ->where('ug.deleted_at IS NULL')
             ->groupBy('ug.id');
 
         return $query;

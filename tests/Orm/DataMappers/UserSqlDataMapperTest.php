@@ -134,7 +134,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1       = 'UPDATE users AS users SET deleted = ?, email = ?, username = ?, password = ? WHERE (id = ?)'; // phpcs:ignore
+        $sql1       = 'UPDATE users AS users SET deleted_at = ?, email = ?, username = ?, password = ? WHERE (id = ?)'; // phpcs:ignore
         $statement1 = MockStatementFactory::createWriteStatementWithAny($this);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
@@ -152,7 +152,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -188,7 +188,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $userGroupIdentifiers = 'ug-1,ug-2';
         $userGroupNames       = 'UG #1,UG #2';
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -224,7 +224,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) GROUP BY users.id LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -260,7 +260,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ac.description ASC'];
         $conditions = ['ac.description LIKE \'abc%\'', 'abc.description LIKE \'%bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY users.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY users.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -293,7 +293,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (users.id = :user_id) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (users.id = :user_id) GROUP BY users.id'; // phpcs:ignore
         $values       = ['user_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -326,7 +326,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (`username` = :username) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (`username` = :username) GROUP BY users.id'; // phpcs:ignore
         $values       = ['username' => [$username, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -359,7 +359,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (email = :email) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (email = :email) GROUP BY users.id'; // phpcs:ignore
         $values       = ['email' => [$email, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -392,7 +392,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
         $values       = ['identifier' => [$username, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -425,7 +425,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
         $values       = ['identifier' => [$email, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -459,7 +459,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $isGravatarAllowed = true;
         $clientId          = '063b730f-3458-49dc-b60e-8171cefacabf';
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted = 0 INNER JOIN api_clients AS ac ON ac.user_id = users.id AND ac.deleted = 0 LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted = 0 LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted = 0 WHERE (users.deleted = 0) AND (ac.id = :client_id) GROUP BY users.id'; // phpcs:ignore
+        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL INNER JOIN api_clients AS ac ON ac.user_id = users.id AND ac.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (ac.id = :client_id) GROUP BY users.id'; // phpcs:ignore
         $values       = ['client_id' => [$clientId, \PDO::PARAM_STR]];
         $expectedData = [
             [

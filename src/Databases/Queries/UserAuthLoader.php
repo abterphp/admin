@@ -33,9 +33,9 @@ class UserAuthLoader implements IAuthLoader
         $query = (new QueryBuilder())
             ->select('u.username AS v0', 'ug.identifier AS v1')
             ->from('users', 'u')
-            ->innerJoin('users_user_groups', 'uug', 'uug.user_id = u.id AND uug.deleted = 0')
-            ->innerJoin('user_groups', 'ug', 'uug.user_group_id = ug.id AND ug.deleted = 0')
-            ->where('u.deleted = 0')
+            ->innerJoin('users_user_groups', 'uug', 'uug.user_id = u.id AND uug.deleted_at IS NULL')
+            ->innerJoin('user_groups', 'ug', 'uug.user_group_id = ug.id AND ug.deleted_at IS NULL')
+            ->where('u.deleted_at IS NULL')
         ;
 
         $connection = $this->connectionPool->getReadConnection();
