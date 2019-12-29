@@ -25,7 +25,7 @@ class BlockCacheTest extends QueryTestCase
         $identifiers = ['foo', 'bar'];
         $cacheTime   = 'baz';
 
-        $sql          = 'SELECT COUNT(*) AS count FROM blocks LEFT JOIN block_layouts AS layouts ON layouts.id = blocks.layout_id WHERE (blocks.deleted = 0) AND (blocks.identifier IN (?,?)) AND (blocks.updated_at > ? OR layouts.updated_at > ?)'; // phpcs:ignore
+        $sql          = 'SELECT COUNT(*) AS count FROM blocks LEFT JOIN block_layouts AS layouts ON layouts.id = blocks.layout_id WHERE (blocks.deleted_at IS NULL) AND (blocks.identifier IN (?,?)) AND (blocks.updated_at > ? OR layouts.updated_at > ?)'; // phpcs:ignore
         $valuesToBind = [
             [$identifiers[0], \PDO::PARAM_STR],
             [$identifiers[1], \PDO::PARAM_STR],
@@ -46,7 +46,7 @@ class BlockCacheTest extends QueryTestCase
         $identifiers = ['foo', 'bar'];
         $cacheTime   = 'baz';
 
-        $sql          = 'SELECT COUNT(*) AS count FROM blocks LEFT JOIN block_layouts AS layouts ON layouts.id = blocks.layout_id WHERE (blocks.deleted = 0) AND (blocks.identifier IN (?,?)) AND (blocks.updated_at > ? OR layouts.updated_at > ?)'; // phpcs:ignore
+        $sql          = 'SELECT COUNT(*) AS count FROM blocks LEFT JOIN block_layouts AS layouts ON layouts.id = blocks.layout_id WHERE (blocks.deleted_at IS NULL) AND (blocks.identifier IN (?,?)) AND (blocks.updated_at > ? OR layouts.updated_at > ?)'; // phpcs:ignore
         $valuesToBind = [
             [$identifiers[0], \PDO::PARAM_STR],
             [$identifiers[1], \PDO::PARAM_STR],
@@ -71,7 +71,7 @@ class BlockCacheTest extends QueryTestCase
         $this->expectException(Database::class);
         $this->expectExceptionCode($errorInfo[1]);
 
-        $sql          = 'SELECT COUNT(*) AS count FROM blocks LEFT JOIN block_layouts AS layouts ON layouts.id = blocks.layout_id WHERE (blocks.deleted = 0) AND (blocks.identifier IN (?,?)) AND (blocks.updated_at > ? OR layouts.updated_at > ?)'; // phpcs:ignore
+        $sql          = 'SELECT COUNT(*) AS count FROM blocks LEFT JOIN block_layouts AS layouts ON layouts.id = blocks.layout_id WHERE (blocks.deleted_at IS NULL) AND (blocks.identifier IN (?,?)) AND (blocks.updated_at > ? OR layouts.updated_at > ?)'; // phpcs:ignore
         $valuesToBind = [
             [$identifiers[0], \PDO::PARAM_STR],
             [$identifiers[1], \PDO::PARAM_STR],

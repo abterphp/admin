@@ -81,7 +81,7 @@ class Client implements ClientRepositoryInterface
         $query = (new QueryBuilder())
             ->select('ac.secret')
             ->from('api_clients', 'ac')
-            ->where('ac.deleted = 0')
+            ->where('ac.deleted_at IS NULL')
             ->andWhere('ac.id = :clientId');
 
         $sql    = $query->getSql();

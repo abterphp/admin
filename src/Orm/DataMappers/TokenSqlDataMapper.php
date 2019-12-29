@@ -8,6 +8,7 @@ use AbterPhp\Admin\Domain\Entities\Token as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use DateTimeImmutable;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -52,9 +53,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
             ->update(
                 'tokens',
                 'tokens',
-                [
-                    'deleted' => [1, \PDO::PARAM_INT],
-                ]
+                ['deleted_at' => new Expression('NOW()')]
             )
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
@@ -174,7 +173,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
                 'tokens.revoked_at'
             )
             ->from('tokens')
-            ->where('tokens.deleted = 0');
+            ->where('tokens.deleted_at IS NULL');
 
         return $query;
     }

@@ -7,11 +7,11 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\AdminResource as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
-
 class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResourceDataMapper
 {
     /**
@@ -45,7 +45,11 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
         assert($entity instanceof Entity, new \InvalidArgumentException());
 
         $query = (new QueryBuilder())
-            ->update('admin_resources', 'admin_resources', ['deleted' => [1, \PDO::PARAM_INT]])
+            ->update(
+                'admin_resources',
+                'admin_resources',
+                ['deleted_at' => new Expression('NOW()')]
+            )
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
@@ -142,7 +146,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
                 ]
             )
             ->where('id = ?')
-            ->andWhere('deleted = 0')
+            ->andWhere('deleted_at IS NULL')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 
         $statement = $this->writeConnection->prepare($query->getSql());
@@ -175,7 +179,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
                 'ar.identifier'
             )
             ->from('admin_resources', 'ar')
-            ->where('ar.deleted = 0');
+            ->where('ar.deleted_at IS NULL');
 
         return $query;
     }

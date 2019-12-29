@@ -40,7 +40,7 @@ class BlockCache
             ->select('COUNT(*) AS count')
             ->from('blocks')
             ->leftJoin('block_layouts', 'layouts', 'layouts.id = blocks.layout_id')
-            ->where('blocks.deleted = 0')
+            ->where('blocks.deleted_at IS NULL')
             ->andWhere($conditions->in('blocks.identifier', $identifiers))
             ->andWhere('blocks.updated_at > ? OR layouts.updated_at > ?')
             ->addUnnamedPlaceholderValue($cacheTime, \PDO::PARAM_STR)
