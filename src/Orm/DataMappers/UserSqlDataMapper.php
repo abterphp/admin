@@ -8,8 +8,8 @@ use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -68,7 +68,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
                 'users',
                 'users',
                 [
-                    'deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR],
+                    'deleted_at' => new Expression('NOW()'),
                     'email'      => [sprintf('%s@example.com', $username), \PDO::PARAM_STR],
                     'username'   => [$username, \PDO::PARAM_STR],
                     'password'   => ['', \PDO::PARAM_STR],

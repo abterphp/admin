@@ -6,9 +6,9 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\Token as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\Helper\DateHelper;
 use DateTimeImmutable;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -53,7 +53,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
             ->update(
                 'tokens',
                 'tokens',
-                ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]]
+                ['deleted_at' => new Expression('NOW()')]
             )
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);

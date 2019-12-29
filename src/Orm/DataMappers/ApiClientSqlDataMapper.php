@@ -7,8 +7,8 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -58,7 +58,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
         $this->deleteAdminResources($entity);
 
         $query = (new QueryBuilder())
-            ->update('api_clients', 'api_clients', ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]])
+            ->update('api_clients', 'api_clients', ['deleted_at' => new Expression('NOW()')])
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 

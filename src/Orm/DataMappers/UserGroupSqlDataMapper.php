@@ -7,8 +7,8 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\UserGroup as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -57,7 +57,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
         $this->deleteAdminResources($entity);
 
         $query = (new QueryBuilder())
-            ->update('user_groups', 'user_groups', ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]])
+            ->update('user_groups', 'user_groups', ['deleted_at' => new Expression('NOW()')])
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
 

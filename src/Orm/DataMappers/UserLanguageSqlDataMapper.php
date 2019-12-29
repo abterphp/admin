@@ -6,8 +6,8 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\UserLanguage as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
-use AbterPhp\Framework\Helper\DateHelper;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -49,7 +49,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
             ->update(
                 'user_languages',
                 'user_languages',
-                ['deleted_at' => [DateHelper::mysqlDateTime(), \PDO::PARAM_STR]]
+                ['deleted_at' => new Expression('NOW()')]
             )
             ->where('id = ?')
             ->addUnnamedPlaceholderValue($entity->getId(), \PDO::PARAM_STR);
