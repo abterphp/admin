@@ -8,8 +8,8 @@ use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper;
-use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -124,7 +124,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $id                = '1c36adc9-47e7-4d64-884d-f3c0ef0c89a3';
         $username          = 'foo';
         $email             = 'foo@example.com';
-        $password          = '';
+        $password          = 'somePassword';
+        $storedPassword    = '';
         $userLanguage      = new UserLanguage('5c66b4ac-5d92-434f-85ee-040f3d1572dc', 'baz', 'Baz');
         $canLogin          = true;
         $isGravatarAllowed = true;
@@ -134,8 +135,12 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1       = 'UPDATE users AS users SET deleted_at = ?, email = ?, username = ?, password = ? WHERE (id = ?)'; // phpcs:ignore
-        $statement1 = MockStatementFactory::createWriteStatementWithAny($this);
+        $sql1       = 'UPDATE users AS users SET deleted_at = NOW(), username = LEFT(MD5(RAND()), 8), email = CONCAT(username, "@example.com"), password = ? WHERE (id = ?)'; // phpcs:ignore
+        $values1    = [
+            [$storedPassword, \PDO::PARAM_STR],
+            [$id, \PDO::PARAM_STR],
+        ];
+        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $entity = new User($id, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);

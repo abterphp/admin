@@ -58,9 +58,6 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     {
         assert($entity instanceof Entity, new \InvalidArgumentException());
 
-        $rand     = rand(0, PHP_INT_MAX);
-        $username = sprintf('deleted-%d', $rand);
-
         $this->deleteUserGroups($entity);
 
         $query = (new QueryBuilder())
@@ -69,8 +66,8 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
                 'users',
                 [
                     'deleted_at' => new Expression('NOW()'),
-                    'email'      => [sprintf('%s@example.com', $username), \PDO::PARAM_STR],
-                    'username'   => [$username, \PDO::PARAM_STR],
+                    'username'   => new Expression('LEFT(MD5(RAND()), 8)'),
+                    'email'      => new Expression('CONCAT(username, "@example.com")'),
                     'password'   => ['', \PDO::PARAM_STR],
                 ]
             )

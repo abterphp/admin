@@ -96,8 +96,9 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
-        $sql1       = 'UPDATE user_groups AS user_groups SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
-        $statement1 = MockStatementFactory::createWriteStatementWithAny($this);
+        $sql1       = 'UPDATE user_groups AS user_groups SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
+        $values1    = [[$id, \PDO::PARAM_STR]];
+        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $entity = new UserGroup($id, $identifier, $name);

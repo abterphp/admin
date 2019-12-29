@@ -46,8 +46,9 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'Foo';
 
-        $sql       = 'UPDATE user_languages AS user_languages SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
-        $statement = MockStatementFactory::createWriteStatementWithAny($this);
+        $sql       = 'UPDATE user_languages AS user_languages SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
+        $values    = [[$id, \PDO::PARAM_STR]];
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new UserLanguage($id, $identifier, $name);
 

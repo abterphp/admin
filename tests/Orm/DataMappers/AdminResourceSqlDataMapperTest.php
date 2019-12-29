@@ -44,8 +44,9 @@ class AdminResourceSqlDataMapperTest extends DataMapperTestCase
         $id         = '8fe2f659-dbe5-4995-9e07-f49fb018cfe7';
         $identifier = 'foo';
 
-        $sql       = 'UPDATE admin_resources AS admin_resources SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
-        $statement = MockStatementFactory::createWriteStatementWithAny($this);
+        $sql       = 'UPDATE admin_resources AS admin_resources SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
+        $values    = [[$id, \PDO::PARAM_STR]];
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new AdminResource($id, $identifier);
 

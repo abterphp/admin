@@ -75,8 +75,9 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $apiClientId = '33a9ef7e-3d84-4bd0-9b38-59b5cb7d5245';
         $expiresAt   = new \DateTimeImmutable();
 
-        $sql       = 'UPDATE tokens AS tokens SET deleted_at = ? WHERE (id = ?)'; // phpcs:ignore
-        $statement = MockStatementFactory::createWriteStatementWithAny($this);
+        $sql       = 'UPDATE tokens AS tokens SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
+        $values    = [[$id, \PDO::PARAM_STR]];
+        $statement = MockStatementFactory::createWriteStatement($this, $values);
         MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
         $entity = new Token($id, $apiClientId, $expiresAt, null);
 
