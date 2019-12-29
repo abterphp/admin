@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "cd34164ddfe1a378b85f18788a429425538bef8c"
+                "reference": "0ab8be6f8944ea1cc7e58787c3f2d06006a92748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/cd34164ddfe1a378b85f18788a429425538bef8c",
-                "reference": "cd34164ddfe1a378b85f18788a429425538bef8c",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/0ab8be6f8944ea1cc7e58787c3f2d06006a92748",
+                "reference": "0ab8be6f8944ea1cc7e58787c3f2d06006a92748",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2019-12-28T22:00:19+00:00"
+            "time": "2019-12-29T17:34:24+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -516,16 +516,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508"
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
                 "shasum": ""
             },
             "require": {
@@ -544,7 +544,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -573,7 +573,7 @@
                 "throwable",
                 "whoops"
             ],
-            "time": "2019-12-25T10:00:00+00:00"
+            "time": "2019-12-29T10:00:00+00:00"
         },
         {
             "name": "hackzilla/password-generator",
@@ -780,16 +780,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.61",
+            "version": "1.0.62",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9"
+                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4fb13c01784a6c9f165a351e996871488ca2d8c9",
-                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
+                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
                 "shasum": ""
             },
             "require": {
@@ -860,7 +860,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-12-08T21:46:50+00:00"
+            "time": "2019-12-29T14:46:55+00:00"
         },
         {
             "name": "league/oauth2-server",
@@ -1340,16 +1340,16 @@
         },
         {
             "name": "opulence/opulence",
-            "version": "v1.1.10",
+            "version": "v1.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opulencephp/Opulence.git",
-                "reference": "451dca5a83b416574dc35e87bba494158d853d5d"
+                "reference": "f3f27e254c39f877c5ec9720bf0e60eabb6dafcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opulencephp/Opulence/zipball/451dca5a83b416574dc35e87bba494158d853d5d",
-                "reference": "451dca5a83b416574dc35e87bba494158d853d5d",
+                "url": "https://api.github.com/repos/opulencephp/Opulence/zipball/f3f27e254c39f877c5ec9720bf0e60eabb6dafcc",
+                "reference": "f3f27e254c39f877c5ec9720bf0e60eabb6dafcc",
                 "shasum": ""
             },
             "require": {
@@ -1428,7 +1428,7 @@
                 "php",
                 "template"
             ],
-            "time": "2019-12-14T13:47:47+00:00"
+            "time": "2019-12-29T15:48:06+00:00"
         },
         {
             "name": "paragonie/random_compat",
