@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin;
 
+use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Form\Extra\DefaultButtons;
 use AbterPhp\Framework\Http\Service\Execute\IRepoService;
@@ -20,9 +21,6 @@ use Psr\Log\LoggerInterface;
 
 abstract class ExecuteAbstract extends AdminAbstract
 {
-    use UrlTrait;
-    use MessageTrait;
-
     const INPUT_NEXT = 'next';
 
     const URL_CREATE = '%s-create';
@@ -226,7 +224,7 @@ abstract class ExecuteAbstract extends AdminAbstract
     }
 
     /**
-     * @param string        $next
+     * @param string      $next
      * @param string|null $entityId
      *
      * @return string
@@ -241,6 +239,7 @@ abstract class ExecuteAbstract extends AdminAbstract
                 if (null === $entityId) {
                     return $this->getCreateUrl();
                 }
+
                 return $this->getEditUrl($entityId);
             case DefaultButtons::BTN_VALUE_NEXT_CREATE:
                 return $this->getCreateUrl();
@@ -255,9 +254,51 @@ abstract class ExecuteAbstract extends AdminAbstract
      */
     protected function getCreateUrl(): string
     {
-        $urlName = strtolower(sprintf(static::URL_CREATE, static::ENTITY_PLURAL));
+        $urlName = strtolower(sprintf(static::URL_CREATE, static::ROUTING_PATH));
         $url     = $this->urlGenerator->createFromName($urlName);
 
         return $url;
+    }
+
+    /**
+     * @return string
+     * @throws URLException
+     */
+    protected function getShowUrl(): string
+    {
+        if ($this->session->has(Session::LAST_GRID_URL)) {
+            return (string)$this->session->get(Session::LAST_GRID_URL);
+        }
+
+        $url = $this->urlGenerator->createFromName(static::ROUTING_PATH);
+
+        return $url;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     * @throws URLException
+     */
+    protected function getEditUrl(string $id): string
+    {
+        $routeName = sprintf(static::URL_EDIT, static::ROUTING_PATH);
+
+        $url = $this->urlGenerator->createFromName($routeName, $id);
+
+        return $url;
+    }
+
+    /**
+     * @param string $messageType
+     *
+     * @return string
+     */
+    protected function getMessage(string $messageType)
+    {
+        $entityName = $this->translator->translate(static::ENTITY_TITLE_SINGULAR);
+
+        return $this->translator->translate($messageType, $entityName);
     }
 }

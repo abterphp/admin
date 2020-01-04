@@ -20,6 +20,8 @@ class User extends GridAbstract
 
     const ENTITY_TITLE_PLURAL = 'admin:users';
 
+    const ROUTING_PATH = 'users';
+
     /** @var string */
     protected $resource = 'users';
 

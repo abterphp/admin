@@ -20,6 +20,8 @@ class User extends ExecuteAbstract
     const ENTITY_TITLE_SINGULAR = 'admin:user';
     const ENTITY_TITLE_PLURAL   = 'admin:users';
 
+    const ROUTING_PATH = 'users';
+
     /**
      * User constructor.
      *

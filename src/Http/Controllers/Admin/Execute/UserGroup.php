@@ -20,6 +20,8 @@ class UserGroup extends ExecuteAbstract
     const ENTITY_TITLE_SINGULAR = 'admin:userGroup';
     const ENTITY_TITLE_PLURAL   = 'admin:userGroups';
 
+    const ROUTING_PATH = 'user-groups';
+
     /**
      * UserGroup constructor.
      *

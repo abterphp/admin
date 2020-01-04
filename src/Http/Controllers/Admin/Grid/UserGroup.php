@@ -20,6 +20,8 @@ class UserGroup extends GridAbstract
 
     const ENTITY_TITLE_PLURAL = 'admin:userGroups';
 
+    const ROUTING_PATH = 'user-groups';
+
     /** @var string */
     protected $resource = 'user_groups';
 

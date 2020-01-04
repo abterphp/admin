@@ -19,14 +19,14 @@ class Routes extends FrameworkRoutes
     const PATH_LOGOUT    = '/logout';
     const PATH_DASHBOARD = '/dashboard';
 
-    const ROUTE_API_CLIENTS        = 'apiclients';
-    const ROUTE_API_CLIENTS_NEW    = 'apiclients-new';
-    const ROUTE_API_CLIENTS_EDIT   = 'apiclients-edit';
-    const ROUTE_API_CLIENTS_DELETE = 'apiclients-delete';
-    const PATH_API_CLIENTS         = '/apiclients';
-    const PATH_API_CLIENTS_NEW     = '/apiclients/new';
-    const PATH_API_CLIENTS_EDIT    = '/apiclients/:entityId/edit';
-    const PATH_API_CLIENTS_DELETE  = '/apiclients/:entityId/delete';
+    const ROUTE_API_CLIENTS        = 'api-clients';
+    const ROUTE_API_CLIENTS_NEW    = 'api-clients-new';
+    const ROUTE_API_CLIENTS_EDIT   = 'api-clients-edit';
+    const ROUTE_API_CLIENTS_DELETE = 'api-clients-delete';
+    const PATH_API_CLIENTS         = '/api-clients';
+    const PATH_API_CLIENTS_NEW     = '/api-clients/new';
+    const PATH_API_CLIENTS_EDIT    = '/api-clients/:entityId/edit';
+    const PATH_API_CLIENTS_DELETE  = '/api-clients/:entityId/delete';
 
     const ROUTE_PROFILE = 'profile';
     const PATH_PROFILE  = '/profile';
@@ -41,17 +41,17 @@ class Routes extends FrameworkRoutes
     const PATH_USERS_DELETE  = '/users/:entityId/delete';
     const PATH_USERS_ENTITY  = '/users/:entityId';
 
-    const ROUTE_USER_GROUPS        = 'usergroups';
-    const ROUTE_USER_GROUPS_NEW    = 'usergroups-new';
-    const ROUTE_USER_GROUPS_EDIT   = 'usergroups-edit';
-    const ROUTE_USER_GROUPS_DELETE = 'usergroups-delete';
-    const PATH_USER_GROUPS         = '/usergroups';
-    const PATH_USER_GROUPS_NEW     = '/usergroups/new';
-    const PATH_USER_GROUPS_EDIT    = '/usergroups/:entityId/edit';
-    const PATH_USER_GROUPS_DELETE  = '/usergroups/:entityId/delete';
-    const PATH_USER_GROUPS_ENTITY  = '/users/:entityId';
+    const ROUTE_USER_GROUPS        = 'user-groups';
+    const ROUTE_USER_GROUPS_NEW    = 'user-groups-new';
+    const ROUTE_USER_GROUPS_EDIT   = 'user-groups-edit';
+    const ROUTE_USER_GROUPS_DELETE = 'user-groups-delete';
+    const PATH_USER_GROUPS         = '/user-groups';
+    const PATH_USER_GROUPS_NEW     = '/user-groups/new';
+    const PATH_USER_GROUPS_EDIT    = '/user-groups/:entityId/edit';
+    const PATH_USER_GROUPS_DELETE  = '/user-groups/:entityId/delete';
+    const PATH_USER_GROUPS_ENTITY  = '/user-groups/:entityId';
 
-    const ROUTE_ACCESS_TOKEN = 'accesstokens';
+    const ROUTE_ACCESS_TOKEN = 'access-tokens';
     const PATH_ACCESS_TOKEN  = '/access-tokens';
 
     const ROUTE_404 = '404';

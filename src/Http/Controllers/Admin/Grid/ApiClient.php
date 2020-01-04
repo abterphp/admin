@@ -20,6 +20,8 @@ class ApiClient extends GridAbstract
 
     const ENTITY_TITLE_PLURAL = 'admin:apiClients';
 
+    const ROUTING_PATH = 'api-clients';
+
     /** @var string */
     protected $resource = 'api_clients';
 

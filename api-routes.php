@@ -41,10 +41,10 @@ $router->group(
             ],
             function (Router $router) {
                 $entities = [
-                    'usergroups'    => 'UserGroup',
-                    'userlanguages' => 'UserLanguage',
-                    'users'         => 'User',
-                    'apiclients'    => 'ApiClient',
+                    'user-groups'    => 'UserGroup',
+                    'user-languages' => 'UserLanguage',
+                    'users'          => 'User',
+                    'apic-lients'    => 'ApiClient',
                 ];
 
                 foreach ($entities as $route => $controllerName) {

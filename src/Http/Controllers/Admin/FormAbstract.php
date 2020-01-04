@@ -6,6 +6,7 @@ namespace AbterPhp\Admin\Http\Controllers\Admin;
 
 use AbterPhp\Admin\Form\Factory\IFormFactory;
 use AbterPhp\Framework\Constant\Event;
+use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Events\FormReady;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -23,9 +24,6 @@ use Psr\Log\LoggerInterface;
 
 abstract class FormAbstract extends AdminAbstract
 {
-    use UrlTrait;
-    use MessageTrait;
-
     const LOG_MSG_LOAD_FAILURE = 'Loading %1$s failed.';
 
     const ENTITY_TITLE_SINGULAR = '';
@@ -178,4 +176,46 @@ abstract class FormAbstract extends AdminAbstract
      * @return IStringerEntity
      */
     abstract protected function createEntity(string $entityEntityId): IStringerEntity;
+
+    /**
+     * @return string
+     * @throws URLException
+     */
+    protected function getShowUrl(): string
+    {
+        if ($this->session->has(Session::LAST_GRID_URL)) {
+            return (string)$this->session->get(Session::LAST_GRID_URL);
+        }
+
+        $url = $this->urlGenerator->createFromName(static::ROUTING_PATH);
+
+        return $url;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     * @throws URLException
+     */
+    protected function getEditUrl(string $id): string
+    {
+        $routeName = sprintf(static::URL_EDIT, static::ROUTING_PATH);
+
+        $url = $this->urlGenerator->createFromName($routeName, $id);
+
+        return $url;
+    }
+
+    /**
+     * @param string $messageType
+     *
+     * @return string
+     */
+    protected function getMessage(string $messageType)
+    {
+        $entityName = $this->translator->translate(static::ENTITY_TITLE_SINGULAR);
+
+        return $this->translator->translate($messageType, $entityName);
+    }
 }

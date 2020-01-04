@@ -137,7 +137,7 @@ abstract class GridAbstract extends AdminAbstract
      */
     protected function getBaseUrl(): string
     {
-        return $this->urlGenerator->createFromName(static::ENTITY_PLURAL) . '?';
+        return $this->urlGenerator->createFromName(static::ROUTING_PATH) . '?';
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class GridAbstract extends AdminAbstract
      */
     protected function getCreateUrl(): string
     {
-        $urlName = strtolower(sprintf(static::URL_CREATE, static::ENTITY_PLURAL));
+        $urlName = sprintf(static::URL_CREATE, static::ROUTING_PATH);
         $url     = $this->urlGenerator->createFromName($urlName);
 
         return $url;

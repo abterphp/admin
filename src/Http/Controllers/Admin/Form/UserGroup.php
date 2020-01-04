@@ -24,6 +24,8 @@ class UserGroup extends FormAbstract
     const ENTITY_TITLE_SINGULAR = 'admin:userGroup';
     const ENTITY_TITLE_PLURAL   = 'admin:userGroups';
 
+    const ROUTING_PATH = 'user-groups';
+
     /** @var string */
     protected $resource = 'user_groups';
 

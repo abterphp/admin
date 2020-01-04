@@ -29,9 +29,9 @@ $router->group(
             ],
             function (Router $router) {
                 $entities = [
-                    'usergroups' => 'UserGroup',
-                    'users'      => 'User',
-                    'apiclients' => 'ApiClient',
+                    'user-groups' => 'UserGroup',
+                    'users'       => 'User',
+                    'api-clients' => 'ApiClient',
                 ];
 
                 foreach ($entities as $route => $controllerName) {

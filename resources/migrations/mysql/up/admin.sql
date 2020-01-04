@@ -16,11 +16,11 @@ CREATE TABLE `admin_resources`
   DEFAULT CHARSET = utf8;
 
 INSERT INTO `admin_resources` (`id`, `identifier`)
-VALUES (UUID(), 'adminresources'),
+VALUES (UUID(), 'admin-resources'),
        (UUID(), 'users'),
-       (UUID(), 'usergroups'),
-       (UUID(), 'usergroups_adminresources'),
-       (UUID(), 'apiclients');
+       (UUID(), 'user-groups'),
+       (UUID(), 'user-groups_admin-resources'),
+       (UUID(), 'api-clients');
 
 --
 -- Table structure and data for table `casbin_rule`

@@ -29,6 +29,8 @@ class ApiClient extends FormAbstract
     const ENTITY_TITLE_SINGULAR = 'admin:apiClient';
     const ENTITY_TITLE_PLURAL   = 'admin:apiClients';
 
+    const ROUTING_PATH = 'api-clients';
+
     /** @var Slugify */
     protected $slugify;
 

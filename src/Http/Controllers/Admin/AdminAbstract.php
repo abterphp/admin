@@ -28,6 +28,8 @@ abstract class AdminAbstract extends ControllerAbstract
     const LOG_CONTEXT_EXCEPTION  = 'Exception';
     const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
 
+    const ROUTING_PATH = '';
+
     /** @var ITranslator */
     protected $translator;
 
