@@ -234,9 +234,9 @@ class User implements IStringerEntity
     }
 
     /**
-     * @return string
+     * @return array|null
      */
-    public function toJSON(): string
+    public function toData(): ?array
     {
         $userGroupIds = [];
         foreach ($this->getUserGroups() as $userGroup) {
@@ -245,16 +245,22 @@ class User implements IStringerEntity
 
         $userLanguageId = $this->getUserLanguage()->getId();
 
-        return json_encode(
-            [
-                "id"                  => $this->getId(),
-                "username"            => $this->getUsername(),
-                "email"               => $this->getEmail(),
-                "can_login"           => $this->canLogin(),
-                "is_gravatar_allowed" => $this->isGravatarAllowed(),
-                "user_group_ids"      => $userGroupIds,
-                "user_language_id"    => $userLanguageId,
-            ]
-        );
+        return [
+            "id"                  => $this->getId(),
+            "username"            => $this->getUsername(),
+            "email"               => $this->getEmail(),
+            "can_login"           => $this->canLogin(),
+            "is_gravatar_allowed" => $this->isGravatarAllowed(),
+            "user_group_ids"      => $userGroupIds,
+            "user_language_id"    => $userLanguageId,
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return json_encode($this->toData());
     }
 }

@@ -151,22 +151,28 @@ class ApiClient implements IStringerEntity
     }
 
     /**
-     * @return string
+     * @return array|null
      */
-    public function toJSON(): string
+    public function toData(): ?array
     {
         $adminResourceIds = [];
         foreach ($this->getAdminResources() as $adminResource) {
             $adminResourceIds[] = $adminResource->getId();
         }
 
-        return json_encode(
-            [
-                "id"                => $this->getId(),
-                "user_id"           => $this->getUserId(),
-                "description"       => $this->getDescription(),
-                "admin_resource_id" => $adminResourceIds,
-            ]
-        );
+        return [
+            "id"                => $this->getId(),
+            "user_id"           => $this->getUserId(),
+            "description"       => $this->getDescription(),
+            "admin_resource_id" => $adminResourceIds,
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return json_encode($this->toData());
     }
 }

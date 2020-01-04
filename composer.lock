@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "0ab8be6f8944ea1cc7e58787c3f2d06006a92748"
+                "reference": "c0fc71ef6d0a720c9b12f5ca6bc1032942ccc28a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/0ab8be6f8944ea1cc7e58787c3f2d06006a92748",
-                "reference": "0ab8be6f8944ea1cc7e58787c3f2d06006a92748",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/c0fc71ef6d0a720c9b12f5ca6bc1032942ccc28a",
+                "reference": "c0fc71ef6d0a720c9b12f5ca6bc1032942ccc28a",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2019-12-29T17:34:24+00:00"
+            "time": "2020-01-04T09:53:22+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -458,27 +458,26 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.12",
+            "version": "2.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "a6255605af39f2db7f5cb62e672bd8a7bad8d208"
+                "reference": "834593d5900615639208417760ba6a17299e2497"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6255605af39f2db7f5cb62e672bd8a7bad8d208",
-                "reference": "a6255605af39f2db7f5cb62e672bd8a7bad8d208",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
+                "reference": "834593d5900615639208417760ba6a17299e2497",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^1.0.1",
-                "php": ">= 5.5"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "dominicsayers/isemail": "dev-master",
-                "phpunit/phpunit": "^4.8.35||^5.7||^6.0",
-                "satooshi/php-coveralls": "^1.0.1",
-                "symfony/phpunit-bridge": "^4.4@dev"
+                "dominicsayers/isemail": "^3.0.7",
+                "phpunit/phpunit": "^4.8.36|^7.5.15",
+                "satooshi/php-coveralls": "^1.0.1"
             },
             "suggest": {
                 "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
@@ -512,7 +511,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-20T12:49:39+00:00"
+            "time": "2019-12-30T08:14:25+00:00"
         },
         {
             "name": "filp/whoops",
@@ -2611,16 +2610,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.4.5",
+            "version": "2.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "12f64e878084244ca92d1ac83e58a668640f6f1d"
+                "reference": "85f142379813cf0a24a19237e9fbe6f77f0251db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/12f64e878084244ca92d1ac83e58a668640f6f1d",
-                "reference": "12f64e878084244ca92d1ac83e58a668640f6f1d",
+                "url": "https://api.github.com/repos/phan/phan/zipball/85f142379813cf0a24a19237e9fbe6f77f0251db",
+                "reference": "85f142379813cf0a24a19237e9fbe6f77f0251db",
                 "shasum": ""
             },
             "require": {
@@ -2680,7 +2679,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-12-11T01:03:28+00:00"
+            "time": "2019-12-29T17:44:25+00:00"
         },
         {
             "name": "phar-io/manifest",

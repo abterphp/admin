@@ -71,15 +71,21 @@ class AdminResource implements IStringerEntity
     }
 
     /**
+     * @return array|null
+     */
+    public function toData(): ?array
+    {
+        return [
+            "id"         => $this->getId(),
+            "identifier" => $this->getIdentifier(),
+        ];
+    }
+
+    /**
      * @return string
      */
     public function toJSON(): string
     {
-        return json_encode(
-            [
-                "id"         => $this->getId(),
-                "identifier" => $this->getIdentifier(),
-            ]
-        );
+        return json_encode($this->toData());
     }
 }

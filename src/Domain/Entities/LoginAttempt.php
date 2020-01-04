@@ -121,14 +121,20 @@ class LoginAttempt implements IStringerEntity
     }
 
     /**
+     * @return array|null
+     */
+    public function toData(): ?array
+    {
+        return [
+            "id" => $this->getId(),
+        ];
+    }
+
+    /**
      * @return string
      */
     public function toJSON(): string
     {
-        return json_encode(
-            [
-                "id" => $this->getId(),
-            ]
-        );
+        return json_encode($this->toData());
     }
 }
