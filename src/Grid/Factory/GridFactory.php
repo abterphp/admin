@@ -12,7 +12,7 @@ use AbterPhp\Framework\Grid\Table\Table;
 
 class GridFactory
 {
-    const ATTRIBUTE_CLASS = 'class';
+    protected const ATTRIBUTE_CLASS = 'class';
 
     /** @var array */
     protected $attributes = [

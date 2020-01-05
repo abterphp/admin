@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use AbterPhp\Admin\Config\Routes as RoutesConfig;
-use AbterPhp\Admin\Constant\Routes as RoutesConstant;
+use AbterPhp\Admin\Constant\Route as RouteConstant;
 use AbterPhp\Admin\Http\Middleware\Api;
 use Opulence\Routing\Router;
 
@@ -27,10 +27,10 @@ $router->group(
             function (Router $router) {
                 /** @see \AbterPhp\Admin\Http\Controllers\Api\Index::notFound() */
                 $router->any(
-                    RoutesConstant::PATH_404,
+                    '/:anything',
                     'Api\Index@notFound',
                     [
-                        RoutesConstant::OPTION_VARS => [RoutesConstant::VAR_ANYTHING => '.+'],
+                        RouteConstant::OPTION_VARS => [RouteConstant::VAR_ANYTHING => '.+'],
                     ]
                 );
             }

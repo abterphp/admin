@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Execute;
 
-use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Admin\Constant\Route;
 use AbterPhp\Framework\Constant\Session;
 
 class Profile extends User
@@ -27,7 +27,7 @@ class Profile extends User
      */
     protected function getUrl(string $next, string $entityId = null)
     {
-        $url = $this->urlGenerator->createFromName(Routes::ROUTE_PROFILE);
+        $url = $this->urlGenerator->createFromName(Route::PROFILE_EDIT);
 
         return $url;
     }

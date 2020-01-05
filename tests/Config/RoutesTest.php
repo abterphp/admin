@@ -64,7 +64,7 @@ class RoutesTest extends TestCase
 
     public function testGetLoginPathThrowsExceptionIfRelatedEnvironmentVariableDoesNotExist()
     {
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGIN_PATH);
+        $this->newEnvironmentVariable('ADMIN_LOGIN_PATH');
 
         $this->expectException(Config::class);
 
@@ -75,7 +75,7 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGIN_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_LOGIN_PATH', $envValue);
 
         $actualResult = $this->sut->getLoginPath();
 
@@ -86,14 +86,14 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGIN_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_LOGIN_PATH', $envValue);
 
         $this->sut->getLoginPath();
 
         // We're removing any environment variable already set
-        putenv(Routes::ADMIN_LOGIN_PATH);
-        unset($_ENV[Routes::ADMIN_LOGIN_PATH]);
-        unset($_SERVER[Routes::ADMIN_LOGIN_PATH]);
+        putenv('ADMIN_LOGIN_PATH');
+        unset($_ENV['ADMIN_LOGIN_PATH']);
+        unset($_SERVER['ADMIN_LOGIN_PATH']);
 
         $actualResult = $this->sut->getLoginPath();
 
@@ -107,7 +107,7 @@ class RoutesTest extends TestCase
 
         $this->sut->setLoginPath($presetValue);
 
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGIN_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_LOGIN_PATH', $envValue);
 
         $this->sut->getLoginPath();
 
@@ -118,7 +118,7 @@ class RoutesTest extends TestCase
 
     public function testGetLogoutPathThrowsExceptionIfRelatedEnvironmentVariableDoesNotExist()
     {
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH);
+        $this->newEnvironmentVariable('ADMIN_LOGOUT_PATH');
 
         $this->expectException(Config::class);
 
@@ -129,7 +129,7 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_LOGOUT_PATH', $envValue);
 
         $actualResult = $this->sut->getLogoutPath();
 
@@ -140,14 +140,14 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_LOGOUT_PATH', $envValue);
 
         $this->sut->getLogoutPath();
 
         // We're removing any environment variable already set
-        putenv(Routes::ADMIN_LOGOUT_PATH);
-        unset($_ENV[Routes::ADMIN_LOGOUT_PATH]);
-        unset($_SERVER[Routes::ADMIN_LOGOUT_PATH]);
+        putenv('ADMIN_LOGOUT_PATH');
+        unset($_ENV['ADMIN_LOGOUT_PATH']);
+        unset($_SERVER['ADMIN_LOGOUT_PATH']);
 
         $actualResult = $this->sut->getLogoutPath();
 
@@ -161,7 +161,7 @@ class RoutesTest extends TestCase
 
         $this->sut->setLogoutPath($presetValue);
 
-        $this->newEnvironmentVariable(Routes::ADMIN_LOGOUT_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_LOGOUT_PATH', $envValue);
 
         $this->sut->getLogoutPath();
 
@@ -172,7 +172,7 @@ class RoutesTest extends TestCase
 
     public function testGetAdminBasePathThrowExceptionIfRelatedEnvironmentVariableDoesNotExist()
     {
-        $this->newEnvironmentVariable(Routes::ADMIN_BASE_PATH);
+        $this->newEnvironmentVariable('ADMIN_BASE_PATH');
 
         $this->expectException(Config::class);
 
@@ -183,7 +183,7 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::ADMIN_BASE_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_BASE_PATH', $envValue);
 
         $actualResult = $this->sut->getAdminBasePath();
 
@@ -194,14 +194,14 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::ADMIN_BASE_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_BASE_PATH', $envValue);
 
         $this->sut->getAdminBasePath();
 
         // We're removing any environment variable already set
-        putenv(Routes::ADMIN_BASE_PATH);
-        unset($_ENV[Routes::ADMIN_BASE_PATH]);
-        unset($_SERVER[Routes::ADMIN_BASE_PATH]);
+        putenv('ADMIN_BASE_PATH');
+        unset($_ENV['ADMIN_BASE_PATH']);
+        unset($_SERVER['ADMIN_BASE_PATH']);
 
         $actualResult = $this->sut->getAdminBasePath();
 
@@ -215,7 +215,7 @@ class RoutesTest extends TestCase
 
         $this->sut->setAdminBasePath($presetValue);
 
-        $this->newEnvironmentVariable(Routes::ADMIN_BASE_PATH, $envValue);
+        $this->newEnvironmentVariable('ADMIN_BASE_PATH', $envValue);
 
         $actualResult = $this->sut->getAdminBasePath();
 
@@ -224,7 +224,7 @@ class RoutesTest extends TestCase
 
     public function testGetApiBasePathThrowExceptionIfRelatedEnvironmentVariableDoesNotExist()
     {
-        $this->newEnvironmentVariable(Routes::API_BASE_PATH);
+        $this->newEnvironmentVariable('API_BASE_PATH');
 
         $this->expectException(Config::class);
 
@@ -235,7 +235,7 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::API_BASE_PATH, $envValue);
+        $this->newEnvironmentVariable('API_BASE_PATH', $envValue);
 
         $actualResult = $this->sut->getApiBasePath();
 
@@ -246,14 +246,14 @@ class RoutesTest extends TestCase
     {
         $envValue = 'foo';
 
-        $this->newEnvironmentVariable(Routes::API_BASE_PATH, $envValue);
+        $this->newEnvironmentVariable('API_BASE_PATH', $envValue);
 
         $this->sut->getApiBasePath();
 
         // We're removing any environment variable already set
-        putenv(Routes::API_BASE_PATH);
-        unset($_ENV[Routes::API_BASE_PATH]);
-        unset($_SERVER[Routes::API_BASE_PATH]);
+        putenv('API_BASE_PATH');
+        unset($_ENV['API_BASE_PATH']);
+        unset($_SERVER['API_BASE_PATH']);
 
         $actualResult = $this->sut->getApiBasePath();
 
@@ -267,7 +267,7 @@ class RoutesTest extends TestCase
 
         $this->sut->setApiBasePath($presetValue);
 
-        $this->newEnvironmentVariable(Routes::API_BASE_PATH, $envValue);
+        $this->newEnvironmentVariable('API_BASE_PATH', $envValue);
 
         $actualResult = $this->sut->getApiBasePath();
 

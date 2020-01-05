@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use AbterPhp\Admin\Config\Routes as RoutesConfig;
-use AbterPhp\Admin\Constant\Routes as RoutesConstant;
+use AbterPhp\Admin\Constant\Route as RouteConstant;
 use AbterPhp\Admin\Http\Middleware\Api;
 use Opulence\Routing\Router;
 
@@ -24,10 +24,10 @@ $router->group(
             function (Router $router) {
                 /** @see \AbterPhp\Admin\Http\Controllers\Api\AccessToken::create() */
                 $router->post(
-                    RoutesConstant::PATH_ACCESS_TOKEN,
+                    '/access-tokens',
                     'Api\AccessToken@create',
                     [
-                        RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_ACCESS_TOKEN,
+                        RouteConstant::OPTION_NAME => RouteConstant::ACCESS_TOKENS_BASE,
                     ]
                 );
             }

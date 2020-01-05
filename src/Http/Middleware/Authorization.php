@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
-use AbterPhp\Admin\Constant\Routes;
 use AbterPhp\Framework\Constant\Session;
 use Casbin\Enforcer;
 use Casbin\Exceptions\CasbinException;
@@ -18,6 +17,8 @@ use Opulence\Sessions\ISession;
 
 class Authorization extends ParameterizedMiddleware
 {
+    public const PATH_403 = '/nope';
+
     const RESOURCE = 'resource';
     const ROLE     = 'role';
 
@@ -59,11 +60,11 @@ class Authorization extends ParameterizedMiddleware
                 return $next($request);
             }
         } catch (CasbinException $e) {
-            return new RedirectResponse(Routes::PATH_403, ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
+            return new RedirectResponse(static::PATH_403, ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
         } catch (\Exception $e) {
             throw $e;
         }
 
-        return new RedirectResponse(Routes::PATH_403, ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
+        return new RedirectResponse(static::PATH_403, ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
     }
 }

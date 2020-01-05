@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "c0fc71ef6d0a720c9b12f5ca6bc1032942ccc28a"
+                "reference": "092a97215e1437438a2b9136f30c54b85440993a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/c0fc71ef6d0a720c9b12f5ca6bc1032942ccc28a",
-                "reference": "c0fc71ef6d0a720c9b12f5ca6bc1032942ccc28a",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/092a97215e1437438a2b9136f30c54b85440993a",
+                "reference": "092a97215e1437438a2b9136f30c54b85440993a",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2020-01-04T09:53:22+00:00"
+            "time": "2020-01-05T13:11:40+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -779,16 +779,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.62",
+            "version": "1.0.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0"
+                "reference": "8132daec326565036bc8e8d1876f77ec183a7bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
-                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8132daec326565036bc8e8d1876f77ec183a7bd6",
+                "reference": "8132daec326565036bc8e8d1876f77ec183a7bd6",
                 "shasum": ""
             },
             "require": {
@@ -859,7 +859,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-12-29T14:46:55+00:00"
+            "time": "2020-01-04T16:30:31+00:00"
         },
         {
             "name": "league/oauth2-server",

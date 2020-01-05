@@ -13,8 +13,8 @@ use AbterPhp\Framework\Grid\Row\Row;
 
 class HeaderFactory
 {
-    const ACTIONS_CONTENT = 'framework:actions';
-    const ACTIONS_GROUP   = 'actions';
+    protected const ACTIONS_CONTENT = 'framework:actions';
+    protected const ACTIONS_GROUP   = 'actions';
 
     /** @var array */
     protected $headers = [];

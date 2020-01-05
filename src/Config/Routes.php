@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Config;
 
-use AbterPhp\Admin\Constant\Routes as RoutesConstant;
 use AbterPhp\Framework\Exception\Config as ConfigException;
 use Opulence\Environments\Environment;
 
 class Routes
 {
-    const ADMIN_LOGIN_PATH  = 'ADMIN_LOGIN_PATH';
-    const ADMIN_LOGOUT_PATH = 'ADMIN_LOGOUT_PATH';
-    const ADMIN_BASE_PATH   = 'ADMIN_BASE_PATH';
-    const API_BASE_PATH     = 'API_BASE_PATH';
+    public const DASHBOARD_PATH = '/dashboard';
+    public const PROFILE_PATH   = '/profile';
+
+    private const ADMIN_LOGIN_PATH  = 'ADMIN_LOGIN_PATH';
+    private const ADMIN_LOGOUT_PATH = 'ADMIN_LOGOUT_PATH';
+    private const ADMIN_BASE_PATH   = 'ADMIN_BASE_PATH';
+    private const API_BASE_PATH     = 'API_BASE_PATH';
 
     /** @var string|null */
     protected static $loginPath;
@@ -148,6 +150,14 @@ class Routes
      */
     public static function getLoginSuccessPath(): string
     {
-        return static::getAdminBasePath() . RoutesConstant::PATH_DASHBOARD;
+        return static::getAdminBasePath() . static::DASHBOARD_PATH;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getProfilePath(): string
+    {
+        return static::getAdminBasePath() . static::PROFILE_PATH;
     }
 }

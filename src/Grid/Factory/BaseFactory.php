@@ -15,8 +15,9 @@ use Opulence\Routing\Urls\UrlGenerator;
 
 abstract class BaseFactory implements IBase
 {
-    const LABEL_EDIT   = 'framework:editItem';
-    const LABEL_DELETE = 'framework:deleteItem';
+    protected const LABEL_EDIT   = 'framework:editItem';
+    protected const LABEL_DELETE = 'framework:deleteItem';
+    protected const LABEL_VIEW   = 'framework:viewItem';
 
     /** @var UrlGenerator */
     protected $urlGenerator;
@@ -47,6 +48,9 @@ abstract class BaseFactory implements IBase
 
     /** @var string[] */
     protected $deleteIntents = [Action::INTENT_DANGER];
+
+    /** @var string[] */
+    protected $viewIntents = [Action::INTENT_DEFAULT];
 
     /**
      * Base constructor.

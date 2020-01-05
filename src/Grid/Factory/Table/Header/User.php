@@ -8,11 +8,11 @@ use AbterPhp\Admin\Grid\Factory\Table\HeaderFactory;
 
 class User extends HeaderFactory
 {
-    const GROUP_USERNAME = 'user-username';
-    const GROUP_EMAIL    = 'user-email';
+    public const GROUP_USERNAME = 'user-username';
+    public const GROUP_EMAIL    = 'user-email';
 
-    const HEADER_USERNAME = 'admin:userUsername';
-    const HEADER_EMAIL    = 'admin:userEmail';
+    private const HEADER_USERNAME = 'admin:userUsername';
+    private const HEADER_EMAIL    = 'admin:userEmail';
 
     /** @var array */
     protected $headers = [

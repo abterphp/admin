@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Grid\Factory;
 
-use AbterPhp\Admin\Constant\Routes;
-use AbterPhp\Admin\Grid\Factory\Table\ApiClient as Table;
+use AbterPhp\Admin\Constant\Route;
+use AbterPhp\Admin\Grid\Factory\Table\ApiClient as TableFactory;
+use AbterPhp\Admin\Grid\Factory\Table\Header\ApiClient as HeaderFactory;
 use AbterPhp\Admin\Grid\Filters\ApiClient as Filters;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
@@ -15,13 +16,8 @@ use Opulence\Routing\Urls\UrlGenerator;
 
 class ApiClient extends BaseFactory
 {
-    const LABEL_NEW_SECRET   = 'admin:newSecret';
-
-    const GROUP_ID          = 'apiclient-id';
-    const GROUP_DESCRIPTION = 'apiclient-description';
-
-    const GETTER_ID          = 'getId';
-    const GETTER_DESCRIPTION = 'getDescription';
+    private const GETTER_ID          = 'getId';
+    private const GETTER_DESCRIPTION = 'getDescription';
 
     /** @var IEncrypter */
     protected $encrypter;
@@ -31,15 +27,15 @@ class ApiClient extends BaseFactory
      *
      * @param UrlGenerator      $urlGenerator
      * @param PaginationFactory $paginationFactory
-     * @param Table             $tableFactory
+     * @param TableFactory      $tableFactory
      * @param GridFactory       $gridFactory
      * @param Filters           $filters
-     * @param IEncrypter       $encrypter
+     * @param IEncrypter        $encrypter
      */
     public function __construct(
         UrlGenerator $urlGenerator,
         PaginationFactory $paginationFactory,
-        Table $tableFactory,
+        TableFactory $tableFactory,
         GridFactory $gridFactory,
         Filters $filters,
         IEncrypter $encrypter
@@ -55,8 +51,8 @@ class ApiClient extends BaseFactory
     public function getGetters(): array
     {
         return [
-            static::GROUP_ID          => static::GETTER_ID,
-            static::GROUP_DESCRIPTION => static::GETTER_DESCRIPTION,
+            HeaderFactory::GROUP_ID          => static::GETTER_ID,
+            HeaderFactory::GROUP_DESCRIPTION => static::GETTER_DESCRIPTION,
         ];
     }
 
@@ -68,11 +64,11 @@ class ApiClient extends BaseFactory
         $attributeCallbacks = $this->getAttributeCallbacks();
 
         $editAttributes = [
-            Html5::ATTR_HREF => [Routes::ROUTE_API_CLIENTS_EDIT],
+            Html5::ATTR_HREF => [Route::API_CLIENTS_EDIT],
         ];
 
         $deleteAttributes = [
-            Html5::ATTR_HREF => [Routes::ROUTE_API_CLIENTS_DELETE],
+            Html5::ATTR_HREF => [Route::API_CLIENTS_DELETE],
         ];
 
         $cellActions   = new Actions();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
-use AbterPhp\Admin\Constant\Routes;
 use AbterPhp\Framework\TestDouble\Session\MockSessionFactory;
 use Casbin\Enforcer;
 use Casbin\Exceptions\CasbinException;
@@ -87,7 +86,7 @@ class AuthorizationTest extends TestCase
         $this->assertNotSame($responseStub, $actualResult);
         $this->assertInstanceOf(RedirectResponse::class, $actualResult);
         $this->assertSame(ResponseHeaders::HTTP_TEMPORARY_REDIRECT, $actualResult->getStatusCode());
-        $this->assertSame(Routes::PATH_403, $actualResult->getTargetUrl());
+        $this->assertSame(Authorization::PATH_403, $actualResult->getTargetUrl());
     }
 
     public function testHandleRedirectsTo403OnCasbinRulesEnforcingError()
@@ -110,7 +109,7 @@ class AuthorizationTest extends TestCase
         $this->assertNotSame($responseStub, $actualResult);
         $this->assertInstanceOf(RedirectResponse::class, $actualResult);
         $this->assertSame(ResponseHeaders::HTTP_TEMPORARY_REDIRECT, $actualResult->getStatusCode());
-        $this->assertSame(Routes::PATH_403, $actualResult->getTargetUrl());
+        $this->assertSame(Authorization::PATH_403, $actualResult->getTargetUrl());
     }
 
     public function testHandleThrowsExceptionOnUnexpectedException()

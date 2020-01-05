@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Grid\Factory;
 
-use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Admin\Constant\Route;
+use AbterPhp\Admin\Grid\Factory\Table\Header\UserGroup as HeaderFactory;
+use AbterPhp\Admin\Grid\Factory\Table\UserGroup as TableFactory;
+use AbterPhp\Admin\Grid\Filters\UserGroup as Filters;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
-use AbterPhp\Admin\Grid\Factory\Table\UserGroup as Table;
-use AbterPhp\Admin\Grid\Filters\UserGroup as Filters;
 use Opulence\Routing\Urls\UrlGenerator;
 
 class UserGroup extends BaseFactory
 {
-    const GROUP_NAME       = 'userGroup-name';
-    const GROUP_IDENTIFIER = 'userGroup-identifier';
-
-    const HEADER_NAME       = 'admin:userGroupName';
-    const HEADER_IDENTIFIER = 'admin:userGroupIdentifier';
-
-    const GETTER_NAME       = 'getName';
-    const GETTER_IDENTIFIER = 'getIdentifier';
+    private const GETTER_NAME = 'getName';
 
     /**
      * UserGroup constructor.
      *
      * @param UrlGenerator      $urlGenerator
      * @param PaginationFactory $paginationFactory
-     * @param Table             $tableFactory
+     * @param TableFactory      $tableFactory
      * @param GridFactory       $gridFactory
      * @param Filters           $filters
      */
     public function __construct(
         UrlGenerator $urlGenerator,
         PaginationFactory $paginationFactory,
-        Table $tableFactory,
+        TableFactory $tableFactory,
         GridFactory $gridFactory,
         Filters $filters
     ) {
@@ -48,8 +42,7 @@ class UserGroup extends BaseFactory
     public function getGetters(): array
     {
         return [
-            static::GROUP_IDENTIFIER => static::GETTER_IDENTIFIER,
-            static::GROUP_NAME       => static::GETTER_NAME,
+            HeaderFactory::GROUP_NAME => static::GETTER_NAME,
         ];
     }
 
@@ -61,11 +54,11 @@ class UserGroup extends BaseFactory
         $attributeCallbacks = $this->getAttributeCallbacks();
 
         $editAttributes = [
-            Html5::ATTR_HREF  => Routes::ROUTE_USER_GROUPS_EDIT,
+            Html5::ATTR_HREF => Route::USER_GROUPS_EDIT,
         ];
 
         $deleteAttributes = [
-            Html5::ATTR_HREF  => Routes::ROUTE_USER_GROUPS_DELETE,
+            Html5::ATTR_HREF => Route::USER_GROUPS_DELETE,
         ];
 
         $cellActions   = new Actions();

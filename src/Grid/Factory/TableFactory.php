@@ -11,13 +11,13 @@ use AbterPhp\Framework\Grid\Table\Table;
 
 class TableFactory
 {
-    const ATTRIBUTE_CLASS = 'class';
+    protected const ATTRIBUTE_CLASS = 'class';
 
-    const ERROR_MSG_BODY_CREATED      = 'Grid table body is already created.';
-    const ERROR_MSG_HEADER_CREATED    = 'Grid table header is already created.';
-    const ERROR_MSG_TABLE_CREATED     = 'Grid table is already created.';
-    const ERROR_MSG_NO_BODY_CREATED   = 'Grid table body is not yet created';
-    const ERROR_MSG_NO_HEADER_CREATED = 'Grig table header is not yet created';
+    protected const ERROR_MSG_BODY_CREATED      = 'Grid table body is already created.';
+    protected const ERROR_MSG_HEADER_CREATED    = 'Grid table header is already created.';
+    protected const ERROR_MSG_TABLE_CREATED     = 'Grid table is already created.';
+    protected const ERROR_MSG_NO_BODY_CREATED   = 'Grid table body is not yet created';
+    protected const ERROR_MSG_NO_HEADER_CREATED = 'Grig table header is not yet created';
 
     /** @var HeaderFactory */
     protected $headerFactory;

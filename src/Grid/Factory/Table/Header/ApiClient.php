@@ -8,11 +8,11 @@ use AbterPhp\Admin\Grid\Factory\Table\HeaderFactory;
 
 class ApiClient extends HeaderFactory
 {
-    const GROUP_ID          = 'apiclient-id';
-    const GROUP_DESCRIPTION = 'apiclient-description';
+    public const GROUP_ID          = 'apiclient-id';
+    public const GROUP_DESCRIPTION = 'apiclient-description';
 
-    const HEADER_ID          = 'admin:apiClientId';
-    const HEADER_DESCRIPTION = 'admin:apiClientDescription';
+    private const HEADER_ID          = 'admin:apiClientId';
+    private const HEADER_DESCRIPTION = 'admin:apiClientDescription';
 
     /** @var array */
     protected $headers = [

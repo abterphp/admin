@@ -112,6 +112,30 @@ abstract class GridAbstract extends AdminAbstract
     }
 
     /**
+     * @return Response
+     * @throws \Casbin\Exceptions\CasbinException
+     * @throws \Throwable
+     */
+    public function list(): Response
+    {
+        $grid = $this->repoGrid->createAndPopulate($this->request->getQuery(), $this->getBaseUrl());
+
+        $this->eventDispatcher->dispatch(Event::GRID_READY, new GridReady($grid));
+
+        $grid->setTranslator($this->translator);
+
+        $title = $this->translator->translate(static::TITLE_SHOW, static::ENTITY_TITLE_PLURAL);
+
+        $this->view = $this->viewFactory->createView(static::VIEW_LIST);
+        $this->view->setVar(static::VAR_GRID, $grid);
+        $this->view->setVar(static::VAR_CREATE_URL, $this->getCreateUrl());
+
+        $this->addCustomAssets();
+
+        return $this->createResponse($title);
+    }
+
+    /**
      * @param IStringerEntity|null $entity
      */
     protected function addCustomAssets(?IStringerEntity $entity = null)

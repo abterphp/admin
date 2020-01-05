@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use AbterPhp\Admin\Config\Routes as RoutesConfig;
-use AbterPhp\Admin\Constant\Routes as RoutesConstant;
+use AbterPhp\Admin\Constant\Route as RouteConstant;
 use Opulence\Routing\Router;
 
 /**
@@ -20,21 +20,21 @@ $router->group(
         $router->get(
             RoutesConfig::getLoginPath(),
             'Admin\Form\Login@display',
-            [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGIN]
+            [RouteConstant::OPTION_NAME => RouteConstant::LOGIN_NEW]
         );
 
         /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\Login::execute() */
         $router->post(
             RoutesConfig::getLoginPath(),
             'Admin\Execute\Login@execute',
-            [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGIN_POST]
+            [RouteConstant::OPTION_NAME => RouteConstant::LOGIN_EXECUTE]
         );
 
         /** @see \AbterPhp\Admin\Http\Controllers\Admin\Execute\Logout::execute() */
         $router->get(
             RoutesConfig::getLogoutPath(),
             'Admin\Execute\Logout@execute',
-            [RoutesConstant::OPTION_NAME => RoutesConstant::ROUTE_LOGOUT]
+            [RouteConstant::OPTION_NAME => RouteConstant::LOGOUT_EXECUTE]
         );
     }
 );

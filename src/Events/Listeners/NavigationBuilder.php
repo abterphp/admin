@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Events\Listeners;
 
-use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Admin\Constant\Resource;
+use AbterPhp\Admin\Constant\Route;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Events\NavigationReady;
 use AbterPhp\Framework\Html\Component\ButtonFactory;
@@ -112,8 +113,8 @@ class NavigationBuilder
         $text = 'admin:apiClients';
         $icon = 'vpn_key';
 
-        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_API_CLIENTS, [], $icon);
-        $resource = $this->getAdminResource(Routes::ROUTE_API_CLIENTS);
+        $button   = $this->buttonFactory->createFromName($text, Route::API_CLIENTS_LIST, [], $icon);
+        $resource = $this->getAdminResource(Resource::API_CLIENTS);
 
         $item = new Item($button);
         $item->setResource($resource);
@@ -130,7 +131,7 @@ class NavigationBuilder
         $text = 'admin:profile';
         $icon = 'account_box';
 
-        $button = $this->buttonFactory->createFromName($text, Routes::ROUTE_PROFILE, [], $icon);
+        $button = $this->buttonFactory->createFromName($text, Route::PROFILE_EDIT, [], $icon);
 
         $item = new Item($button);
 
@@ -146,8 +147,8 @@ class NavigationBuilder
         $text = 'admin:users';
         $icon = 'person';
 
-        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_USERS, [], $icon);
-        $resource = $this->getAdminResource(Routes::ROUTE_USERS);
+        $button   = $this->buttonFactory->createFromName($text, Route::USERS_LIST, [], $icon);
+        $resource = $this->getAdminResource(Resource::USERS);
 
         $item = new Item($button);
         $item->setResource($resource);
@@ -164,8 +165,8 @@ class NavigationBuilder
         $text = 'admin:userGroups';
         $icon = 'group';
 
-        $button   = $this->buttonFactory->createFromName($text, Routes::ROUTE_USER_GROUPS, [], $icon);
-        $resource = $this->getAdminResource(Routes::ROUTE_USER_GROUPS);
+        $button   = $this->buttonFactory->createFromName($text, Route::USER_GROUPS_LIST, [], $icon);
+        $resource = $this->getAdminResource(Resource::USER_GROUPS);
 
         $item = new Item($button);
         $item->setResource($resource);
@@ -182,7 +183,7 @@ class NavigationBuilder
         $text = 'admin:logout';
         $icon = 'settings_power';
 
-        $button = $this->buttonFactory->createFromName($text, Routes::ROUTE_LOGOUT, [], $icon);
+        $button = $this->buttonFactory->createFromName($text, Route::LOGOUT_EXECUTE, [], $icon);
 
         $item = new Item($button);
 

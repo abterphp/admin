@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Admin\Form;
 
-use AbterPhp\Admin\Constant\Routes;
+use AbterPhp\Admin\Constant\Route;
 use AbterPhp\Admin\Form\Factory\Profile as FormFactory;
 use AbterPhp\Admin\Orm\UserRepo as Repo;
 use AbterPhp\Framework\Assets\AssetManager;
@@ -80,7 +80,7 @@ class Profile extends User
     {
         $urlGenerator = $this->urlGenerator;
 
-        $url = $urlGenerator->createFromName(Routes::ROUTE_PROFILE);
+        $url = $urlGenerator->createFromName(Route::PROFILE_EDIT);
 
         return $url;
     }
