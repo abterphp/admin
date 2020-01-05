@@ -13,6 +13,7 @@ use AbterPhp\Framework\Form\Container\FormGroup;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Element\MultiSelect;
 use AbterPhp\Framework\Form\Element\Select;
+use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\IForm;
 use AbterPhp\Framework\Form\Label\Label;
 use AbterPhp\Framework\I18n\ITranslator;
@@ -52,8 +53,8 @@ class UserGroup extends Base
 
         $this->createForm($action, $method)
             ->addDefaultElements()
-            ->addIdentifier($entity)
             ->addName($entity)
+            ->addIdentifier($entity)
             ->addAdminResources($entity)
             ->addDefaultButtons($showUrl);
 
@@ -74,11 +75,14 @@ class UserGroup extends Base
         $input = new Input(
             'identifier',
             'identifier',
-            $entity->getIdentifier()
+            $entity->getIdentifier(),
+            [],
+            [Html5::ATTR_CLASS => 'semi-auto']
         );
-        $label = new Label('body', 'admin:userGroupIdentifier');
+        $label = new Label('identifier', 'admin:userGroupIdentifier');
+        $help  = new Help('admin:userGroupIdentifierHelp');
 
-        $this->form[] = new FormGroup($input, $label);
+        $this->form[] = new FormGroup($input, $label, $help);
 
         return $this;
     }

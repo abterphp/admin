@@ -16,10 +16,10 @@ use AbterPhp\Framework\Form\Container\FormGroup;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Element\MultiSelect;
 use AbterPhp\Framework\Form\Element\Select;
+use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\IForm;
 use AbterPhp\Framework\Form\Label\Label;
 use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Node;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Orm\IEntity;
 use Opulence\Sessions\ISession;
@@ -239,7 +239,7 @@ class User extends Base
             $attributes
         );
         $label = new Label('can_login', 'admin:userCanLogin');
-        $help  = new Node('admin:userCanLogin');
+        $help  = new Help('admin:userCanLoginHelp');
 
         $this->form[] = new CheckboxGroup($input, $label, $help);
 
@@ -268,7 +268,7 @@ class User extends Base
             'is_gravatar_allowed',
             'admin:userIsGravatarAllowed'
         );
-        $help  = new Node('admin:userIsGravatarAllowed');
+        $help  = new Help('admin:userIsGravatarAllowedHelp');
 
         $this->form[] = new CheckboxGroup($input, $label, $help);
 
@@ -332,7 +332,7 @@ class User extends Base
      */
     protected function createUserGroupSelect(array $options): Select
     {
-        $size = $this->getMultiSelectSize(
+        $size       = $this->getMultiSelectSize(
             count($options),
             static::MULTISELECT_MIN_SIZE,
             static::MULTISELECT_MAX_SIZE
@@ -409,7 +409,7 @@ class User extends Base
      */
     protected function createUserLanguageSelect(array $options): Select
     {
-        $size = $this->getMultiSelectSize(
+        $size       = $this->getMultiSelectSize(
             count($options),
             static::MULTISELECT_MIN_SIZE,
             static::MULTISELECT_MAX_SIZE

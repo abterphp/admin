@@ -160,3 +160,7 @@
 .hidee {
     margin: 1em 0;
 }
+
+.btn-visible {
+    background-color: rgba(0, 0, 0, .05);
+}
