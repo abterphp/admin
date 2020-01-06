@@ -50,8 +50,6 @@ $(document).ready(function () {
         passwordIsStrong = false;
         result = zxcvbn(val, [username.val(), email.val()]);
 
-        console.log('isPasswordStrong', result);
-
         setPasswordHelp(result);
         setProgress(result);
 
@@ -60,8 +58,6 @@ $(document).ready(function () {
 
     var setProgress = function (result) {
         var percent = (result.score+1) * 20;
-
-        console.log('setProgress', result.score);
 
         passwordProgress
             .css('width', percent + '%')
@@ -89,9 +85,7 @@ $(document).ready(function () {
     var isPasswordRepeated = function () {
         var areSame = (rawPassword.val() === passwordRepeated.val());
 
-        console.log(areSame);
-
-        //passwordRepeated.parent().toggleClass('has-error', !areSame);
+        // passwordRepeated.parent().toggleClass('has-error', !areSame);
 
         return areSame;
     };

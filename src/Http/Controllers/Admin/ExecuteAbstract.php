@@ -84,7 +84,7 @@ abstract class ExecuteAbstract extends AdminAbstract
         $postData = $this->getPostData();
         $fileData = $this->getFileData();
 
-        $errors = $this->repoService->validateForm(array_merge($postData, $fileData));
+        $errors = $this->repoService->validateForm(array_merge($postData, $fileData), IRepoService::CREATE);
 
         if (count($errors) > 0) {
             $this->flashService->mergeErrorMessages($errors);
@@ -125,7 +125,7 @@ abstract class ExecuteAbstract extends AdminAbstract
         $postData = $this->getPostData();
         $fileData = $this->getFileData();
 
-        $errors = $this->repoService->validateForm(array_merge($postData, $fileData));
+        $errors = $this->repoService->validateForm(array_merge($postData, $fileData), IRepoService::UPDATE);
 
         try {
             $entity = $this->repoService->retrieveEntity($entityId);

@@ -71,8 +71,8 @@ class User extends Base
             ->addEmail($entity)
             ->addPassword()
             ->addPasswordConfirmed()
-            ->addRawPassword()
-            ->addRawPasswordConfirmed()
+            ->addRawPassword($entity)
+            ->addRawPasswordConfirmed($entity)
             ->addCanLogin($entity)
             ->addIsGravatarAllowed($entity)
             ->addUserGroups($entity)
@@ -116,9 +116,9 @@ class User extends Base
             [],
             [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF]]
         );
-        $label = new Label('body', 'admin:userUsername');
+        $label = new Label('username', 'admin:userUsername');
 
-        $this->form[] = new FormGroup($input, $label);
+        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
 
         return $this;
     }
@@ -135,11 +135,11 @@ class User extends Base
             'email',
             $entity->getEmail(),
             [],
-            [Html5::ATTR_AUTOCOMPLETE => [Input::AUTOCOMPLETE_OFF]]
+            [Html5::ATTR_AUTOCOMPLETE => [Input::AUTOCOMPLETE_OFF], Html5::ATTR_TYPE => Input::TYPE_EMAIL]
         );
         $label = new Label('email', 'admin:userEmail');
 
-        $this->form[] = new FormGroup($input, $label);
+        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
 
         return $this;
     }
@@ -177,9 +177,11 @@ class User extends Base
     }
 
     /**
+     * @param Entity $entity
+     *
      * @return $this
      */
-    protected function addRawPassword(): User
+    protected function addRawPassword(Entity $entity): User
     {
         $input = new Input(
             'raw_password',
@@ -193,15 +195,18 @@ class User extends Base
         );
         $label = new Label('raw_password', 'admin:userPassword');
 
-        $this->form[] = new FormGroup($input, $label);
+        $class        = $entity->getId() ? FormGroup::CLASS_REQUIRED : '';
+        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => $class]);
 
         return $this;
     }
 
     /**
+     * @param Entity $entity
+     *
      * @return $this
      */
-    protected function addRawPasswordConfirmed(): User
+    protected function addRawPasswordConfirmed(Entity $entity): User
     {
         $input = new Input(
             'raw_password_confirmed',
@@ -215,7 +220,8 @@ class User extends Base
         );
         $label = new Label('raw_password_confirmed', 'admin:userConfirmPassword');
 
-        $this->form[] = new FormGroup($input, $label);
+        $class        = $entity->getId() ? FormGroup::CLASS_REQUIRED : '';
+        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => $class]);
 
         return $this;
     }
@@ -370,7 +376,10 @@ class User extends Base
 
         $this->form[] = new FormGroup(
             $this->createUserLanguageSelect($options),
-            $this->createUserLanguageLabel()
+            $this->createUserLanguageLabel(),
+            null,
+            [],
+            [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]
         );
 
         return $this;

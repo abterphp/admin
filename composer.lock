@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "092a97215e1437438a2b9136f30c54b85440993a"
+                "reference": "c607f7d5cb5d032abd18cbf7c7f54c0fea471128"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/092a97215e1437438a2b9136f30c54b85440993a",
-                "reference": "092a97215e1437438a2b9136f30c54b85440993a",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/c607f7d5cb5d032abd18cbf7c7f54c0fea471128",
+                "reference": "c607f7d5cb5d032abd18cbf7c7f54c0fea471128",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2020-01-05T13:11:40+00:00"
+            "time": "2020-01-06T22:38:25+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",

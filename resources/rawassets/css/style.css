@@ -164,3 +164,7 @@
 .btn-visible {
     background-color: rgba(0, 0, 0, .05);
 }
+
+input.error, textarea.error {
+    border-color: red;
+}

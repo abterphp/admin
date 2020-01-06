@@ -55,12 +55,13 @@ abstract class RepoServiceAbstract implements IRepoService
 
     /**
      * @param array $postData
+     * @param int   $additionalData
      *
      * @return array
      */
-    public function validateForm(array $postData): array
+    public function validateForm(array $postData, int $additionalData = self::MIXED): array
     {
-        if ($this->getValidator()->isValid($postData)) {
+        if ($this->getValidator($additionalData)->isValid($postData)) {
             return [];
         }
 
@@ -68,9 +69,13 @@ abstract class RepoServiceAbstract implements IRepoService
     }
 
     /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param int $additionalData
+     *
      * @return IValidator
      */
-    protected function getValidator(): IValidator
+    protected function getValidator(int $additionalData): IValidator
     {
         if ($this->validator) {
             return $this->validator;

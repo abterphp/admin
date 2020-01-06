@@ -11,7 +11,7 @@ use Opulence\Validation\Rules\Factories\RulesFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class UserTest extends TestCase
+class ExistingUserTest extends TestCase
 {
     /** @var User - System Under Test */
     protected $sut;
@@ -25,7 +25,7 @@ class UserTest extends TestCase
 
         $this->rulesFactoryMock = StubRulesFactory::createRulesFactory($this, ['uuid' => new Uuid()]);
 
-        $this->sut = new User($this->rulesFactoryMock);
+        $this->sut = new ExistingUser($this->rulesFactoryMock);
     }
 
     /**

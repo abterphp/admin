@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Bootstrappers\Validation;
 
-use AbterPhp\Admin\Validation\Factory\User;
+use AbterPhp\Admin\Validation\Factory\ExistingUser;
+use AbterPhp\Admin\Validation\Factory\NewUser;
 use AbterPhp\Admin\Validation\Factory\UserGroup;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Validation\Rules\AtLeastOne;
@@ -31,7 +32,8 @@ class ValidatorBootstrapper extends BaseBootstrapper
      * @var array
      */
     protected $validatorFactories = [
-        User::class,
+        NewUser::class,
+        ExistingUser::class,
         UserGroup::class,
     ];
 

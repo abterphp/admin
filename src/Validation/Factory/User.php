@@ -7,7 +7,7 @@ namespace AbterPhp\Admin\Validation\Factory;
 use Opulence\Validation\Factories\ValidatorFactory;
 use Opulence\Validation\IValidator;
 
-class User extends ValidatorFactory
+abstract class User extends ValidatorFactory
 {
     /**
      * @return IValidator
@@ -37,13 +37,13 @@ class User extends ValidatorFactory
             ->uuid()
             ->required();
 
-        $validator
-            ->field('password');
-
-        $validator
-            ->field('password_confirmed')
-            ->equalsField('password');
+        $this->addPasswordFields($validator);
 
         return $validator;
     }
+
+    /**
+     * @param IValidator $validator
+     */
+    abstract protected function addPasswordFields(IValidator $validator): void;
 }

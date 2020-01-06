@@ -6,7 +6,8 @@ namespace AbterPhp\Admin\Service\Execute;
 
 use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Orm\UserRepo as GridRepo;
-use AbterPhp\Admin\Validation\Factory\User as ValidatorFactory;
+use AbterPhp\Admin\Validation\Factory\ExistingUser as ValidatorFactory;
+use AbterPhp\Admin\Validation\Factory\NewUser as NewUserValidatorFactory;
 use AbterPhp\Framework\Crypto\Crypto;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Events\Dispatchers\IEventDispatcher;
@@ -27,6 +28,9 @@ class UserTest extends TestCase
     /** @var ValidatorFactory|MockObject */
     protected $validatorFactoryMock;
 
+    /** @var NewUserValidatorFactory|MockObject */
+    protected $newUserValidatorFactoryMock;
+
     /** @var IUnitOfWork|MockObject */
     protected $unitOfWorkMock;
 
@@ -40,18 +44,21 @@ class UserTest extends TestCase
     {
         parent::setUp();
 
-        $this->gridRepoMock         = $this->createMock(GridRepo::class);
-        $this->validatorFactoryMock = $this->createMock(ValidatorFactory::class);
-        $this->unitOfWorkMock       = $this->createMock(IUnitOfWork::class);
-        $this->eventDispatcherMock  = $this->createMock(IEventDispatcher::class);
-        $this->cryptoMock           = $this->createMock(Crypto::class);
+        $this->gridRepoMock                = $this->createMock(GridRepo::class);
+        $this->validatorFactoryMock        = $this->createMock(ValidatorFactory::class);
+        $this->newUserValidatorFactoryMock = $this->createMock(NewUserValidatorFactory::class);
+        $this->unitOfWorkMock              = $this->createMock(IUnitOfWork::class);
+        $this->eventDispatcherMock         = $this->createMock(IEventDispatcher::class);
+        $this->cryptoMock                  = $this->createMock(Crypto::class);
+        $this->cryptoMock                  = $this->createMock(Crypto::class);
 
         $this->sut = new User(
             $this->gridRepoMock,
             $this->validatorFactoryMock,
             $this->unitOfWorkMock,
             $this->eventDispatcherMock,
-            $this->cryptoMock
+            $this->cryptoMock,
+            $this->newUserValidatorFactoryMock
         );
     }
 

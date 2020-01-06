@@ -37,7 +37,7 @@ class User extends FormAbstract
     protected $slugify;
 
     /** @var AssetManager */
-    protected $assets;
+    protected $assetManager;
 
     /** @var string */
     protected $frontendSalt;
@@ -82,7 +82,7 @@ class User extends FormAbstract
             $eventDispatcher
         );
 
-        $this->assets       = $assetManager;
+        $this->assetManager = $assetManager;
         $this->frontendSalt = $frontendSalt;
     }
 
@@ -120,23 +120,13 @@ class User extends FormAbstract
     {
         parent::addCustomAssets($entity);
 
-        $footerResource = $this->getResourceName(static::RESOURCE_FOOTER);
+        $footer = $this->getResourceName(static::RESOURCE_FOOTER);
 
-        $this->assets->addJs(
-            $footerResource,
-            '/admin-assets/vendor/sha3/sha3.js'
-        );
-        $this->assets->addJsContent(
-            $footerResource,
-            "var frontendSalt = '{$this->frontendSalt}'"
-        );
-        $this->assets->addJs(
-            $footerResource,
-            '/admin-assets/vendor/zxcvbn/zxcvbn.min.js'
-        );
-        $this->assets->addJs(
-            $footerResource,
-            '/admin-assets/js/user.js'
-        );
+        $this->assetManager->addJs($footer, '/admin-assets/vendor/sha3/sha3.js');
+        $this->assetManager->addJsContent($footer, "var frontendSalt = '{$this->frontendSalt}'");
+        $this->assetManager->addJs($footer, '/admin-assets/vendor/zxcvbn/zxcvbn.min.js');
+        $this->assetManager->addJs($footer, '/admin-assets/js/user.js');
+        $this->assetManager->addJs($footer, '/admin-assets/js/required.js');
+        $this->assetManager->addJs($footer, '/admin-assets/js/validation.js');
     }
 }

@@ -8,33 +8,40 @@ use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\UserRepo as GridRepo;
-use AbterPhp\Admin\Validation\Factory\User as ValidatorFactory;
+use AbterPhp\Admin\Validation\Factory\ExistingUser as ValidatorFactory;
+use AbterPhp\Admin\Validation\Factory\NewUser as NewUserValidatorFactory;
 use AbterPhp\Framework\Crypto\Crypto;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Http\Requests\UploadedFile;
 use Opulence\Orm\IUnitOfWork;
+use Opulence\Validation\IValidator;
 
 class User extends RepoServiceAbstract
 {
     /** @var Crypto */
     private $crypto;
 
+    /** @var NewUserValidatorFactory */
+    private $newUserValidatorFactory;
+
     /**
      * User constructor.
      *
-     * @param GridRepo         $repo
-     * @param ValidatorFactory $validatorFactory
-     * @param IUnitOfWork      $unitOfWork
-     * @param IEventDispatcher $eventDispatcher
-     * @param Crypto           $crypto
+     * @param GridRepo                $repo
+     * @param ValidatorFactory        $validatorFactory
+     * @param IUnitOfWork             $unitOfWork
+     * @param IEventDispatcher        $eventDispatcher
+     * @param Crypto                  $crypto
+     * @param NewUserValidatorFactory $newUserValidatorFactory
      */
     public function __construct(
         GridRepo $repo,
         ValidatorFactory $validatorFactory,
         IUnitOfWork $unitOfWork,
         IEventDispatcher $eventDispatcher,
-        Crypto $crypto
+        Crypto $crypto,
+        NewUserValidatorFactory $newUserValidatorFactory
     ) {
         parent::__construct(
             $repo,
@@ -43,7 +50,28 @@ class User extends RepoServiceAbstract
             $eventDispatcher
         );
 
-        $this->crypto = $crypto;
+        $this->crypto                  = $crypto;
+        $this->newUserValidatorFactory = $newUserValidatorFactory;
+    }
+
+    /**
+     * @param int $additionalData
+     *
+     * @return IValidator
+     */
+    protected function getValidator(int $additionalData): IValidator
+    {
+        if ($additionalData == static::CREATE) {
+            $this->validator = $this->newUserValidatorFactory->createValidator();
+        }
+
+        if ($this->validator) {
+            return $this->validator;
+        }
+
+        $this->validator = $this->validatorFactory->createValidator();
+
+        return $this->validator;
     }
 
     /**

@@ -70,6 +70,25 @@ class UserGroup extends Base
      *
      * @return $this
      */
+    protected function addName(Entity $entity): UserGroup
+    {
+        $input = new Input(
+            'name',
+            'name',
+            $entity->getName()
+        );
+        $label = new Label('body', 'admin:userGroupName');
+
+        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+
+        return $this;
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return $this
+     */
     protected function addIdentifier(Entity $entity): UserGroup
     {
         $input = new Input(
@@ -83,25 +102,6 @@ class UserGroup extends Base
         $help  = new Help('admin:userGroupIdentifierHelp');
 
         $this->form[] = new FormGroup($input, $label, $help);
-
-        return $this;
-    }
-
-    /**
-     * @param Entity $entity
-     *
-     * @return $this
-     */
-    protected function addName(Entity $entity): UserGroup
-    {
-        $input = new Input(
-            'name',
-            'name',
-            $entity->getName()
-        );
-        $label = new Label('body', 'admin:userGroupName');
-
-        $this->form[] = new FormGroup($input, $label);
 
         return $this;
     }
