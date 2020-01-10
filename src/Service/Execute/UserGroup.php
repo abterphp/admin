@@ -63,9 +63,11 @@ class UserGroup extends RepoServiceAbstract
     {
         assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
-        $name = isset($postData['name']) ? (string)$postData['name'] : '';
+        $name = $postData['name'] ?: $entity->getName();
 
-        $identifier = $this->slugify->slugify($name);
+        $identifier = $postData['identifier'] ?? $entity->getIdentifier();
+        $identifier = $identifier ?: $name;
+        $identifier = $this->slugify->slugify($identifier);
 
         $adminResources = [];
         if (array_key_exists('admin_resource_ids', $postData)) {

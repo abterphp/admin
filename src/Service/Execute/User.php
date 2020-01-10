@@ -112,18 +112,18 @@ class User extends RepoServiceAbstract
     {
         assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
-        $username          = isset($postData['username']) ? (string)$postData['username'] : '';
-        $email             = isset($postData['email']) ? (string)$postData['email'] : '';
-        $password          = isset($postData['password']) ? (string)$postData['password'] : '';
-        $isGravatarAllowed = isset($postData['is_gravatar_allowed']) ? (bool)$postData['is_gravatar_allowed'] : false;
-        $canLogin          = isset($postData['can_login']) ? (bool)$postData['can_login'] : false;
+        $username          = $postData['username'] ?: '';
+        $email             = $postData['email'] ?: '';
+        $password          = $postData['password'] ?: '';
+        $isGravatarAllowed = $postData['is_gravatar_allowed'] ?? false;
+        $canLogin          = $postData['can_login'] ?? false;
         $userLanguage      = $this->createUserLanguage($postData);
         $userGroups        = $this->createUserGroups($postData);
 
         $entity->setUsername($username)
             ->setEmail($email)
-            ->setIsGravatarAllowed($isGravatarAllowed)
-            ->setCanLogin($canLogin)
+            ->setIsGravatarAllowed((bool)$isGravatarAllowed)
+            ->setCanLogin((bool)$canLogin)
             ->setUserLanguage($userLanguage)
             ->setUserGroups($userGroups);
 
@@ -141,7 +141,7 @@ class User extends RepoServiceAbstract
      */
     protected function createUserLanguage(array $postData): UserLanguage
     {
-        $userLanguageId = isset($postData['user_language_id']) ? (string)$postData['user_language_id'] : '';
+        $userLanguageId = $postData['user_language_id'] ?? '';
 
         return new UserLanguage($userLanguageId, '', '');
     }

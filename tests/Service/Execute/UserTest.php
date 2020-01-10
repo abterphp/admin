@@ -50,7 +50,6 @@ class UserTest extends TestCase
         $this->unitOfWorkMock              = $this->createMock(IUnitOfWork::class);
         $this->eventDispatcherMock         = $this->createMock(IEventDispatcher::class);
         $this->cryptoMock                  = $this->createMock(Crypto::class);
-        $this->cryptoMock                  = $this->createMock(Crypto::class);
 
         $this->sut = new User(
             $this->gridRepoMock,
@@ -64,7 +63,11 @@ class UserTest extends TestCase
 
     public function testCreateMinimal()
     {
-        $postData = [];
+        $postData = [
+            'username' => '',
+            'password' => '',
+            'email'    => '',
+        ];
 
         $this->gridRepoMock->expects($this->once())->method('add');
         $this->eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch');
@@ -90,6 +93,7 @@ class UserTest extends TestCase
         $userGroupIds   = ['ug-1', 'ug-2'];
         $postData       = [
             'username'            => $username,
+            'password'            => '',
             'email'               => $email,
             'is_gravatar_allowed' => true,
             'can_login'           => true,
@@ -117,7 +121,11 @@ class UserTest extends TestCase
         $password       = 'foo';
         $hashedPassword = 'foo-hashed';
         $postData       = [
-            'password' => $password,
+            'username'         => '',
+            'password'         => $password,
+            'email'            => '',
+            'user_language_id' => '',
+            'user_group_ids'   => '',
         ];
 
         $this->gridRepoMock->expects($this->once())->method('add');
@@ -144,9 +152,10 @@ class UserTest extends TestCase
         $userGroupIds   = ['ug-1', 'ug-2'];
         $postData       = [
             'username'            => $username,
+            'password'            => '',
             'email'               => $email,
-            'is_gravatar_allowed' => true,
-            'can_login'           => true,
+            'is_gravatar_allowed' => '1',
+            'can_login'           => '1',
             'user_language_id'    => $userLanguageId,
             'user_group_ids'      => $userGroupIds,
         ];

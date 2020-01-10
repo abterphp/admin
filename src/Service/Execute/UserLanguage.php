@@ -62,8 +62,10 @@ class UserLanguage extends RepoServiceAbstract
     {
         assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
-        $name       = isset($postData['name']) ? (string)$postData['name'] : '';
-        $identifier = isset($postData['identifier']) ? (string)$postData['identifier'] : $name;
+        $name = isset($postData['name']) ? (string)$postData['name'] : '';
+
+        $identifier = $postData['identifier'] ?? $entity->getIdentifier();
+        $identifier = $identifier ?: $entity->getName();
         $identifier = $this->slugify->slugify($identifier);
 
         $entity
