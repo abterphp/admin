@@ -18,13 +18,14 @@ class UserLanguage extends ValidatorFactory
 
         $validator
             ->field('id')
-            ->uuid()
-        ;
+            ->uuid();
+
+        $validator
+            ->field('identifier');
 
         $validator
             ->field('name')
-            ->required()
-        ;
+            ->required();
 
         return $validator;
     }
