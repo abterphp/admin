@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Validation\Factory;
 
+use AbterPhp\Framework\Http\Service\Execute\IRepoService;
 use Opulence\Validation\Factories\ValidatorFactory;
 use Opulence\Validation\IValidator;
 
-abstract class User extends ValidatorFactory
+class User extends ValidatorFactory implements IConditional
 {
+    use ConditionalTrait;
+
     /**
      * @return IValidator
      */
@@ -18,7 +21,7 @@ abstract class User extends ValidatorFactory
 
         $validator
             ->field('id')
-            ->uuid();
+            ->forbidden();
 
         $validator
             ->field('username')
@@ -37,7 +40,14 @@ abstract class User extends ValidatorFactory
             ->uuid()
             ->required();
 
-        $this->addPasswordFields($validator);
+        $validator
+            ->field('password');
+
+        $validator
+            ->field('password_confirmed')
+            ->equalsField('password');
+
+        $this->makePasswordRequired($validator);
 
         return $validator;
     }
@@ -45,5 +55,18 @@ abstract class User extends ValidatorFactory
     /**
      * @param IValidator $validator
      */
-    abstract protected function addPasswordFields(IValidator $validator): void;
+    protected function makePasswordRequired(IValidator $validator): void
+    {
+        if ($this->additionalData !== IRepoService::CREATE) {
+            return;
+        }
+
+        $validator
+            ->field('password')
+            ->required();
+
+        $validator
+            ->field('password_confirmed')
+            ->required();
+    }
 }

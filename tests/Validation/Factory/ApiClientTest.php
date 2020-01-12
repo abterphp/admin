@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Validation\Factory;
 
 use AbterPhp\Admin\TestDouble\Validation\StubRulesFactory;
+use AbterPhp\Framework\Validation\Rules\Forbidden;
 use AbterPhp\Framework\Validation\Rules\Uuid;
 use Opulence\Validation\IValidator;
 use Opulence\Validation\Rules\Factories\RulesFactory;
@@ -23,7 +24,10 @@ class ApiClientTest extends TestCase
     {
         parent::setUp();
 
-        $this->rulesFactoryMock = StubRulesFactory::createRulesFactory($this, ['uuid' => new Uuid()]);
+        $this->rulesFactoryMock = StubRulesFactory::createRulesFactory(
+            $this,
+            ['uuid' => new Uuid(), 'forbidden' => new Forbidden()]
+        );
 
         $this->sut = new ApiClient($this->rulesFactoryMock);
     }
@@ -40,7 +44,6 @@ class ApiClientTest extends TestCase
             ],
             'valid-data'                          => [
                 [
-                    'id'          => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'user_id'     => '5c032f90-bf10-4a77-81aa-b0b1254a8f66',
                     'description' => 'foo',
                 ],
@@ -55,39 +58,28 @@ class ApiClientTest extends TestCase
             ],
             'valid-data-with-admin-resources'     => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'user_id'            => '5c032f90-bf10-4a77-81aa-b0b1254a8f66',
                     'description'        => 'foo',
                     'admin_resource_ids' => ['bar', 'baz'],
                 ],
                 true,
             ],
-            'invalid-id-not-uuid'                 => [
-                [
-                    'id'          => '465c91df-9cc7-47e2-a2ef-8fe64575314',
-                    'user_id'     => '5c032f90-bf10-4a77-81aa-b0b1254a8f66',
-                    'description' => 'foo',
-                ],
-                false,
-            ],
-            'invalid-user-id-empty'               => [
+            'invalid-has-id'                      => [
                 [
                     'id'          => '465c91df-9cc7-47e2-a2ef-8fe645753148',
-                    'user_id'     => '',
+                    'user_id'     => '5c032f90-bf10-4a77-81aa-b0b1254a8f66',
                     'description' => 'foo',
                 ],
                 false,
             ],
             'invalid-user-id-missing'             => [
                 [
-                    'id'          => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'description' => 'foo',
                 ],
                 false,
             ],
             'invalid-user-id-not-uuid'            => [
                 [
-                    'id'          => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'user_id'     => '5c032f90-bf10-4a77-81aa-b0b1254a8f6',
                     'description' => 'foo',
                 ],

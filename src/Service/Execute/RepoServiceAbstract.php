@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Service\Execute;
 
+use AbterPhp\Admin\Validation\Factory\IConditional;
 use AbterPhp\Framework\Constant\Event;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\Events\EntityChange;
@@ -79,6 +80,10 @@ abstract class RepoServiceAbstract implements IRepoService
     {
         if ($this->validator) {
             return $this->validator;
+        }
+
+        if ($this->validatorFactory instanceof IConditional) {
+            $this->validatorFactory->setAdditionalData($additionalData);
         }
 
         $this->validator = $this->validatorFactory->createValidator();

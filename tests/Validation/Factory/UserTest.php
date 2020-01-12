@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Validation\Factory;
 
 use AbterPhp\Admin\TestDouble\Validation\StubRulesFactory;
+use AbterPhp\Framework\Http\Service\Execute\IRepoService;
+use AbterPhp\Framework\Validation\Rules\Forbidden;
 use AbterPhp\Framework\Validation\Rules\Uuid;
 use Opulence\Validation\IValidator;
 use Opulence\Validation\Rules\Factories\RulesFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ExistingUserTest extends TestCase
+class UserTest extends TestCase
 {
     /** @var User - System Under Test */
     protected $sut;
@@ -23,24 +25,26 @@ class ExistingUserTest extends TestCase
     {
         parent::setUp();
 
-        $this->rulesFactoryMock = StubRulesFactory::createRulesFactory($this, ['uuid' => new Uuid()]);
+        $this->rulesFactoryMock = StubRulesFactory::createRulesFactory(
+            $this,
+            ['uuid' => new Uuid(), 'forbidden' => new Forbidden()]
+        );
 
-        $this->sut = new ExistingUser($this->rulesFactoryMock);
+        $this->sut = new User($this->rulesFactoryMock);
     }
 
     /**
      * @return array
      */
-    public function createValidatorProvider(): array
+    public function createValidatorExistingProvider(): array
     {
         return [
-            'empty-data' => [
+            'empty-data'                          => [
                 [],
                 false,
             ],
-            'valid-data' => [
+            'valid-data'                          => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => 'user@example.com',
                     'user_group_ids'     => [
@@ -55,30 +59,23 @@ class ExistingUserTest extends TestCase
             ],
             'valid-data-missing-all-not-required' => [
                 [
-                    'username'           => 'foo',
-                    'email'              => 'user@example.com',
-                    'user_language_id'   => 'df99af41-82fd-4865-a3d1-6a2eebf0951c',
+                    'username'         => 'foo',
+                    'email'            => 'user@example.com',
+                    'user_language_id' => 'df99af41-82fd-4865-a3d1-6a2eebf0951c',
                 ],
                 true,
             ],
-            'invalid-id-not-uuid' => [
+            'invalid-has-id'                      => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe64575314',
-                    'username'           => 'foo',
-                    'email'              => 'user@example.com',
-                    'user_group_ids'     => [
-                        '5c032f90-bf10-4a77-81aa-b0b1254a8f66',
-                        '96aaef56-0e11-4f1c-b407-a8b65ff8e647',
-                    ],
-                    'user_language_id'   => 'df99af41-82fd-4865-a3d1-6a2eebf0951c',
-                    'password'           => 'foo',
-                    'password_confirmed' => 'foo',
+                    'id'               => '465c91df-9cc7-47e2-a2ef-8fe645753148',
+                    'username'         => 'foo',
+                    'email'            => 'user@example.com',
+                    'user_language_id' => 'df99af41-82fd-4865-a3d1-6a2eebf0951c',
                 ],
                 false,
             ],
-            'invalid-username-missing' => [
+            'invalid-username-missing'            => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => '',
                     'email'              => 'user@example.com',
                     'user_group_ids'     => [
@@ -91,9 +88,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-email-not-valid' => [
+            'invalid-email-not-valid'             => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => 'user@@example.com',
                     'user_group_ids'     => [
@@ -106,9 +102,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-email-empty' => [
+            'invalid-email-empty'                 => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => '',
                     'user_group_ids'     => [
@@ -121,9 +116,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-email-missing' => [
+            'invalid-email-missing'               => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'user_group_ids'     => [
                         '5c032f90-bf10-4a77-81aa-b0b1254a8f66',
@@ -135,9 +129,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-user-language-id-not-uuid' => [
+            'invalid-user-language-id-not-uuid'   => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => 'user@example.com',
                     'user_group_ids'     => [],
@@ -147,9 +140,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-user-language-id-empty' => [
+            'invalid-user-language-id-empty'      => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => 'user@example.com',
                     'user_group_ids'     => [
@@ -162,9 +154,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-user-language-id-missing' => [
+            'invalid-user-language-id-missing'    => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => 'user@example.com',
                     'user_group_ids'     => [
@@ -176,9 +167,8 @@ class ExistingUserTest extends TestCase
                 ],
                 false,
             ],
-            'invalid-passwords-dont-match' => [
+            'invalid-passwords-dont-match'        => [
                 [
-                    'id'                 => '465c91df-9cc7-47e2-a2ef-8fe645753148',
                     'username'           => 'foo',
                     'email'              => 'user@example.com',
                     'user_group_ids'     => [
@@ -195,13 +185,59 @@ class ExistingUserTest extends TestCase
     }
 
     /**
-     * @dataProvider createValidatorProvider
+     * @dataProvider createValidatorExistingProvider
      *
      * @param array $data
      * @param bool  $expectedResult
      */
-    public function testCreateValidator(array $data, bool $expectedResult)
+    public function testCreateValidatorExisting(array $data, bool $expectedResult)
     {
+        $this->runTestCreateValidator(IRepoService::UPDATE, $data, $expectedResult);
+    }
+
+    /**
+     * @return array
+     */
+    public function createValidatorNewProvider(): array
+    {
+        $data = $this->createValidatorExistingProvider();
+
+        $data['valid-data-missing-all-not-required'] = [
+            [
+                'username'           => 'foo',
+                'email'              => 'user@example.com',
+                'user_language_id'   => 'df99af41-82fd-4865-a3d1-6a2eebf0951c',
+                'password'           => 'foo',
+                'password_confirmed' => 'foo',
+            ],
+            true,
+        ];
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider createValidatorNewProvider
+     *
+     * @param array $data
+     * @param bool  $expectedResult
+     */
+    public function testCreateValidatorNew(array $data, bool $expectedResult)
+    {
+        $this->runTestCreateValidator(IRepoService::CREATE, $data, $expectedResult);
+    }
+
+    /**
+     * @dataProvider createValidatorExistingProvider
+     *
+     * @param array $additionalData
+     * @param array $data
+     * @param bool  $expectedResult
+     */
+    public function runTestCreateValidator(int $additionalData, array $data, bool $expectedResult)
+    {
+        $this->sut->setAdditionalData($additionalData);
+
         $validator = $this->sut->createValidator();
 
         $this->assertInstanceOf(IValidator::class, $validator);

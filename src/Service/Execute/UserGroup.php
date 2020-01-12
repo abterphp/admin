@@ -63,7 +63,7 @@ class UserGroup extends RepoServiceAbstract
     {
         assert($entity instanceof Entity, new \InvalidArgumentException('Invalid entity'));
 
-        $name = $postData['name'] ?: $entity->getName();
+        $name = $postData['name'];
 
         $identifier = $postData['identifier'] ?? $entity->getIdentifier();
         $identifier = $identifier ?: $name;

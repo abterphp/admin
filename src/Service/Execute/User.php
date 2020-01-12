@@ -8,8 +8,7 @@ use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\UserRepo as GridRepo;
-use AbterPhp\Admin\Validation\Factory\ExistingUser as ValidatorFactory;
-use AbterPhp\Admin\Validation\Factory\NewUser as NewUserValidatorFactory;
+use AbterPhp\Admin\Validation\Factory\User as ValidatorFactory;
 use AbterPhp\Framework\Crypto\Crypto;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Events\Dispatchers\IEventDispatcher;
@@ -22,9 +21,6 @@ class User extends RepoServiceAbstract
     /** @var Crypto */
     private $crypto;
 
-    /** @var NewUserValidatorFactory */
-    private $newUserValidatorFactory;
-
     /**
      * User constructor.
      *
@@ -33,15 +29,13 @@ class User extends RepoServiceAbstract
      * @param IUnitOfWork             $unitOfWork
      * @param IEventDispatcher        $eventDispatcher
      * @param Crypto                  $crypto
-     * @param NewUserValidatorFactory $newUserValidatorFactory
      */
     public function __construct(
         GridRepo $repo,
         ValidatorFactory $validatorFactory,
         IUnitOfWork $unitOfWork,
         IEventDispatcher $eventDispatcher,
-        Crypto $crypto,
-        NewUserValidatorFactory $newUserValidatorFactory
+        Crypto $crypto
     ) {
         parent::__construct(
             $repo,
@@ -51,7 +45,6 @@ class User extends RepoServiceAbstract
         );
 
         $this->crypto                  = $crypto;
-        $this->newUserValidatorFactory = $newUserValidatorFactory;
     }
 
     /**
@@ -61,10 +54,6 @@ class User extends RepoServiceAbstract
      */
     protected function getValidator(int $additionalData): IValidator
     {
-        if ($additionalData == static::CREATE) {
-            $this->validator = $this->newUserValidatorFactory->createValidator();
-        }
-
         if ($this->validator) {
             return $this->validator;
         }
