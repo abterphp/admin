@@ -9,6 +9,7 @@ use AbterPhp\Admin\Validation\Factory\UserGroup;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Validation\Rules\Base64;
 use AbterPhp\Framework\Validation\Rules\ExactlyOne;
+use AbterPhp\Framework\Validation\Rules\Forbidden;
 use AbterPhp\Framework\Validation\Rules\MaxLength;
 use AbterPhp\Framework\Validation\Rules\MinLength;
 use AbterPhp\Framework\Validation\Rules\Url;
@@ -95,6 +96,7 @@ class ValidatorBootstrapper extends BaseBootstrapper
      */
     protected function registerRuleExtensions(RuleExtensionRegistry $ruleExtensionRegistry)
     {
+        $ruleExtensionRegistry->registerRuleExtension(new Forbidden());
         $ruleExtensionRegistry->registerRuleExtension(new ExactlyOne());
         $ruleExtensionRegistry->registerRuleExtension(new Base64());
         $ruleExtensionRegistry->registerRuleExtension(new MaxLength());
