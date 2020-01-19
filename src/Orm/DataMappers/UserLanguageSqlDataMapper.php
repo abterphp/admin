@@ -88,6 +88,9 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
             ->limit($pageSize)
             ->offset($limitFrom);
 
+        if (!$orders) {
+            $query->orderBy('created_at ASC');
+        }
         foreach ($orders as $order) {
             $query->addOrderBy($order);
         }

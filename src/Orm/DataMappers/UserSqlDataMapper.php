@@ -111,6 +111,9 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
             ->limit($pageSize)
             ->offset($limitFrom);
 
+        if (!$orders) {
+            $query->orderBy('username ASC');
+        }
         foreach ($orders as $order) {
             $query->addOrderBy($order);
         }

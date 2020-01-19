@@ -93,6 +93,9 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
             ->limit($pageSize)
             ->offset($limitFrom);
 
+        if (!$orders) {
+            $query->orderBy('ug.created_at ASC');
+        }
         foreach ($orders as $order) {
             $query->addOrderBy($order);
         }

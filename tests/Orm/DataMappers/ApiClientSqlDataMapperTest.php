@@ -217,7 +217,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description1 = 'bar';
         $secret1      = 'bar-secret';
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id ORDER BY created_at ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],

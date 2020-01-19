@@ -24,7 +24,7 @@ class SlugifyBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     public function registerBindings(IContainer $container)
     {
-        $slugify = new Slugify();
+        $slugify = new Slugify(['regexp' => '/([^A-Za-z0-9_]|-)+/']);
 
         $container->bindInstance(Slugify::class, $slugify);
     }
