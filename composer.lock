@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "a527641cc6c7e763553431722cd6151652b6d378"
+                "reference": "df4541c2e7ebc1a6a8e3ccffafe065c9498e967c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/a527641cc6c7e763553431722cd6151652b6d378",
-                "reference": "a527641cc6c7e763553431722cd6151652b6d378",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/df4541c2e7ebc1a6a8e3ccffafe065c9498e967c",
+                "reference": "df4541c2e7ebc1a6a8e3ccffafe065c9498e967c",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 }
             ],
             "description": "Foundations for AbterPHP",
-            "time": "2020-01-16T01:16:23+00:00"
+            "time": "2020-01-19T07:32:09+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -2468,16 +2468,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.4",
+            "version": "1.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef",
                 "shasum": ""
             },
             "require": {
@@ -2512,7 +2512,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-12-15T19:12:40+00:00"
+            "time": "2020-01-17T21:11:47+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
