@@ -30,6 +30,12 @@ $router->group(
                         RouteConstant::OPTION_NAME => RouteConstant::ACCESS_TOKENS_BASE,
                     ]
                 );
+                /** @see \AbterPhp\Admin\Http\Controllers\Api\Editor::fileUpload() */
+                $router->any(
+                    '/editor-file-upload',
+                    'Api\Editor@fileUpload',
+                    []
+                );
             }
         );
         $router->group(
