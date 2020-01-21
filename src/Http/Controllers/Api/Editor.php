@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers\Api;
 
-use AbterPhp\Admin\Config\Routes;
-use AbterPhp\Framework\Constant\Env as FrameworkEnv;
-use AbterPhp\Website\Constant\Env as WebsiteEnv;
+use AbterPhp\Admin\Constant\Env;
 use Opulence\Environments\Environment;
 use Opulence\Http\Responses\JsonResponse;
 use Opulence\Http\Responses\Response;
@@ -15,19 +13,6 @@ use Opulence\Routing\Controller;
 
 class Editor extends Controller
 {
-    /** @var Routes */
-    protected $routes;
-
-    /**
-     * Editor constructor.
-     *
-     * @param Routes $routes
-     */
-    public function __construct(Routes $routes)
-    {
-        $this->routes = $routes;
-    }
-
     /**
      * @return Response
      */
@@ -35,51 +20,48 @@ class Editor extends Controller
     {
         $actualClientId = explode(' ', $this->request->getHeaders()->get('authorization'))[1];
 
-        $expectedClientId = Environment::getVar(FrameworkEnv::CRYPTO_CLIENT_ID);
+        $expectedClientId = Environment::getVar(Env::UPLOAD_CLIENT_ID);
         if ($actualClientId != $expectedClientId) {
-            $response = new JsonResponse(
-                [
-                    'success' => false,
-                    'status'  => ResponseHeaders::HTTP_FORBIDDEN,
-                ],
-                ResponseHeaders::HTTP_FORBIDDEN
-            );
-            $response->send();
-
-            return $response;
+            return $this->sendJson(ResponseHeaders::HTTP_FORBIDDEN);
         }
 
         $image = $this->request->getFiles()->get('image');
         if ($image->hasErrors()) {
-            $response = new JsonResponse(
-                [
-                    'success' => false,
-                    'status'  => ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR,
-                ],
-                ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR
-            );
-            $response->send();
-
-            return $response;
+            return $this->sendJson(ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR);
         }
 
+        $pathinfo  = pathinfo($image->getTempFilename());
         $basePath  = mb_substr(basename($image->getPathname()), 3);
-        $extension = pathinfo($image->getTempFilename())['extension'];
+        $extension = $pathinfo['extension'] ?? '';
         $filename  = sprintf('%s.%s', $basePath, $extension);
 
-        $path = sprintf('%s/editor-file-upload', Environment::getVar(FrameworkEnv::DIR_PUBLIC));
-        $url  = Environment::getVar(WebsiteEnv::WEBSITE_BASE_URL) . 'editor-file-upload/' . $filename;
+        $path = Environment::getVar(Env::DIR_UPLOAD);
+        $url  = Environment::getVar(Env::UPLOAD_BASE_URL) . '/' . $filename;
 
         $image->move($path, $filename);
 
-        $response = new JsonResponse(
-            [
-                'data'    => ['url' => $url],
-                'success' => true,
-                'status'  => ResponseHeaders::HTTP_OK,
-            ],
-            ResponseHeaders::HTTP_OK
-        );
+        return $this->sendJson(ResponseHeaders::HTTP_OK, ['url' => $url]);
+    }
+
+    /**
+     * @param int        $status
+     * @param array|null $data
+     *
+     * @return Response
+     */
+    protected function sendJson($status = ResponseHeaders::HTTP_OK, array $data = null): Response
+    {
+        $body = [
+            'success' => $status == ResponseHeaders::HTTP_OK,
+            'status'  => $status,
+        ];
+
+        if ($data) {
+            $body['data'] = $data;
+        }
+
+        $response = new JsonResponse($body, $status);
+
         $response->send();
 
         return $response;
