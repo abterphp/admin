@@ -18,7 +18,8 @@ class Editor extends Controller
      */
     public function fileUpload(): Response
     {
-        $actualClientId = explode(' ', $this->request->getHeaders()->get('authorization'))[1];
+        $authHeader     = $this->request->getHeaders()->get('authorization');
+        $actualClientId = strpos($authHeader, ' ') ? explode(' ', $authHeader)[1] : '';
 
         $expectedClientId = Environment::getVar(Env::UPLOAD_CLIENT_ID);
         if ($actualClientId != $expectedClientId) {
