@@ -37,8 +37,13 @@ class Editor extends Controller
         $filename  = sprintf('%s.%s', $baseName, $extension);
 
         $basePath = Environment::getVar(Env::EDITOR_BASE_PATH);
-        $path     = Environment::getVar(Env::DIR_MEDIA) . '/' . $basePath;
-        $url      = Environment::getVar(Env::MEDIA_BASE_URL) . '/' . $basePath . '/' . $filename;
+        $path     = Environment::getVar(Env::DIR_MEDIA) . $basePath;
+        $url      = sprintf(
+            '%s/%s/%s',
+            rtrim(Environment::getVar(Env::MEDIA_BASE_URL), DIRECTORY_SEPARATOR),
+            trim($basePath, DIRECTORY_SEPARATOR),
+            $filename
+        );
 
         $image->move($path, $filename);
 

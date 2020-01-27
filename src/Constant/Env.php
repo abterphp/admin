@@ -15,7 +15,6 @@ class Env extends FrameworkEnv
     public const ADMIN_LOGIN_PATH  = 'ADMIN_LOGIN_PATH';
     public const ADMIN_LOGOUT_PATH = 'ADMIN_LOGOUT_PATH';
 
-    public const MEDIA_BASE_URL   = 'MEDIA_BASE_URL';
     public const EDITOR_CLIENT_ID = 'EDITOR_CLIENT_ID';
     public const EDITOR_BASE_PATH = 'EDITOR_BASE_PATH';
 }
