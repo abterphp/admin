@@ -21,7 +21,7 @@ class Editor extends Controller
         $authHeader     = $this->request->getHeaders()->get('authorization');
         $actualClientId = strpos($authHeader, ' ') ? explode(' ', $authHeader)[1] : '';
 
-        $expectedClientId = Environment::getVar(Env::UPLOAD_CLIENT_ID);
+        $expectedClientId = Environment::getVar(Env::EDITOR_CLIENT_ID);
         if ($actualClientId != $expectedClientId) {
             return $this->sendJson(ResponseHeaders::HTTP_FORBIDDEN);
         }
@@ -32,12 +32,13 @@ class Editor extends Controller
         }
 
         $pathinfo  = pathinfo($image->getTempFilename());
-        $basePath  = mb_substr(basename($image->getPathname()), 3);
+        $baseName  = mb_substr(basename($image->getPathname()), 3);
         $extension = $pathinfo['extension'] ?? '';
-        $filename  = sprintf('%s.%s', $basePath, $extension);
+        $filename  = sprintf('%s.%s', $baseName, $extension);
 
-        $path = Environment::getVar(Env::DIR_UPLOAD);
-        $url  = Environment::getVar(Env::UPLOAD_BASE_URL) . '/' . $filename;
+        $basePath = Environment::getVar(Env::EDITOR_BASE_PATH);
+        $path     = Environment::getVar(Env::DIR_MEDIA) . '/' . $basePath;
+        $url      = Environment::getVar(Env::MEDIA_BASE_URL) . '/' . $basePath . '/' . $filename;
 
         $image->move($path, $filename);
 
