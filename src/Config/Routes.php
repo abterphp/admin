@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Config;
 
+use AbterPhp\Admin\Constant\Env;
+use AbterPhp\Framework\Config\Routes as FrameworkRoutes;
 use AbterPhp\Framework\Exception\Config as ConfigException;
 use Opulence\Environments\Environment;
 
-class Routes
+class Routes extends FrameworkRoutes
 {
     public const DASHBOARD_PATH = '/dashboard';
     public const PROFILE_PATH   = '/profile';
-
-    private const ADMIN_LOGIN_PATH  = 'ADMIN_LOGIN_PATH';
-    private const ADMIN_LOGOUT_PATH = 'ADMIN_LOGOUT_PATH';
-    private const ADMIN_BASE_PATH   = 'ADMIN_BASE_PATH';
-    private const API_BASE_PATH     = 'API_BASE_PATH';
 
     /** @var string|null */
     protected static $loginPath;
@@ -28,6 +25,9 @@ class Routes
 
     /** @var string|null */
     protected static $apiBasePath;
+
+    /** @var string|null */
+    protected static $uploadUrl;
 
     /**
      * @param string $loginPath
@@ -46,9 +46,9 @@ class Routes
             return static::$loginPath;
         }
 
-        $loginPath = Environment::getVar(static::ADMIN_LOGIN_PATH);
+        $loginPath = Environment::getVar(Env::ADMIN_LOGIN_PATH);
         if (null === $loginPath) {
-            throw new ConfigException(__CLASS__, [static::ADMIN_LOGIN_PATH]);
+            throw new ConfigException(__CLASS__, [Env::ADMIN_LOGIN_PATH]);
         }
 
         static::$loginPath = (string)$loginPath;
@@ -73,9 +73,9 @@ class Routes
             return static::$logoutPath;
         }
 
-        $logoutPath = Environment::getVar(static::ADMIN_LOGOUT_PATH);
+        $logoutPath = Environment::getVar(Env::ADMIN_LOGOUT_PATH);
         if (null === $logoutPath) {
-            throw new ConfigException(__CLASS__, [static::ADMIN_LOGOUT_PATH]);
+            throw new ConfigException(__CLASS__, [Env::ADMIN_LOGOUT_PATH]);
         }
 
         static::$logoutPath = (string)$logoutPath;
@@ -100,9 +100,9 @@ class Routes
             return static::$adminBasePath;
         }
 
-        $adminBasePath = Environment::getVar(static::ADMIN_BASE_PATH);
+        $adminBasePath = Environment::getVar(Env::ADMIN_BASE_PATH);
         if (null === $adminBasePath) {
-            throw new ConfigException(__CLASS__, [static::ADMIN_BASE_PATH]);
+            throw new ConfigException(__CLASS__, [Env::ADMIN_BASE_PATH]);
         }
 
         static::$adminBasePath = (string)$adminBasePath;
@@ -127,9 +127,9 @@ class Routes
             return static::$apiBasePath;
         }
 
-        $apiBasePath = Environment::getVar(static::API_BASE_PATH);
+        $apiBasePath = Environment::getVar(Env::API_BASE_PATH);
         if (null === $apiBasePath) {
-            throw new ConfigException(__CLASS__, [static::API_BASE_PATH]);
+            throw new ConfigException(__CLASS__, [Env::API_BASE_PATH]);
         }
 
         static::$apiBasePath = (string)$apiBasePath;
@@ -159,5 +159,34 @@ class Routes
     public static function getProfilePath(): string
     {
         return static::getAdminBasePath() . static::PROFILE_PATH;
+    }
+
+    /**
+     * @param string $uploadUrl
+     */
+    public static function setUploadUrl(string $uploadUrl): void
+    {
+        static::$uploadUrl = $uploadUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getUploadUrl(): string
+    {
+        if (null !== static::$uploadUrl) {
+            return static::$uploadUrl;
+        }
+
+        $uploadUrl = sprintf(
+            '%s%s%s',
+            rtrim(static::getMediaUrl(), DIRECTORY_SEPARATOR),
+            DIRECTORY_SEPARATOR,
+            ltrim(Environment::getVar(Env::EDITOR_BASE_PATH), DIRECTORY_SEPARATOR)
+        );
+
+        static::$uploadUrl = (string)$uploadUrl;
+
+        return static::$uploadUrl;
     }
 }

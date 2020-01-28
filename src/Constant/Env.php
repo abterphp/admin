@@ -17,4 +17,8 @@ class Env extends FrameworkEnv
 
     public const EDITOR_CLIENT_ID = 'EDITOR_CLIENT_ID';
     public const EDITOR_BASE_PATH = 'EDITOR_BASE_PATH';
+
+    public const API_BASE_URL         = 'API_BASE_URL';
+    public const API_BASE_PATH        = 'API_BASE_PATH';
+    public const API_PROBLEM_BASE_URL = 'API_PROBLEM_BASE_URL';
 }

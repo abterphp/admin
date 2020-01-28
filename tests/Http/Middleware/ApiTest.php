@@ -8,11 +8,10 @@ use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Admin\Psr7\RequestConverter;
-use AbterPhp\Admin\Psr7\ResponseConverter;
-use AbterPhp\Admin\Psr7\ResponseFactory;
 use AbterPhp\Framework\Config\EnvReader;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
+use Nyholm\Psr7\ServerRequest as Psr7Request;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Requests\RequestMethods;
 use Opulence\Http\Responses\Response;
@@ -20,7 +19,6 @@ use Opulence\Http\Responses\ResponseHeaders;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Nyholm\Psr7\ServerRequest as Psr7Request;
 
 class ApiTest extends TestCase
 {
