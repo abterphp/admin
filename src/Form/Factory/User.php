@@ -195,7 +195,8 @@ class User extends Base
         );
         $label = new Label('raw_password', 'admin:userPassword');
 
-        $class        = $entity->getId() ? FormGroup::CLASS_REQUIRED : '';
+        $class = $entity->getId() ? '' : FormGroup::CLASS_REQUIRED;
+
         $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => $class]);
 
         return $this;
@@ -220,7 +221,8 @@ class User extends Base
         );
         $label = new Label('raw_password_confirmed', 'admin:userConfirmPassword');
 
-        $class        = $entity->getId() ? FormGroup::CLASS_REQUIRED : '';
+        $class = $entity->getId() ? '' : FormGroup::CLASS_REQUIRED;
+
         $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => $class]);
 
         return $this;
