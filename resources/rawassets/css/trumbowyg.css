@@ -1,0 +1,8 @@
+.trumbowyg-box, .trumbowyg-editor {
+    margin: 3px auto 17px !important;
+}
+
+.trumbowyg-editor .table td, .trumbowyg-editor .table th {
+    line-height: 2em;
+    border: 1px solid #4d575d;
+}
