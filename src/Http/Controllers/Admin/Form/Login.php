@@ -56,7 +56,7 @@ class Login extends AdminAbstract
      */
     public function display(): Response
     {
-        $this->assets->addJsContent('admin-login', "var frontendSalt = '{$this->frontendSalt}'");
+        $this->assets->addJsVar('admin-login', 'frontendSalt', $this->frontendSalt);
 
         $this->view = $this->viewFactory->createView('contents/backend/login');
 

@@ -111,13 +111,7 @@ class ApiClient extends FormAbstract
             $footerResource,
             '/admin-assets/vendor/password-generator/password-generator.js'
         );
-        $this->assets->addJsContent(
-            $footerResource,
-            "var secretLength = '{$this->secretLength}'"
-        );
-        $this->assets->addJs(
-            $footerResource,
-            '/admin-assets/js/api-client.js'
-        );
+        $this->assets->addJsVar($footerResource, 'secretLength', $this->secretLength);
+        $this->assets->addJs($footerResource, '/admin-assets/js/api-client.js');
     }
 }

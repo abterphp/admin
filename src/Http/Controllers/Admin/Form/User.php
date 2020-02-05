@@ -123,7 +123,7 @@ class User extends FormAbstract
         $footer = $this->getResourceName(static::RESOURCE_FOOTER);
 
         $this->assetManager->addJs($footer, '/admin-assets/vendor/sha3/sha3.js');
-        $this->assetManager->addJsContent($footer, "var frontendSalt = '{$this->frontendSalt}'");
+        $this->assetManager->addJsVar($footer, 'frontendSalt', $this->frontendSalt);
         $this->assetManager->addJs($footer, '/admin-assets/vendor/zxcvbn/zxcvbn.min.js');
         $this->assetManager->addJs($footer, '/admin-assets/js/user.js');
         $this->assetManager->addJs($footer, '/admin-assets/js/required.js');
