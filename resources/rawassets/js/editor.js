@@ -33,14 +33,14 @@ $(document).ready(function () {
         ],
         plugins: {
             // Add imagur parameters to upload plugin for demo purposes
-            upload: {
+            /*upload: {
                 serverPath: editorFileUploadPath,
                 fileFieldName: 'image',
                 headers: {
                     'Authorization': 'Client-ID ' + clientId
                 },
                 urlPropertyName: 'data.url'
-            },
+            },*/
             resizimg: {
                 minSize: 64,
                 step: 16,
