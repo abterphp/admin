@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Admin\Orm\DataMapper;
+namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\Token;
-use AbterPhp\Admin\Orm\DataMappers\TokenSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AbterPhp\Admin\Orm\DataMapper;
+namespace AbterPhp\Admin\Orm\DataMappers;
 
 use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
-use AbterPhp\Admin\Orm\DataMappers\UserSqlDataMapper;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
 use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
