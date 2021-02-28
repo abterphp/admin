@@ -78,12 +78,12 @@ trait ApiIssueTrait
      */
     protected function getExceptionContext(\Exception $exception): array
     {
-        // @phan-suppress-next-line PhanUndeclaredConstant
+        // @phan-suppress-next-line PhanUndeclaredConstantOfClass
         $result = [static::LOG_CONTEXT_EXCEPTION => $exception->getMessage()];
 
         $i = 1;
         while ($exception = $exception->getPrevious()) {
-            // @phan-suppress-next-line PhanUndeclaredConstant
+            // @phan-suppress-next-line PhanUndeclaredConstantOfClass
             $result[sprintf(static::LOG_PREVIOUS_EXCEPTION, $i++)] = $exception->getMessage();
         }
 

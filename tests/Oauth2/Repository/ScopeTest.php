@@ -35,7 +35,12 @@ class ScopeTest extends QueryTestCase
         ];
         $row0          = ['id' => $id];
         $statement0    = MockStatementFactory::createReadRowStatement($this, $valuesToBind0, $row0);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->getScopeEntityByIdentifier($identifier);
 
@@ -60,7 +65,12 @@ class ScopeTest extends QueryTestCase
         ];
         $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
         $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->getScopeEntityByIdentifier($identifier);
     }
@@ -110,7 +120,12 @@ class ScopeTest extends QueryTestCase
             ['admin_resource_id' => $arId2],
         ];
         $statement0    = MockStatementFactory::createReadStatement($this, $valuesToBind0, $rows0);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);
 
@@ -139,10 +154,6 @@ class ScopeTest extends QueryTestCase
             $this->createScopeStub($scopeIdentifier1),
         ];
 
-        $arId0 = 'cfa57635-bed4-4f59-a7c8-091fb0c05964';
-        $arId1 = 'ddd844f3-6894-4049-821d-3ed461e2e970';
-        $arId2 = '3966099c-84ff-48cf-9d65-794519651fe5';
-
         /** @var ClientEntityInterface|MockObject $clientEntityMock */
         $clientEntityMock = $this->createMock(ClientEntityInterface::class);
         $clientEntityMock->expects($this->any())->method('getIdentifier')->willReturn($clientIdentifier);
@@ -155,7 +166,12 @@ class ScopeTest extends QueryTestCase
         ];
         $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
         $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->finalizeScopes($scopes, $grantType, $clientEntityMock, null);
     }

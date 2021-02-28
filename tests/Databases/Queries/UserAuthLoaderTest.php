@@ -25,7 +25,7 @@ class UserAuthLoaderTest extends QueryTestCase
         $username            = 'foo';
         $userGroupIdentifier = 'bar';
 
-        $sql          = 'SELECT u.username AS v0, ug.identifier AS v1 FROM users AS u INNER JOIN users_user_groups AS uug ON uug.user_id = u.id AND uug.deleted_at IS NULL INNER JOIN user_groups AS ug ON uug.user_group_id = ug.id AND ug.deleted_at IS NULL WHERE (u.deleted_at IS NULL)'; // phpcs:ignore
+        $sql0         = 'SELECT u.username AS v0, ug.identifier AS v1 FROM users AS u INNER JOIN users_user_groups AS uug ON uug.user_id = u.id AND uug.deleted_at IS NULL INNER JOIN user_groups AS ug ON uug.user_group_id = ug.id AND ug.deleted_at IS NULL WHERE (u.deleted_at IS NULL)'; // phpcs:ignore
         $valuesToBind = [];
         $returnValues = [
             [
@@ -33,8 +33,13 @@ class UserAuthLoaderTest extends QueryTestCase
                 'v1' => $userGroupIdentifier,
             ],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $valuesToBind, $returnValues);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $valuesToBind, $returnValues);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->loadAll();
 
@@ -48,10 +53,15 @@ class UserAuthLoaderTest extends QueryTestCase
         $this->expectException(Database::class);
         $this->expectExceptionCode($errorInfo[1]);
 
-        $sql          = 'SELECT u.username AS v0, ug.identifier AS v1 FROM users AS u INNER JOIN users_user_groups AS uug ON uug.user_id = u.id AND uug.deleted_at IS NULL INNER JOIN user_groups AS ug ON uug.user_group_id = ug.id AND ug.deleted_at IS NULL WHERE (u.deleted_at IS NULL)'; // phpcs:ignore
+        $sql0         = 'SELECT u.username AS v0, ug.identifier AS v1 FROM users AS u INNER JOIN users_user_groups AS uug ON uug.user_id = u.id AND uug.deleted_at IS NULL INNER JOIN user_groups AS ug ON uug.user_group_id = ug.id AND ug.deleted_at IS NULL WHERE (u.deleted_at IS NULL)'; // phpcs:ignore
         $valuesToBind = [];
-        $statement    = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->loadAll();
     }

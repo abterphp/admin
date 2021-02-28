@@ -62,4 +62,15 @@ class Client implements ClientEntityInterface
     {
         return $this->redirectUri;
     }
+
+    /**
+     * Returns true if the client is confidential.
+     *
+     * @return bool
+     */
+    public function isConfidential()
+    {
+        // TODO: Improve
+        return false;
+    }
 }

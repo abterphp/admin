@@ -39,16 +39,21 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description = 'foo';
         $secret      = 'bar';
 
-        $sql       = 'INSERT INTO api_clients (id, user_id, description, secret) VALUES (?, ?, ?, ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'INSERT INTO api_clients (id, user_id, description, secret) VALUES (?, ?, ?, ?)'; // phpcs:ignore
+        $values0    = [
             [$nextId, \PDO::PARAM_STR],
             [$userId, \PDO::PARAM_STR],
             [$description, \PDO::PARAM_STR],
             [$secret, \PDO::PARAM_STR],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
-        $entity = new ApiClient($nextId, $userId, $description, $secret);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
+        $entity     = new ApiClient($nextId, $userId, $description, $secret);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $this->sut->add($entity);
 
@@ -68,8 +73,10 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $acarId1     = '8060491b-909f-4154-8886-62f06267c864';
         $resourceId1 = '5a2feca1-42dd-4bc4-81b3-9ff55da83e95';
 
-        $this->idGeneratorMock->expects($this->at(0))->method('generate')->willReturn($acarId0);
-        $this->idGeneratorMock->expects($this->at(1))->method('generate')->willReturn($acarId1);
+        $this->idGeneratorMock
+            ->expects($this->exactly(2))
+            ->method('generate')
+            ->willReturnOnConsecutiveCalls($acarId0, $acarId1);
 
         $sql0       = 'INSERT INTO api_clients (id, user_id, description, secret) VALUES (?, ?, ?, ?)'; // phpcs:ignore
         $values0    = [
@@ -79,7 +86,6 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
             [$secret, \PDO::PARAM_STR],
         ];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $resource0 = new AdminResource($resourceId0, '');
         $resource1 = new AdminResource($resourceId1, '');
@@ -92,16 +98,20 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
             [$resourceId0, \PDO::PARAM_STR],
         ];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
-        $sql1       = 'INSERT INTO api_clients_admin_resources (id, api_client_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values1    = [
+        $sql2       = 'INSERT INTO api_clients_admin_resources (id, api_client_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values2    = [
             [$acarId1, \PDO::PARAM_STR],
             [$nextId, \PDO::PARAM_STR],
             [$resourceId1, \PDO::PARAM_STR],
         ];
-        $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 2);
+        $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(3))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2);
 
         $this->sut->add($entity);
 
@@ -122,12 +132,16 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $sql0       = 'DELETE FROM api_clients_admin_resources WHERE (api_client_id = ?)'; // phpcs:ignore
         $values0    = [[$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'UPDATE api_clients AS api_clients SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $resource0 = new AdminResource($resourceId0, '');
         $resource1 = new AdminResource($resourceId1, '');
@@ -147,14 +161,19 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description1 = 'bar';
         $secret1      = 'bar-secret';
 
-        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id'; // phpcs:ignore
+        $sql0         = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],
             ['id' => $id1, 'user_id' => $userId1, 'description' => $description1, 'secret' => $secret1],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -178,7 +197,7 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $arId10         = '';
         $arIdentifier10 = '';
 
-        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id'; // phpcs:ignore
+        $sql0         = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -198,8 +217,13 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
                 'admin_resource_identifiers' => $arIdentifier10,
             ],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -217,14 +241,19 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description1 = 'bar';
         $secret1      = 'bar-secret';
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id ORDER BY created_at ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) GROUP BY ac.id ORDER BY created_at ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],
             ['id' => $id1, 'user_id' => $userId1, 'description' => $description1, 'secret' => $secret1],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, [], [], []);
 
@@ -245,14 +274,19 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ac.description ASC'];
         $conditions = ['ac.description LIKE \'abc%\'', 'abc.description LIKE \'%bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY ac.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY ac.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'user_id' => $userId0, 'description' => $description0, 'secret' => $secret0],
             ['id' => $id1, 'user_id' => $userId1, 'description' => $description1, 'secret' => $secret1],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, $orders, $conditions, []);
 
@@ -266,11 +300,16 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $description = 'foo';
         $secret      = 'foo-secret';
 
-        $sql          = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) AND (ac.id = :api_client_id) GROUP BY ac.id'; // phpcs:ignore
+        $sql0         = 'SELECT ac.id, ac.user_id, ac.description, ac.secret, GROUP_CONCAT(ar.id) AS admin_resource_ids, GROUP_CONCAT(ar.identifier) AS admin_resource_identifiers FROM api_clients AS ac LEFT JOIN api_clients_admin_resources AS acar ON acar.api_client_id = ac.id LEFT JOIN admin_resources AS ar ON acar.admin_resource_id = ar.id WHERE (ac.deleted_at IS NULL) AND (ac.id = :api_client_id) GROUP BY ac.id'; // phpcs:ignore
         $values       = ['api_client_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'user_id' => $userId, 'description' => $description, 'secret' => $secret]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getById($id);
 
@@ -291,12 +330,16 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
             [$id, \PDO::PARAM_STR],
         ];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'DELETE FROM api_clients_admin_resources WHERE (api_client_id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $entity = new ApiClient($id, $userId, $description, $secret);
         $this->sut->update($entity);
@@ -315,8 +358,10 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
         $acarId1     = '8060491b-909f-4154-8886-62f06267c864';
         $resourceId1 = '5a2feca1-42dd-4bc4-81b3-9ff55da83e95';
 
-        $this->idGeneratorMock->expects($this->at(0))->method('generate')->willReturn($acarId0);
-        $this->idGeneratorMock->expects($this->at(1))->method('generate')->willReturn($acarId1);
+        $this->idGeneratorMock
+            ->expects($this->exactly(2))
+            ->method('generate')
+            ->willReturnOnConsecutiveCalls($acarId0, $acarId1);
 
         $sql0       = 'UPDATE api_clients AS api_clients SET description = ?, secret = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [
@@ -325,12 +370,10 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
             [$id, \PDO::PARAM_STR],
         ];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'DELETE FROM api_clients_admin_resources WHERE (api_client_id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $resource0 = new AdminResource($resourceId0, '');
         $resource1 = new AdminResource($resourceId1, '');
@@ -343,7 +386,6 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
             [$resourceId0, \PDO::PARAM_STR],
         ];
         $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
 
         $sql3       = 'INSERT INTO api_clients_admin_resources (id, api_client_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values3    = [
@@ -352,7 +394,12 @@ class ApiClientSqlDataMapperTest extends DataMapperTestCase
             [$resourceId1, \PDO::PARAM_STR],
         ];
         $statement3 = MockStatementFactory::createWriteStatement($this, $values3);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql3, $statement3, 3);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(4))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2], [$sql3])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2, $statement3);
 
         $this->sut->update($entity);
     }

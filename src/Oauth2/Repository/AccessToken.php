@@ -97,8 +97,7 @@ class AccessToken implements AccessTokenRepositoryInterface
      */
     protected function persistTokenScope(AccessTokenEntityInterface $accessTokenEntity, ScopeEntityInterface $scope)
     {
-        // @phan-suppress-next-line PhanTypeMismatchArgument
-        $scopeId         = $this->uuidGenerator->generate(null);
+        $scopeId         = $this->uuidGenerator->generate(new \stdClass());
         $tokenId         = $accessTokenEntity->getIdentifier();
         $adminResourceId = $scope->getIdentifier();
 

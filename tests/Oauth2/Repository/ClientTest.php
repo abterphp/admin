@@ -66,7 +66,12 @@ class ClientTest extends QueryTestCase
             'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
         ];
         $statement0    = MockStatementFactory::createReadRowStatement($this, $valuesToBind0, $clientData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
 
@@ -111,7 +116,12 @@ class ClientTest extends QueryTestCase
             'clientId' => [$clientIdentifier, \PDO::PARAM_STR],
         ];
         $statement0    = MockStatementFactory::createReadRowStatement($this, $valuesToBind0, $clientData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
 
@@ -142,7 +152,12 @@ class ClientTest extends QueryTestCase
         ];
         $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
         $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql0, $statement0, 0);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $this->sut->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
     }

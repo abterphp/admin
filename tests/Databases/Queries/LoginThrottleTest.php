@@ -26,14 +26,19 @@ class LoginThrottleTest extends QueryTestCase
         $username        = 'bar';
         $maxFailureCount = 11;
 
-        $sql          = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $sql0         = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
         $valuesToBind = [
             [$ipHash, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
         ];
         $returnValue  = 2;
-        $statement    = MockStatementFactory::createReadColumnStatement($this, $valuesToBind, $returnValue);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadColumnStatement($this, $valuesToBind, $returnValue);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->isLoginAllowed($ipHash, $username, $maxFailureCount);
 
@@ -46,14 +51,19 @@ class LoginThrottleTest extends QueryTestCase
         $username        = 'bar';
         $maxFailureCount = 11;
 
-        $sql          = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $sql0         = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
         $valuesToBind = [
             [$ipHash, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
         ];
         $returnValue  = 14;
-        $statement    = MockStatementFactory::createReadColumnStatement($this, $valuesToBind, $returnValue);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadColumnStatement($this, $valuesToBind, $returnValue);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->isLoginAllowed($ipHash, $username, $maxFailureCount);
 
@@ -71,13 +81,18 @@ class LoginThrottleTest extends QueryTestCase
         $username        = 'bar';
         $maxFailureCount = 11;
 
-        $sql          = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $sql0         = 'SELECT COUNT(*) AS count FROM login_attempts AS la WHERE (la.ip_hash = ? OR la.username = ?) AND (la.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
         $valuesToBind = [
             [$ipHash, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
         ];
-        $statement    = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
+
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->isLoginAllowed($ipHash, $username, $maxFailureCount);
     }
@@ -87,13 +102,18 @@ class LoginThrottleTest extends QueryTestCase
         $ipHash   = 'foo';
         $username = 'bar';
 
-        $sql          = 'DELETE FROM login_attempts WHERE (login_attempts.ip_hash = ?) AND (login_attempts.username = ?) AND (login_attempts.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $sql0         = 'DELETE FROM login_attempts WHERE (login_attempts.ip_hash = ?) AND (login_attempts.username = ?) AND (login_attempts.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
         $valuesToBind = [
             [$ipHash, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
         ];
-        $statement    = MockStatementFactory::createWriteStatement($this, $valuesToBind);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createWriteStatement($this, $valuesToBind);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->clear($ipHash, $username);
     }
@@ -108,13 +128,18 @@ class LoginThrottleTest extends QueryTestCase
         $ipHash   = 'foo';
         $username = 'bar';
 
-        $sql          = 'DELETE FROM login_attempts WHERE (login_attempts.ip_hash = ?) AND (login_attempts.username = ?) AND (login_attempts.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
+        $sql0         = 'DELETE FROM login_attempts WHERE (login_attempts.ip_hash = ?) AND (login_attempts.username = ?) AND (login_attempts.created_at > NOW() - INTERVAL 1 HOUR)'; // phpcs:ignore
         $valuesToBind = [
             [$ipHash, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
         ];
-        $statement    = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->clear($ipHash, $username);
     }

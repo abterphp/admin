@@ -14,6 +14,7 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Cocur\Slugify\Slugify;
+use League\Flysystem\FilesystemException;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
@@ -114,7 +115,7 @@ class User extends FormAbstract
     /**
      * @param IStringerEntity|null $entity
      *
-     * @throws \League\Flysystem\FileNotFoundException
+     * @throws FilesystemException
      */
     protected function addCustomAssets(?IStringerEntity $entity = null)
     {

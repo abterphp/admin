@@ -29,10 +29,16 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'Foo';
 
-        $sql       = 'INSERT INTO user_languages (id, identifier, name) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values    = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR]];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $sql0       = 'INSERT INTO user_languages (id, identifier, name) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values     = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR]];
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new UserLanguage($nextId, $identifier, $name);
 
         $this->sut->add($entity);
@@ -46,10 +52,16 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'Foo';
 
-        $sql       = 'UPDATE user_languages AS user_languages SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
-        $values    = [[$id, \PDO::PARAM_STR]];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $sql0       = 'UPDATE user_languages AS user_languages SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
+        $values     = [[$id, \PDO::PARAM_STR]];
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new UserLanguage($id, $identifier, $name);
 
         $this->sut->delete($entity);
@@ -64,14 +76,19 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier1 = 'bar';
         $name1       = 'Bar';
 
-        $sql          = 'SELECT user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL)'; // phpcs:ignore
+        $sql0         = 'SELECT user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL)'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'identifier' => $identifier0, 'name' => $name0],
             ['id' => $id1, 'identifier' => $identifier1, 'name' => $name1],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -90,14 +107,19 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ac.description ASC'];
         $conditions = ['ac.description LIKE \'abc%\'', 'abc.description LIKE \'%bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'identifier' => $identifier0, 'name' => $name0],
             ['id' => $id1, 'identifier' => $identifier1, 'name' => $name1],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, $orders, $conditions, []);
 
@@ -110,11 +132,16 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'Foo';
 
-        $sql          = 'SELECT user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL) AND (user_languages.id = :user_language_id)'; // phpcs:ignore
+        $sql0         = 'SELECT user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL) AND (user_languages.id = :user_language_id)'; // phpcs:ignore
         $values       = ['user_language_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getById($id);
 
@@ -127,11 +154,16 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'Foo';
 
-        $sql          = 'SELECT user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL) AND (identifier = :identifier)'; // phpcs:ignore
+        $sql0         = 'SELECT user_languages.id, user_languages.identifier, user_languages.name FROM user_languages WHERE (user_languages.deleted_at IS NULL) AND (identifier = :identifier)'; // phpcs:ignore
         $values       = ['identifier' => [$identifier, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getByIdentifier($identifier);
 
@@ -144,10 +176,16 @@ class UserLanguageSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'Foo';
 
-        $sql       = 'UPDATE user_languages AS user_languages SET identifier = ?, name = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
-        $values    = [[$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $sql0       = 'UPDATE user_languages AS user_languages SET identifier = ?, name = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
+        $values     = [[$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new UserLanguage($id, $identifier, $name);
 
         $this->sut->update($entity);

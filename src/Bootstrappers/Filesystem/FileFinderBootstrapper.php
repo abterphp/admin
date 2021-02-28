@@ -8,7 +8,7 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\Filesystem\IFileFinder;
 use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use Opulence\Databases\Adapters\Pdo\MySql\Driver as MySqlDriver;
 use Opulence\Databases\Adapters\Pdo\PostgreSql\Driver as PostgreSqlDriver;
@@ -71,7 +71,7 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
         $fileFinder = new FileFinder();
         foreach ($abterModuleManager->getResourcePaths() as $resourcePath) {
             $path    = $this->getMigrationsPath($resourcePath, $dbDriver);
-            $adapter = new Local($path);
+            $adapter = new LocalFilesystemAdapter($path);
             $fs      = new Filesystem($adapter);
 
             $fileFinder->registerFilesystem($fs);

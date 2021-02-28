@@ -36,8 +36,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql       = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
+        $values     = [
             [$nextId, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
             [$email, \PDO::PARAM_STR],
@@ -46,8 +46,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$canLogin, \PDO::PARAM_INT],
             [$isGravatarAllowed, \PDO::PARAM_INT],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $entity = new User($nextId, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);
         $this->sut->add($entity);
@@ -73,8 +78,8 @@ class UserSqlDataMapperTest extends DataMapperTestCase
 
         $this->sut->setIdGenerator(MockIdGeneratorFactory::create($this, $uugId0, $uugId1));
 
-        $sql0      = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'INSERT INTO users (id, username, email, password, user_language_id, can_login, is_gravatar_allowed) VALUES (?, ?, ?, ?, ?, ?, ?)'; // phpcs:ignore
+        $values     = [
             [$nextId, \PDO::PARAM_STR],
             [$username, \PDO::PARAM_STR],
             [$email, \PDO::PARAM_STR],
@@ -83,8 +88,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$canLogin, \PDO::PARAM_INT],
             [$isGravatarAllowed, \PDO::PARAM_INT],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement, 0);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
 
         $sql1       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values1    = [
@@ -93,7 +97,6 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$userGroups[0]->getId(), \PDO::PARAM_STR],
         ];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $sql2       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values2    = [
@@ -102,7 +105,12 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$userGroups[1]->getId(), \PDO::PARAM_STR],
         ];
         $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(3))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2);
 
         $entity = new User(
             $nextId,
@@ -133,7 +141,6 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $sql0       = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
         $values0    = [[$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'UPDATE users AS users SET deleted_at = NOW(), username = LEFT(MD5(RAND()), 8), email = CONCAT(username, "@example.com"), password = ? WHERE (id = ?)'; // phpcs:ignore
         $values1    = [
@@ -141,7 +148,12 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$id, \PDO::PARAM_STR],
         ];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $entity = new User($id, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);
         $this->sut->delete($entity);
@@ -157,7 +169,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -171,9 +183,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -193,7 +209,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $userGroupIdentifiers = 'ug-1,ug-2';
         $userGroupNames       = 'UG #1,UG #2';
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -210,9 +226,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'user_group_names'         => $userGroupNames,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -229,7 +249,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id ORDER BY username ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) GROUP BY users.id ORDER BY username ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -243,9 +263,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, [], [], []);
 
@@ -265,7 +289,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ac.description ASC'];
         $conditions = ['ac.description LIKE \'abc%\'', 'abc.description LIKE \'%bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY users.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (ac.description LIKE \'abc%\') AND (abc.description LIKE \'%bca\') GROUP BY users.id ORDER BY ac.description ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -279,9 +303,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, $orders, $conditions, []);
 
@@ -298,7 +326,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (users.id = :user_id) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (users.id = :user_id) GROUP BY users.id'; // phpcs:ignore
         $values       = ['user_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -312,9 +340,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getById($id);
 
@@ -331,7 +363,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (`username` = :username) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (`username` = :username) GROUP BY users.id'; // phpcs:ignore
         $values       = ['username' => [$username, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -345,9 +377,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getByUsername($username);
 
@@ -364,7 +400,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (email = :email) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (email = :email) GROUP BY users.id'; // phpcs:ignore
         $values       = ['email' => [$email, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -378,9 +414,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getByEmail($email);
 
@@ -397,7 +437,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
         $values       = ['identifier' => [$username, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -411,9 +451,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->find($username);
 
@@ -430,7 +474,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $canLogin          = true;
         $isGravatarAllowed = true;
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND ((username = :identifier OR email = :identifier)) GROUP BY users.id'; // phpcs:ignore
         $values       = ['identifier' => [$email, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -444,9 +488,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->find($email);
 
@@ -464,7 +512,7 @@ class UserSqlDataMapperTest extends DataMapperTestCase
         $isGravatarAllowed = true;
         $clientId          = '063b730f-3458-49dc-b60e-8171cefacabf';
 
-        $sql          = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL INNER JOIN api_clients AS ac ON ac.user_id = users.id AND ac.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (ac.id = :client_id) GROUP BY users.id'; // phpcs:ignore
+        $sql0         = 'SELECT users.id, users.username, users.email, users.password, users.user_language_id, ul.identifier AS user_language_identifier, users.can_login, users.is_gravatar_allowed, GROUP_CONCAT(ug.id) AS user_group_ids, GROUP_CONCAT(ug.identifier) AS user_group_identifiers, GROUP_CONCAT(ug.name) AS user_group_names FROM users INNER JOIN user_languages AS ul ON ul.id = users.user_language_id AND ul.deleted_at IS NULL INNER JOIN api_clients AS ac ON ac.user_id = users.id AND ac.deleted_at IS NULL LEFT JOIN users_user_groups AS uug ON uug.user_id = users.id AND uug.deleted_at IS NULL LEFT JOIN user_groups AS ug ON ug.id = uug.user_group_id AND ug.deleted_at IS NULL WHERE (users.deleted_at IS NULL) AND (ac.id = :client_id) GROUP BY users.id'; // phpcs:ignore
         $values       = ['client_id' => [$clientId, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -478,9 +526,13 @@ class UserSqlDataMapperTest extends DataMapperTestCase
                 'is_gravatar_allowed'      => $isGravatarAllowed,
             ],
         ];
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
 
-        $statement = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getByClientId($clientId);
 
@@ -508,12 +560,16 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$id, \PDO::PARAM_STR],
         ];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $entity = new User($id, $username, $email, $password, $canLogin, $isGravatarAllowed, $userLanguage);
         $this->sut->update($entity);
@@ -548,22 +604,24 @@ class UserSqlDataMapperTest extends DataMapperTestCase
             [$id, \PDO::PARAM_STR],
         ];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'DELETE FROM users_user_groups WHERE (user_id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $sql2       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values2    = [[$uugId0, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR], [$userGroups[0]->getId(), \PDO::PARAM_STR]];
         $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
 
         $sql3       = 'INSERT INTO users_user_groups (id, user_id, user_group_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values3    = [[$uugId1, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR], [$userGroups[1]->getId(), \PDO::PARAM_STR]];
         $statement3 = MockStatementFactory::createWriteStatement($this, $values3);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql3, $statement3, 3);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(4))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2], [$sql3])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2, $statement3);
 
         $entity = new User(
             $id,

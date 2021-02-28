@@ -25,7 +25,7 @@ class AdminResourceAuthLoaderTest extends QueryTestCase
         $userGroupIdentifier     = 'foo';
         $adminResourceIdentifier = 'bar';
 
-        $sql          = 'SELECT ug.identifier AS v0, ar.identifier AS v1 FROM user_groups_admin_resources AS ugar INNER JOIN admin_resources AS ar ON ugar.admin_resource_id = ar.id AND ar.deleted_at IS NULL INNER JOIN user_groups AS ug ON ugar.user_group_id = ug.id AND ug.deleted_at IS NULL'; // phpcs:ignore
+        $sql0         = 'SELECT ug.identifier AS v0, ar.identifier AS v1 FROM user_groups_admin_resources AS ugar INNER JOIN admin_resources AS ar ON ugar.admin_resource_id = ar.id AND ar.deleted_at IS NULL INNER JOIN user_groups AS ug ON ugar.user_group_id = ug.id AND ug.deleted_at IS NULL'; // phpcs:ignore
         $valuesToBind = [];
         $returnValues = [
             [
@@ -33,8 +33,13 @@ class AdminResourceAuthLoaderTest extends QueryTestCase
                 'v1' => $adminResourceIdentifier,
             ],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $valuesToBind, $returnValues);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $valuesToBind, $returnValues);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $actualResult = $this->sut->loadAll();
 
@@ -48,11 +53,15 @@ class AdminResourceAuthLoaderTest extends QueryTestCase
         $this->expectException(Database::class);
         $this->expectExceptionCode($errorInfo[1]);
 
-        $sql          = 'SELECT ug.identifier AS v0, ar.identifier AS v1 FROM user_groups_admin_resources AS ugar INNER JOIN admin_resources AS ar ON ugar.admin_resource_id = ar.id AND ar.deleted_at IS NULL INNER JOIN user_groups AS ug ON ugar.user_group_id = ug.id AND ug.deleted_at IS NULL'; // phpcs:ignore
+        $sql0         = 'SELECT ug.identifier AS v0, ar.identifier AS v1 FROM user_groups_admin_resources AS ugar INNER JOIN admin_resources AS ar ON ugar.admin_resource_id = ar.id AND ar.deleted_at IS NULL INNER JOIN user_groups AS ug ON ugar.user_group_id = ug.id AND ug.deleted_at IS NULL'; // phpcs:ignore
         $valuesToBind = [];
+        $statement0   = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
 
-        $statement = MockStatementFactory::createErrorStatement($this, $valuesToBind, $errorInfo);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $this->readConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->loadAll();
     }

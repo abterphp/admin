@@ -59,7 +59,12 @@ class AccessTokenTest extends QueryTestCase
             [$expiresAt->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
         ];
         $statement0    = MockStatementFactory::createWriteStatement($this, $valuesToBind0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->persistNewAccessToken($accessTokenEntityMock);
     }
@@ -87,7 +92,12 @@ class AccessTokenTest extends QueryTestCase
         ];
         $errorInfo0    = ['FOO', $expectedCode, $expectedMessage];
         $statement0    = MockStatementFactory::createErrorStatement($this, $valuesToBind0, $errorInfo0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(1))
+            ->method('prepare')
+            ->withConsecutive([$sql0])
+            ->willReturnOnConsecutiveCalls($statement0);
 
         $this->sut->persistNewAccessToken($accessTokenEntityMock);
     }
@@ -104,14 +114,22 @@ class AccessTokenTest extends QueryTestCase
         $scopeIdentifier0 = 'scope-0';
         $scopeIdentifier1 = 'scope-1';
 
-        $scope0 = $this->createScopeStub($scopeId0, $scopeIdentifier0, 0);
-        $scope1 = $this->createScopeStub($scopeId1, $scopeIdentifier1, 1);
+        $this->uuidGeneratorMock
+            ->expects($this->exactly(2))
+            ->method('generate')
+            ->willReturnOnConsecutiveCalls($scopeId0, $scopeId1);
+
+        $scope = $this->createMock(ScopeEntityInterface::class);
+        $scope
+            ->expects($this->any())
+            ->method('getIdentifier')
+            ->willReturn($scopeIdentifier0, $scopeIdentifier1);
 
         $accessTokenEntityMock = $this->createAccessTokenStub(
             $tokenId,
             $clientName,
             $expiresAt,
-            [$scope0, $scope1]
+            [$scope, $scope]
         );
 
         $sql0          = 'INSERT INTO tokens (id, api_client_id, expires_at) VALUES (?, ?, ?)'; // phpcs:ignore
@@ -121,7 +139,6 @@ class AccessTokenTest extends QueryTestCase
             [$expiresAt->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
         ];
         $statement0    = MockStatementFactory::createWriteStatement($this, $valuesToBind0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1          = 'INSERT INTO tokens_admin_resources (id, token_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $valuesToBind1 = [
@@ -130,7 +147,6 @@ class AccessTokenTest extends QueryTestCase
             [$scopeIdentifier0, \PDO::PARAM_STR],
         ];
         $statement1    = MockStatementFactory::createWriteStatement($this, $valuesToBind1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $sql2          = 'INSERT INTO tokens_admin_resources (id, token_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $valuesToBind2 = [
@@ -139,7 +155,12 @@ class AccessTokenTest extends QueryTestCase
             [$scopeIdentifier1, \PDO::PARAM_STR],
         ];
         $statement2    = MockStatementFactory::createWriteStatement($this, $valuesToBind2);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(3))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2);
 
         $this->sut->persistNewAccessToken($accessTokenEntityMock);
     }
@@ -161,13 +182,22 @@ class AccessTokenTest extends QueryTestCase
 
         $scopeIdentifier0 = 'scope-0';
 
-        $scope0 = $this->createScopeStub($scopeId0, $scopeIdentifier0, 0);
+        $this->uuidGeneratorMock
+            ->expects($this->exactly(1))
+            ->method('generate')
+            ->willReturnOnConsecutiveCalls($scopeId0);
+
+        $scope = $this->createMock(ScopeEntityInterface::class);
+        $scope
+            ->expects($this->any())
+            ->method('getIdentifier')
+            ->willReturn($scopeIdentifier0);
 
         $accessTokenEntityMock = $this->createAccessTokenStub(
             $tokenId,
             $clientName,
             $expiresAt,
-            [$scope0]
+            [$scope]
         );
 
         $sql0          = 'INSERT INTO tokens (id, api_client_id, expires_at) VALUES (?, ?, ?)'; // phpcs:ignore
@@ -177,7 +207,6 @@ class AccessTokenTest extends QueryTestCase
             [$expiresAt->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
         ];
         $statement0    = MockStatementFactory::createWriteStatement($this, $valuesToBind0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1          = 'INSERT INTO tokens_admin_resources (id, token_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $valuesToBind1 = [
@@ -187,7 +216,12 @@ class AccessTokenTest extends QueryTestCase
         ];
         $errorInfo1    = ['FOO', $expectedCode, $expectedMessage];
         $statement1    = MockStatementFactory::createErrorStatement($this, $valuesToBind1, $errorInfo1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $this->sut->persistNewAccessToken($accessTokenEntityMock);
     }

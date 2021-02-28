@@ -30,15 +30,21 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt   = new \DateTimeImmutable();
         $revokedAt   = null;
 
-        $sql       = 'INSERT INTO tokens (id, api_client_id, expires_at, revoked_at) VALUES (?, ?, ?, ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'INSERT INTO tokens (id, api_client_id, expires_at, revoked_at) VALUES (?, ?, ?, ?)'; // phpcs:ignore
+        $values     = [
             [$nextId, \PDO::PARAM_STR],
             [$apiClientId, \PDO::PARAM_STR],
             [$expiresAt, \PDO::PARAM_STR],
             [$revokedAt, \PDO::PARAM_NULL],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new Token($nextId, $apiClientId, $expiresAt, $revokedAt);
 
         $this->sut->add($entity);
@@ -53,15 +59,21 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt   = new \DateTimeImmutable();
         $revokedAt   = new \DateTimeImmutable();
 
-        $sql       = 'INSERT INTO tokens (id, api_client_id, expires_at, revoked_at) VALUES (?, ?, ?, ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'INSERT INTO tokens (id, api_client_id, expires_at, revoked_at) VALUES (?, ?, ?, ?)'; // phpcs:ignore
+        $values     = [
             [$nextId, \PDO::PARAM_STR],
             [$apiClientId, \PDO::PARAM_STR],
             [$expiresAt, \PDO::PARAM_STR],
             [$revokedAt, \PDO::PARAM_STR],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new Token($nextId, $apiClientId, $expiresAt, $revokedAt);
 
         $this->sut->add($entity);
@@ -75,10 +87,16 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $apiClientId = '33a9ef7e-3d84-4bd0-9b38-59b5cb7d5245';
         $expiresAt   = new \DateTimeImmutable();
 
-        $sql       = 'UPDATE tokens AS tokens SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
-        $values    = [[$id, \PDO::PARAM_STR]];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $sql0       = 'UPDATE tokens AS tokens SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
+        $values     = [[$id, \PDO::PARAM_STR]];
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new Token($id, $apiClientId, $expiresAt, null);
 
         $this->sut->delete($entity);
@@ -96,14 +114,19 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt1   = '2019-08-18 00:22:13';
         $revokedAt1   = '2019-08-18 00:22:18';
 
-        $sql          = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted_at IS NULL)'; // phpcs:ignore
+        $sql0         = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted_at IS NULL)'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             ['id' => $id0, 'api_client_id' => $apiClientId0, 'expires_at' => $expiresAt0, 'revoked_at' => $revokedAt0],
             ['id' => $id1, 'api_client_id' => $apiClientId1, 'expires_at' => $expiresAt1, 'revoked_at' => $revokedAt1],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -119,15 +142,20 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt0   = '2019-08-18 00:22:03';
         $revokedAt0   = null;
 
-        $sql          = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted_at IS NULL) AND (tokens.api_client_id = :api_client_id)'; // phpcs:ignore
+        $sql0         = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted_at IS NULL) AND (tokens.api_client_id = :api_client_id)'; // phpcs:ignore
         $values       = [
             'api_client_id' => [$apiClientId, \PDO::PARAM_STR],
         ];
         $expectedData = [
             ['id' => $id0, 'api_client_id' => $apiClientId0, 'expires_at' => $expiresAt0, 'revoked_at' => $revokedAt0],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getByClientId($apiClientId);
 
@@ -141,7 +169,7 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt   = '2019-08-18 00:22:03';
         $revokedAt   = null;
 
-        $sql          = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted_at IS NULL) AND (tokens.id = :token_id)'; // phpcs:ignore
+        $sql0         = 'SELECT tokens.id, tokens.api_client_id, tokens.expires_at, tokens.revoked_at FROM tokens WHERE (tokens.deleted_at IS NULL) AND (tokens.id = :token_id)'; // phpcs:ignore
         $values       = ['token_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [
             [
@@ -151,8 +179,13 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
                 'revoked_at'    => $revokedAt,
             ],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getById($id);
 
@@ -166,15 +199,21 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt   = new \DateTimeImmutable('2019-08-18 00:22:03');
         $revokedAt   = null;
 
-        $sql       = 'UPDATE tokens AS tokens SET api_client_id = ?, expires_at = ?, revoked_at = ? WHERE (id = ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'UPDATE tokens AS tokens SET api_client_id = ?, expires_at = ?, revoked_at = ? WHERE (id = ?)'; // phpcs:ignore
+        $values     = [
             [$apiClientId, \PDO::PARAM_STR],
             [$expiresAt, \PDO::PARAM_STR],
             [$revokedAt, \PDO::PARAM_NULL],
             [$id, \PDO::PARAM_STR],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new Token($id, $apiClientId, $expiresAt, $revokedAt);
 
         $this->sut->update($entity);
@@ -187,15 +226,21 @@ class TokenSqlDataMapperTest extends DataMapperTestCase
         $expiresAt   = new \DateTimeImmutable('2019-08-18 00:22:03');
         $revokedAt   = new \DateTimeImmutable('2019-08-18 00:22:13');
 
-        $sql       = 'UPDATE tokens AS tokens SET api_client_id = ?, expires_at = ?, revoked_at = ? WHERE (id = ?)'; // phpcs:ignore
-        $values    = [
+        $sql0       = 'UPDATE tokens AS tokens SET api_client_id = ?, expires_at = ?, revoked_at = ? WHERE (id = ?)'; // phpcs:ignore
+        $values     = [
             [$apiClientId, \PDO::PARAM_STR],
             [$expiresAt, \PDO::PARAM_STR],
             [$revokedAt, \PDO::PARAM_STR],
             [$id, \PDO::PARAM_STR],
         ];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
+
         $entity = new Token($id, $apiClientId, $expiresAt, $revokedAt);
 
         $this->sut->update($entity);

@@ -96,4 +96,21 @@ class Client implements ClientRepositoryInterface
 
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * Validate a client's secret.
+     *
+     * @param string      $clientIdentifier The client's identifier
+     * @param null|string $clientSecret     The client's secret (if sent)
+     * @param null|string $grantType        The type of grant the client is using (if sent)
+     *
+     * @return bool
+     */
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
+        // TODO: Improve
+        return false;
+    }
 }

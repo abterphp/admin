@@ -7,8 +7,8 @@ namespace AbterPhp\Admin\Orm\DataMapper;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Orm\DataMappers\UserGroupSqlDataMapper;
-use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Admin\TestCase\Orm\DataMapperTestCase;
+use AbterPhp\Admin\TestDouble\Orm\MockIdGeneratorFactory;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use AbterPhp\Framework\TestDouble\Database\MockStatementFactory;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,10 +31,15 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql       = 'INSERT INTO user_groups (id, identifier, name) VALUES (?, ?, ?)'; // phpcs:ignore
-        $values    = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR]];
-        $statement = MockStatementFactory::createWriteStatement($this, $values);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql, $statement);
+        $sql0       = 'INSERT INTO user_groups (id, identifier, name) VALUES (?, ?, ?)'; // phpcs:ignore
+        $values     = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR]];
+        $statement0 = MockStatementFactory::createWriteStatement($this, $values);
+
+        $this->writeConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $entity = new UserGroup($nextId, $identifier, $name);
         $this->sut->add($entity);
@@ -59,7 +64,6 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $sql0       = 'INSERT INTO user_groups (id, identifier, name) VALUES (?, ?, ?)'; // phpcs:ignore
         $values0    = [[$nextId, \PDO::PARAM_STR], [$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'INSERT INTO user_groups_admin_resources (id, user_group_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values1    = [
@@ -68,7 +72,6 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
             [$adminResources[0]->getId(), \PDO::PARAM_STR],
         ];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $sql2       = 'INSERT INTO user_groups_admin_resources (id, user_group_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values2    = [
@@ -77,7 +80,12 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
             [$adminResources[1]->getId(), \PDO::PARAM_STR],
         ];
         $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(3))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2);
 
         $entity = new UserGroup($nextId, $identifier, $name, $adminResources);
         $this->sut->add($entity);
@@ -94,12 +102,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $sql0       = 'DELETE FROM user_groups_admin_resources WHERE (user_group_id = ?)'; // phpcs:ignore
         $values0    = [[$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'UPDATE user_groups AS user_groups SET deleted_at = NOW() WHERE (id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $entity = new UserGroup($id, $identifier, $name);
         $this->sut->delete($entity);
@@ -111,7 +123,7 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) GROUP BY ug.id'; // phpcs:ignore
+        $sql0         = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) GROUP BY ug.id'; // phpcs:ignore
         $values       = [];
         $expectedData = [
             [
@@ -122,8 +134,13 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
                 // phpcs:ignore
             ],
         ];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getAll();
 
@@ -136,11 +153,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) GROUP BY ug.id ORDER BY ug.created_at ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) GROUP BY ug.id ORDER BY ug.created_at ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, [], [], []);
 
@@ -156,11 +178,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $orders     = ['ug.name ASC'];
         $conditions = ['ug.name = \'abc\'', 'abc.name = \'bca\''];
 
-        $sql          = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.name = \'abc\') AND (abc.name = \'bca\') GROUP BY ug.id ORDER BY ug.name ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
+        $sql0         = 'SELECT SQL_CALC_FOUND_ROWS ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.name = \'abc\') AND (abc.name = \'bca\') GROUP BY ug.id ORDER BY ug.name ASC LIMIT 10 OFFSET 0'; // phpcs:ignore
         $values       = [];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getPage(0, 10, $orders, $conditions, []);
 
@@ -173,11 +200,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.id = :user_group_id) GROUP BY ug.id'; // phpcs:ignore
+        $sql0         = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.id = :user_group_id) GROUP BY ug.id'; // phpcs:ignore
         $values       = ['user_group_id' => [$id, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getById($id);
 
@@ -190,11 +222,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $identifier = 'foo';
         $name       = 'bar';
 
-        $sql          = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.identifier = :identifier) GROUP BY ug.id'; // phpcs:ignore
+        $sql0         = 'SELECT ug.id, ug.identifier, ug.name, GROUP_CONCAT(ugar.admin_resource_id) AS admin_resource_ids FROM user_groups AS ug LEFT JOIN user_groups_admin_resources AS ugar ON ugar.user_group_id = ug.id WHERE (ug.deleted_at IS NULL) AND (ug.identifier = :identifier) GROUP BY ug.id'; // phpcs:ignore
         $values       = ['identifier' => [$identifier, \PDO::PARAM_STR]];
         $expectedData = [['id' => $id, 'identifier' => $identifier, 'name' => $name]];
-        $statement    = MockStatementFactory::createReadStatement($this, $values, $expectedData);
-        MockStatementFactory::prepare($this, $this->readConnectionMock, $sql, $statement);
+        $statement0   = MockStatementFactory::createReadStatement($this, $values, $expectedData);
+
+        $this->readConnectionMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with($sql0)
+            ->willReturn($statement0);
 
         $actualResult = $this->sut->getByIdentifier($identifier);
 
@@ -210,12 +247,16 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $sql0       = 'UPDATE user_groups AS user_groups SET identifier = ?, name = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [[$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'DELETE FROM user_groups_admin_resources WHERE (user_group_id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(2))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1);
 
         $entity = new UserGroup($id, $identifier, $name);
         $this->sut->update($entity);
@@ -238,12 +279,10 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
         $sql0       = 'UPDATE user_groups AS user_groups SET identifier = ?, name = ? WHERE (id = ?) AND (deleted_at IS NULL)'; // phpcs:ignore
         $values0    = [[$identifier, \PDO::PARAM_STR], [$name, \PDO::PARAM_STR], [$id, \PDO::PARAM_STR]];
         $statement0 = MockStatementFactory::createWriteStatement($this, $values0);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql0, $statement0, 0);
 
         $sql1       = 'DELETE FROM user_groups_admin_resources WHERE (user_group_id = ?)'; // phpcs:ignore
         $values1    = [[$id, \PDO::PARAM_STR]];
         $statement1 = MockStatementFactory::createWriteStatement($this, $values1);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql1, $statement1, 1);
 
         $sql2       = 'INSERT INTO user_groups_admin_resources (id, user_group_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values2    = [
@@ -252,7 +291,6 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
             [$adminResources[0]->getId(), \PDO::PARAM_STR],
         ];
         $statement2 = MockStatementFactory::createWriteStatement($this, $values2);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql2, $statement2, 2);
 
         $sql3       = 'INSERT INTO user_groups_admin_resources (id, user_group_id, admin_resource_id) VALUES (?, ?, ?)'; // phpcs:ignore
         $values3    = [
@@ -261,7 +299,12 @@ class UserGroupSqlDataMapperTest extends DataMapperTestCase
             [$adminResources[1]->getId(), \PDO::PARAM_STR],
         ];
         $statement3 = MockStatementFactory::createWriteStatement($this, $values3);
-        MockStatementFactory::prepare($this, $this->writeConnectionMock, $sql3, $statement3, 3);
+
+        $this->writeConnectionMock
+            ->expects($this->exactly(4))
+            ->method('prepare')
+            ->withConsecutive([$sql0], [$sql1], [$sql2], [$sql3])
+            ->willReturnOnConsecutiveCalls($statement0, $statement1, $statement2, $statement3);
 
         $entity = new UserGroup($id, $identifier, $name, $adminResources);
         $this->sut->update($entity);

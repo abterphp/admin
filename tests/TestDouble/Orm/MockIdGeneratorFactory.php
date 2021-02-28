@@ -18,13 +18,13 @@ class MockIdGeneratorFactory
      */
     public static function create(TestCase $testCase, string ...$ids): IIdGenerator
     {
-        /** @var IIdGenerator $idGeneratorMock */
-        $idGeneratorMock = $testCase->getMockBuilder(IIdGenerator::class)
-            ->getMock();
+        /** @var IIdGenerator|MockObject $idGeneratorMock */
+        $idGeneratorMock = $testCase->getMockBuilder(IIdGenerator::class)->getMock();
 
-        foreach ($ids as $idx => $returnValue) {
-            $idGeneratorMock->expects($testCase->at($idx))->method('generate')->willReturn($returnValue);
-        }
+        $idGeneratorMock
+            ->expects($testCase->exactly(count($ids)))
+            ->method('generate')
+            ->willReturnOnConsecutiveCalls(...$ids);
 
         return $idGeneratorMock;
     }
