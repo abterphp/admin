@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "abterphp/framework",
-            "version": "dev-master",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/abterphp/framework.git",
-                "reference": "c3bdf870651ed2dd4e89b83ae6414a32e60b1f73"
+                "reference": "8b5b31da4153846f05ce9fa1fdd18bebb2bace96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abterphp/framework/zipball/c3bdf870651ed2dd4e89b83ae6414a32e60b1f73",
-                "reference": "c3bdf870651ed2dd4e89b83ae6414a32e60b1f73",
+                "url": "https://api.github.com/repos/abterphp/framework/zipball/8b5b31da4153846f05ce9fa1fdd18bebb2bace96",
+                "reference": "8b5b31da4153846f05ce9fa1fdd18bebb2bace96",
                 "shasum": ""
             },
             "require": {
@@ -80,9 +80,9 @@
             "description": "Foundations for AbterPHP",
             "support": {
                 "issues": "https://github.com/abterphp/framework/issues",
-                "source": "https://github.com/abterphp/framework/tree/master"
+                "source": "https://github.com/abterphp/framework/tree/main"
             },
-            "time": "2021-02-28T12:01:06+00:00"
+            "time": "2021-02-28T22:06:37+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
