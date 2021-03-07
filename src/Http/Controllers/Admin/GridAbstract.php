@@ -64,23 +64,23 @@ abstract class GridAbstract extends AdminAbstract
      * GridAbstract constructor.
      *
      * @param FlashService     $flashService
+     * @param LoggerInterface  $logger
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
-     * @param LoggerInterface  $logger
      * @param AssetManager     $assets
      * @param IRepoGrid        $repoGrid
      * @param IEventDispatcher $eventDispatcher
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         AssetManager $assets,
         IRepoGrid $repoGrid,
         IEventDispatcher $eventDispatcher
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator, $logger);
+        parent::__construct($flashService, $logger, $translator, $urlGenerator);
 
         $this->assets          = $assets;
         $this->repoGrid        = $repoGrid;

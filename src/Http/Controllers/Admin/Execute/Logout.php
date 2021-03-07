@@ -27,19 +27,19 @@ class Logout extends AdminAbstract
      * Logout constructor.
      *
      * @param FlashService    $flashService
+     * @param LoggerInterface $logger
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
-     * @param LoggerInterface $logger
      * @param ISession        $session
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         ISession $session
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator, $logger);
+        parent::__construct($flashService, $logger, $translator, $urlGenerator);
 
         $this->session = $session;
     }

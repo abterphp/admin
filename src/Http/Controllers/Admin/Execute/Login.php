@@ -39,31 +39,27 @@ class Login extends ControllerAbstract
     /** @var LoginService */
     protected $loginService;
 
-    /** @var LoggerInterface */
-    protected $logger;
-
     /**
      * Login constructor.
      *
      * @param FlashService       $flashService
+     * @param LoggerInterface    $logger
      * @param SessionInitializer $sessionInitializer
      * @param ITranslator        $translator
      * @param LoginService       $loginService
-     * @param LoggerInterface    $logger
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         SessionInitializer $sessionInitializer,
         ITranslator $translator,
-        LoginService $loginService,
-        LoggerInterface $logger
+        LoginService $loginService
     ) {
-        parent::__construct($flashService);
+        parent::__construct($flashService, $logger);
 
         $this->sessionInitializer = $sessionInitializer;
         $this->translator         = $translator;
         $this->loginService       = $loginService;
-        $this->logger             = $logger;
     }
 
     public function execute(): Response

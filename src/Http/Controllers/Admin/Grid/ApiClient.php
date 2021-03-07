@@ -29,27 +29,27 @@ class ApiClient extends GridAbstract
      * ApiClient constructor.
      *
      * @param FlashService     $flashService
+     * @param LoggerInterface  $logger
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
-     * @param LoggerInterface  $logger
      * @param AssetManager     $assets
      * @param RepoGrid         $repoGrid
      * @param IEventDispatcher $eventDispatcher
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         AssetManager $assets,
         RepoGrid $repoGrid,
         IEventDispatcher $eventDispatcher
     ) {
         parent::__construct(
             $flashService,
+            $logger,
             $translator,
             $urlGenerator,
-            $logger,
             $assets,
             $repoGrid,
             $eventDispatcher

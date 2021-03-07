@@ -28,35 +28,31 @@ class AccessToken extends ControllerAbstract
     /** @var ResponseConverter */
     protected $responseConverter;
 
-    /** @var LoggerInterface */
-    protected $logger;
-
     /**
      * AccessToken constructor.
      *
      * @param FlashService        $flashService
+     * @param LoggerInterface     $logger
      * @param AuthorizationServer $authorizationServer
      * @param RequestConverter    $requestConverter
      * @param ResponseFactory     $responseFactory
      * @param ResponseConverter   $responseConverter
-     * @param LoggerInterface     $logger
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         AuthorizationServer $authorizationServer,
         RequestConverter $requestConverter,
         ResponseFactory $responseFactory,
-        ResponseConverter $responseConverter,
-        LoggerInterface $logger
+        ResponseConverter $responseConverter
     ) {
-        parent::__construct($flashService);
+        parent::__construct($flashService, $logger);
 
         $this->authorizationServer = $authorizationServer;
 
         $this->requestConverter  = $requestConverter;
         $this->responseFactory   = $responseFactory;
         $this->responseConverter = $responseConverter;
-        $this->logger            = $logger;
     }
 
     /**

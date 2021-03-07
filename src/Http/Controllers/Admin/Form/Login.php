@@ -9,15 +9,12 @@ use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
 use Opulence\Http\Responses\Response;
-use Opulence\Routing\Urls\URLException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
 class Login extends AdminAbstract
 {
     const ENTITY_SINGULAR = 'login';
-
-    const POST_USERNAME = 'username';
 
     /** @var AssetManager */
     protected $assets;
@@ -29,21 +26,21 @@ class Login extends AdminAbstract
      * Login constructor.
      *
      * @param FlashService    $flashService
+     * @param LoggerInterface $logger
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
-     * @param LoggerInterface $logger
      * @param AssetManager    $assets
      * @param string          $frontendSalt
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         AssetManager $assets,
         string $frontendSalt
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator, $logger);
+        parent::__construct($flashService, $logger, $translator, $urlGenerator);
 
         $this->assets       = $assets;
         $this->frontendSalt = $frontendSalt;
@@ -51,7 +48,6 @@ class Login extends AdminAbstract
 
     /**
      * @return Response
-     * @throws URLException
      * @throws \Throwable
      */
     public function display(): Response

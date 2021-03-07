@@ -59,9 +59,9 @@ abstract class FormAbstract extends AdminAbstract
      * FormAbstract constructor.
      *
      * @param FlashService     $flashService
+     * @param LoggerInterface  $logger
      * @param ITranslator      $translator
      * @param UrlGenerator     $urlGenerator
-     * @param LoggerInterface  $logger
      * @param IGridRepo        $repo
      * @param ISession         $session
      * @param IFormFactory     $formFactory
@@ -69,15 +69,15 @@ abstract class FormAbstract extends AdminAbstract
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         IGridRepo $repo,
         ISession $session,
         IFormFactory $formFactory,
         IEventDispatcher $eventDispatcher
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator, $logger);
+        parent::__construct($flashService, $logger, $translator, $urlGenerator);
 
         $this->repo            = $repo;
         $this->session         = $session;

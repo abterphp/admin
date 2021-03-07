@@ -36,9 +36,6 @@ abstract class AdminAbstract extends ControllerAbstract
     /** @var UrlGenerator */
     protected $urlGenerator;
 
-    /** @var LoggerInterface */
-    protected $logger;
-
     /** @var string */
     protected $resource = '';
 
@@ -46,21 +43,20 @@ abstract class AdminAbstract extends ControllerAbstract
      * AdminAbstract constructor.
      *
      * @param FlashService    $flashService
+     * @param LoggerInterface $logger
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
-     * @param LoggerInterface $logger
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
-        UrlGenerator $urlGenerator,
-        LoggerInterface $logger
+        UrlGenerator $urlGenerator
     ) {
-        parent::__construct($flashService);
+        parent::__construct($flashService, $logger);
 
         $this->translator   = $translator;
         $this->urlGenerator = $urlGenerator;
-        $this->logger       = $logger;
     }
 
     /**

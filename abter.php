@@ -22,7 +22,6 @@ return [
         Bootstrappers\Database\MigrationsBootstrapper::class,
     ],
     Module::HTTP_BOOTSTRAPPERS => [
-        Bootstrappers\Http\Controllers\Execute\LoginBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\ApiClientBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\LoginBootstrapper::class,
         Bootstrappers\Http\Controllers\Form\UserBootstrapper::class,
@@ -30,6 +29,7 @@ return [
         Bootstrappers\Http\Views\BuildersBootstrapper::class,
         Bootstrappers\Oauth2\AuthorizationServerBootstrapper::class,
         Bootstrappers\Oauth2\ResourceServerBootstrapper::class,
+        Bootstrappers\Service\Execute\LoginBootstrapper::class,
         Bootstrappers\Vendor\SlugifyBootstrapper::class,
     ],
     Module::COMMANDS           => [

@@ -33,13 +33,13 @@ class LoginBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function registerBindings(IContainer $container)
     {
         $flashService = $container->resolve(FlashService::class);
+        $logger       = $container->resolve(LoggerInterface::class);
         $translator   = $container->resolve(ITranslator::class);
         $urlGenerator = $container->resolve(UrlGenerator::class);
-        $logger       = $container->resolve(LoggerInterface::class);
         $assets       = $container->resolve(AssetManager::class);
         $frontendSalt = getenv(Env::CRYPTO_FRONTEND_SALT);
 
-        $login = new Login($flashService, $translator, $urlGenerator, $logger, $assets, $frontendSalt);
+        $login = new Login($flashService, $logger, $translator, $urlGenerator, $assets, $frontendSalt);
 
         $container->bindInstance(Login::class, $login);
     }

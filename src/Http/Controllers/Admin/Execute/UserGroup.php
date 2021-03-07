@@ -26,25 +26,25 @@ class UserGroup extends ExecuteAbstract
      * UserGroup constructor.
      *
      * @param FlashService    $flashService
+     * @param LoggerInterface $logger
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
-     * @param LoggerInterface $logger
      * @param RepoService     $repoService
      * @param ISession        $session
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         RepoService $repoService,
         ISession $session
     ) {
         parent::__construct(
             $flashService,
+            $logger,
             $translator,
             $urlGenerator,
-            $logger,
             $repoService,
             $session
         );

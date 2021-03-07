@@ -37,9 +37,9 @@ class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
     public function registerBindings(IContainer $container)
     {
         $flashService    = $container->resolve(FlashService::class);
+        $logger          = $container->resolve(LoggerInterface::class);
         $translator      = $container->resolve(ITranslator::class);
         $urlGenerator    = $container->resolve(UrlGenerator::class);
-        $logger          = $container->resolve(LoggerInterface::class);
         $repo            = $container->resolve(Repo::class);
         $session         = $container->resolve(ISession::class);
         $formFactory     = $container->resolve(FormFactory::class);
@@ -49,9 +49,9 @@ class ProfileBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         $profileController = new Profile(
             $flashService,
+            $logger,
             $translator,
             $urlGenerator,
-            $logger,
             $repo,
             $session,
             $formFactory,

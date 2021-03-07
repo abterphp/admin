@@ -31,21 +31,21 @@ class Dashboard extends AdminAbstract
      * Dashboard constructor.
      *
      * @param FlashService        $flashService
+     * @param LoggerInterface     $logger
      * @param ITranslator         $translator
      * @param UrlGenerator        $urlGenerator
-     * @param LoggerInterface     $logger
      * @param Enforcer            $enforcer
      * @param DashboardCollection $dashboard
      */
     public function __construct(
         FlashService $flashService,
+        LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        LoggerInterface $logger,
         Enforcer $enforcer,
         DashboardCollection $dashboard
     ) {
-        parent::__construct($flashService, $translator, $urlGenerator, $logger);
+        parent::__construct($flashService, $logger, $translator, $urlGenerator);
 
         $this->enforcer  = $enforcer;
         $this->dashboard = $dashboard;
