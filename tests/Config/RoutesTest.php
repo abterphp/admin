@@ -10,13 +10,12 @@ use PHPUnit\Framework\TestCase;
 class RoutesTest extends TestCase
 {
     /** @var Routes - System Under Test */
-    protected $sut;
+    protected Routes $sut;
 
-    /** @var string|null */
+    /** @var string|bool|null */
     protected $origValue;
 
-    /** @var string|null */
-    protected $origName;
+    protected ?string $origName;
 
     public function setUp(): void
     {
@@ -292,5 +291,26 @@ class RoutesTest extends TestCase
 
         $this->assertNotEmpty($adminBasePath);
         $this->assertStringContainsString($adminBasePath, $actualResult);
+    }
+
+    public function testGetProfilePathContainsAdminPath()
+    {
+        $adminBasePath = $this->sut->getAdminBasePath();
+
+        $actualResult = $this->sut->getProfilePath();
+
+        $this->assertNotEmpty($adminBasePath);
+        $this->assertStringContainsString($adminBasePath, $actualResult);
+    }
+
+    public function testGetUploadUrl()
+    {
+        $uploadUrl = 'foo';
+
+        $this->sut->setUploadUrl($uploadUrl);
+
+        $actualResult = $this->sut->getUploadUrl();
+
+        $this->assertSame($uploadUrl, $actualResult);
     }
 }

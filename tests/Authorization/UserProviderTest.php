@@ -6,13 +6,14 @@ namespace AbterPhp\Admin\Authorization;
 
 use AbterPhp\Admin\Databases\Queries\UserAuthLoader;
 use Casbin\Exceptions\CasbinException;
+use Casbin\Model\Model;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UserProviderTest extends TestCase
 {
     /** @var UserProvider - System Under Test */
-    protected $sut;
+    protected UserProvider $sut;
 
     /** @var MockObject|UserAuthLoader */
     protected $authLoaderMock;
@@ -22,15 +23,6 @@ class UserProviderTest extends TestCase
         $this->authLoaderMock = $this->createMock(UserAuthLoader::class);
 
         $this->sut = new UserProvider($this->authLoaderMock);
-    }
-
-    public function testLoadPolicyLoadsData()
-    {
-        $modelStub = new \stdClass();
-
-        $actualResult = $this->sut->savePolicy($modelStub);
-
-        $this->assertTrue($actualResult);
     }
 
     public function testLoadPolicyAddsLoadedDataToModel()
@@ -47,48 +39,23 @@ class UserProviderTest extends TestCase
         $policyContainer = new \stdClass();
         $policyContainer->policy = [];
 
-        $modelStub = new \stdClass();
-        $modelStub->model = ['g' => ['g' => $policyContainer]];
+        $modelMock = $this->getMockBuilder(Model::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $modelMock->expects($this->exactly(2))->method('addPolicy');
 
         $this->authLoaderMock
             ->expects($this->once())
             ->method('loadAll')
             ->willReturn($loadedData);
 
-        $this->sut->loadPolicy($modelStub);
-
-        $this->assertCount(2, $policyContainer->policy);
-        $this->assertSame([$v00, $v01, '', '', ','], $policyContainer->policy[0]);
-        $this->assertSame([$v10, $v11, '', '', ','], $policyContainer->policy[1]);
-    }
-
-    public function testSavePolicyReturnsTrue()
-    {
-        $modelStub = new \stdClass();
-
-        $actualResult = $this->sut->savePolicy($modelStub);
-
-        $this->assertTrue($actualResult);
-    }
-
-    public function testAddPolicyDoesNotThrowException()
-    {
-        $actualResult = $this->sut->addPolicy('foo', 'bar', []);
-
-        $this->assertNull($actualResult);
-    }
-
-    public function testRemovePolicyReturnZero()
-    {
-        $actualResult = $this->sut->removePolicy('foo', 'bar', []);
-
-        $this->assertSame(0, $actualResult);
+        $this->sut->loadPolicy($modelMock);
     }
 
     public function testRemoveFilterPolicyThrowsCasbinException()
     {
         $this->expectException(CasbinException::class);
 
-        $this->sut->removeFilteredPolicy('foo', 'bar', 'baz');
+        $this->sut->removeFilteredPolicy('foo', 'bar', 0);
     }
 }

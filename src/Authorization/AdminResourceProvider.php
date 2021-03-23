@@ -31,11 +31,11 @@ class AdminResourceProvider implements CasbinAdapter
      *
      * @param Model $model
      *
-     * @return bool
+     * @throws CasbinException
      */
-    public function savePolicy($model)
+    public function savePolicy(Model $model): void
     {
-        return true;
+        throw new CasbinException('not implemented');
     }
 
     /**
@@ -44,41 +44,39 @@ class AdminResourceProvider implements CasbinAdapter
      * @param string $sec
      * @param string $ptype
      * @param array  $rule
-     *
-     * @return void
-     */
-    public function addPolicy($sec, $ptype, $rule)
-    {
-        return;
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param string $sec
-     * @param string $ptype
-     * @param array  $rule
-     *
-     * @return int
-     */
-    public function removePolicy($sec, $ptype, $rule)
-    {
-        $count = 0;
-
-        return $count;
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @param       $sec
-     * @param       $ptype
-     * @param       $fieldIndex
-     * @param mixed ...$fieldValues
      *
      * @throws CasbinException
      */
-    public function removeFilteredPolicy($sec, $ptype, $fieldIndex, ...$fieldValues)
+    public function addPolicy(string $sec, string $ptype, array $rule): void
+    {
+        throw new CasbinException('not implemented');
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param string $sec
+     * @param string $ptype
+     * @param array  $rule
+     *
+     * @throws CasbinException
+     */
+    public function removePolicy(string $sec, string $ptype, array $rule): void
+    {
+        throw new CasbinException('not implemented');
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param string $sec
+     * @param string $ptype
+     * @param int    $fieldIndex
+     * @param string ...$fieldValues
+     *
+     * @throws CasbinException
+     */
+    public function removeFilteredPolicy(string $sec, string $ptype, int $fieldIndex, string ...$fieldValues): void
     {
         throw new CasbinException('not implemented');
     }

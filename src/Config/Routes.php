@@ -14,20 +14,15 @@ class Routes extends FrameworkRoutes
     public const DASHBOARD_PATH = '/dashboard';
     public const PROFILE_PATH   = '/profile';
 
-    /** @var string|null */
-    protected static $loginPath;
+    protected static ?string $loginPath = null;
 
-    /** @var string|null */
-    protected static $logoutPath;
+    protected static ?string $logoutPath = null;
 
-    /** @var string|null */
-    protected static $adminBasePath;
+    protected static ?string $adminBasePath = null;
 
-    /** @var string|null */
-    protected static $apiBasePath;
+    protected static ?string $apiBasePath = null;
 
-    /** @var string|null */
-    protected static $uploadUrl;
+    protected static ?string $uploadUrl = null;
 
     /**
      * @param string $loginPath

@@ -9,16 +9,14 @@ use Casbin\Model\Model;
 
 trait PolicyProviderTrait
 {
-    /** @var IAuthLoader */
-    protected $authLoader;
+    protected IAuthLoader $authLoader;
 
-    /** @var string */
-    protected $prefix = '';
+    protected string $prefix = '';
 
     /**
      * @param Model $model
      */
-    public function loadPolicy($model)
+    public function loadPolicy(Model $model): void
     {
         $rawData = $this->authLoader->loadAll();
 
@@ -26,10 +24,8 @@ trait PolicyProviderTrait
             $v0 = $line['v0'];
             $v1 = sprintf('%s_%s', $this->prefix, $line['v1']);
 
-            $model->model['p']['p']->policy[] = [$v0, $v1, 'read', '', ','];
-            $model->model['p']['p']->policy[] = [$v0, $v1, 'write', '', ','];
+            $model->addPolicy('p', 'p', [$v0, $v1, 'read', '', ',']);
+            $model->addPolicy('p', 'p', [$v0, $v1, 'write', '', ',']);
         }
-
-        return;
     }
 }

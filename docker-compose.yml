@@ -1,10 +1,50 @@
 version: '3'
 services:
+  db_test:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=abter_test
+      - MYSQL_DATABASE=abter_test
+      - MYSQL_USER=abter_test
+      - MYSQL_PASSWORD=abter_test
+      - MYSQL_PORT=3306
+    volumes:
+      - ./docker/mysql/dumps:/docker-entrypoint-initdb.d:ro
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d:ro
+
+  memcached:
+    image: memcached:alpine
+
+  redis:
+    image: redis:alpine
+
+  mailcatcher:
+    image: mailhog/mailhog
+    environment:
+      - MH_HOSTNAME=localhost
+
   cli:
     image: abtercms/php:74
+    links:
+      - db_test
+      - memcached
+      - redis
+      - mailcatcher
     volumes:
       - .:/website
-      - ./docker/php/conf.d/ast-on.ini:/usr/local/etc/php/conf.d/ast-on.ini:ro
+      - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
+      - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
+    working_dir: /website
+
+  cli80:
+    image: abtercms/php:80
+    links:
+      - db_test
+      - memcached
+      - redis
+      - mailcatcher
+    volumes:
+      - .:/website
       - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
       - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
     working_dir: /website
