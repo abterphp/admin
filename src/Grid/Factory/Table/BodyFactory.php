@@ -10,19 +10,15 @@ use AbterPhp\Framework\Grid\Component\Body;
 class BodyFactory
 {
     /**
-     * @param array        $getters
-     * @param array        $rowArguments
-     * @param Actions|null $rowActions
+     * @param array<string,callable> $getters
+     * @param Actions|null           $actions
      *
      * @return Body
      */
     public function create(
         array $getters,
-        array $rowArguments,
-        ?Actions $rowActions
+        ?Actions $actions = null
     ): Body {
-        $body = new Body($getters, $rowArguments, $rowActions);
-
-        return $body;
+        return new Body($getters, $actions);
     }
 }

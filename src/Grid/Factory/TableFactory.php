@@ -8,6 +8,8 @@ use AbterPhp\Admin\Grid\Factory\Table\BodyFactory;
 use AbterPhp\Admin\Grid\Factory\Table\HeaderFactory;
 use AbterPhp\Framework\Grid\Component\Actions;
 use AbterPhp\Framework\Grid\Table\Table;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 
 class TableFactory
 {
@@ -19,22 +21,15 @@ class TableFactory
     protected const ERROR_MSG_NO_BODY_CREATED   = 'Grid table body is not yet created';
     protected const ERROR_MSG_NO_HEADER_CREATED = 'Grig table header is not yet created';
 
-    /** @var HeaderFactory */
-    protected $headerFactory;
+    protected HeaderFactory $headerFactory;
 
-    /** @var BodyFactory */
-    protected $bodyFactory;
+    protected BodyFactory $bodyFactory;
 
-    /** @var array */
-    protected $tableAttributes = [
-        self::ATTRIBUTE_CLASS => 'table table-striped table-hover table-bordered',
-    ];
+    /** @var array<string,Attribute> */
+    protected array $tableAttributes = [];
 
-    /** @var array */
-    protected $headerAttributes = [];
-
-    /** @var array */
-    protected $bodyAttributes = [];
+    /** @var array<string,Attribute> */
+    protected array $headerAttributes = [];
 
     /**
      * TableFactory constructor.
@@ -46,6 +41,9 @@ class TableFactory
     {
         $this->headerFactory = $headerFactory;
         $this->bodyFactory   = $bodyFactory;
+
+        $tableAttributes       = [self::ATTRIBUTE_CLASS => 'table table-striped table-hover table-bordered'];
+        $this->tableAttributes = Attributes::fromArray($tableAttributes);
     }
 
     /**
@@ -65,7 +63,7 @@ class TableFactory
         $hasActions = $rowActions && count($rowActions) > 0;
 
         $header = $this->headerFactory->create($hasActions, $params, $baseUrl);
-        $body   = $this->bodyFactory->create($getters, $this->bodyAttributes, $rowActions);
+        $body   = $this->bodyFactory->create($getters, $rowActions);
 
         return new Table($body, $header, [], $this->tableAttributes);
     }

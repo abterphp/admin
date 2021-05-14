@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class LastGridPageTest extends TestCase
 {
     /** @var LastGridPage - System Under Test */
-    protected $sut;
+    protected LastGridPage $sut;
 
     /** @var MockObject|ISession */
     protected $sessionMock;

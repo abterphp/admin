@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Http\Middleware;
 
 use AbterPhp\Admin\Config\Routes as RoutesConfig;
-use AbterPhp\Framework\Config\EnvReader;
 use AbterPhp\Framework\Constant\Env;
+use AbterPhp\Framework\Environments\Environment;
 use AbterPhp\Framework\Exception\Security as SecurityException;
 use Opulence\Cache\ICacheBridge;
-use Opulence\Environments\Environment;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class SecurityTest extends TestCase
 {
     /** @var Security - System Under Test */
-    protected $sut;
+    protected Security $sut;
 
     /** @var MockObject|ICacheBridge */
     protected $cacheBridgeMock;
@@ -32,7 +31,7 @@ class SecurityTest extends TestCase
 
     public function testHandleRunsChecksIfNoEnvironmentNameIsSet()
     {
-        (new EnvReader())->clear(Env::ENV_NAME);
+        Environment::setVar(Env::ENV_NAME, Environment::PRODUCTION);
 
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
 
@@ -50,7 +49,7 @@ class SecurityTest extends TestCase
 
     public function testHandleSkipsChecksIfNotInProduction()
     {
-        (new EnvReader())->set(Env::ENV_NAME, Environment::STAGING);
+        Environment::setVar(Env::ENV_NAME, Environment::STAGING);
 
         $this->cacheBridgeMock->expects($this->never())->method('has');
 
@@ -72,7 +71,7 @@ class SecurityTest extends TestCase
 
     public function testHandleRunsChecksIfInProduction()
     {
-        (new EnvReader())->set(Env::ENV_NAME, Environment::PRODUCTION);
+        Environment::setVar(Env::ENV_NAME, Environment::PRODUCTION);
 
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(true);
 
@@ -118,7 +117,7 @@ class SecurityTest extends TestCase
         string $apiBasePath,
         string $oauth2PrivateKeyPassword
     ) {
-        (new EnvReader())->set(Env::ENV_NAME, Environment::PRODUCTION);
+        Environment::setVar(Env::ENV_NAME, Environment::PRODUCTION);
 
         $this->expectException(SecurityException::class);
 

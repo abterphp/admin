@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Middleware;
 
-use AbterPhp\Admin\Constant\Env;
 use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Admin\Psr7\RequestConverter;
-use AbterPhp\Framework\Config\EnvReader;
 use Closure;
 use Exception;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -28,20 +26,15 @@ class Api implements IMiddleware
     const HEADER_USER_ID       = 'xxx-user-id';
     const HEADER_USER_USERNAME = 'xxx-user-username';
 
-    /** @var ResourceServer */
-    protected $resourceServer;
+    protected ResourceServer $resourceServer;
 
-    /** @var RequestConverter */
-    protected $requestConverter;
+    protected RequestConverter $requestConverter;
 
-    /** @var UserRepo */
-    protected $userRepo;
+    protected UserRepo $userRepo;
 
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /** @var string */
-    protected $problemBaseUrl;
+    protected string $problemBaseUrl;
 
     /**
      * Api constructor.
@@ -50,21 +43,21 @@ class Api implements IMiddleware
      * @param RequestConverter $requestConverter
      * @param UserRepo         $userRepo
      * @param LoggerInterface  $logger
-     * @param EnvReader        $envReader
+     * @param string           $problemBaseUrl
      */
     public function __construct(
         ResourceServer $resourceServer,
         RequestConverter $requestConverter,
         UserRepo $userRepo,
         LoggerInterface $logger,
-        EnvReader $envReader
+        string $problemBaseUrl
     ) {
         $this->resourceServer = $resourceServer;
 
         $this->requestConverter = $requestConverter;
         $this->userRepo         = $userRepo;
         $this->logger           = $logger;
-        $this->problemBaseUrl   = $envReader->get(Env::API_PROBLEM_BASE_URL);
+        $this->problemBaseUrl   = $problemBaseUrl;
     }
 
     // TODO: Check error response formats

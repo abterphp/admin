@@ -16,14 +16,15 @@ use AbterPhp\Framework\Form\Element\Select;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\IForm;
 use AbterPhp\Framework\Form\Label\Label;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Orm\IEntity;
+use Opulence\Orm\OrmException;
 use Opulence\Sessions\ISession;
 
 class UserGroup extends Base
 {
-    /** @var AdminResourceRepo */
-    protected $adminResourceRepo;
+    protected AdminResourceRepo $adminResourceRepo;
 
     /**
      * UserGroup constructor.
@@ -46,6 +47,7 @@ class UserGroup extends Base
      * @param IEntity|null $entity
      *
      * @return IForm
+     * @throws OrmException
      */
     public function create(string $action, string $method, string $showUrl, ?IEntity $entity = null): IForm
     {
@@ -72,14 +74,11 @@ class UserGroup extends Base
      */
     protected function addName(Entity $entity): UserGroup
     {
-        $input = new Input(
-            'name',
-            'name',
-            $entity->getName()
-        );
+        $input = new Input('name', 'name', $entity->getName());
         $label = new Label('body', 'admin:userGroupName');
 
-        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+        $attributes   = Attributes::fromArray([Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+        $this->form[] = new FormGroup($input, $label, null, [], $attributes);
 
         return $this;
     }
@@ -96,7 +95,7 @@ class UserGroup extends Base
             'identifier',
             $entity->getIdentifier(),
             [],
-            [Html5::ATTR_CLASS => 'semi-auto']
+            Attributes::fromArray([Html5::ATTR_CLASS => 'semi-auto'])
         );
         $label = new Label('identifier', 'admin:userGroupIdentifier');
         $help  = new Help('admin:userGroupIdentifierHelp');
@@ -110,6 +109,7 @@ class UserGroup extends Base
      * @param Entity $entity
      *
      * @return $this
+     * @throws OrmException
      */
     protected function addAdminResources(Entity $entity): UserGroup
     {
@@ -128,7 +128,7 @@ class UserGroup extends Base
 
     /**
      * @return AdminResource[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     protected function getAllAdminResources(): array
     {
@@ -177,18 +177,16 @@ class UserGroup extends Base
      */
     protected function createAdminResourceSelect(array $options): Select
     {
-        $size = $this->getMultiSelectSize(
+        $size   = $this->getMultiSelectSize(
             count($options),
             static::MULTISELECT_MIN_SIZE,
             static::MULTISELECT_MAX_SIZE
         );
-        $attributes = [Html5::ATTR_SIZE => [$size]];
-
         $select = new MultiSelect(
             'admin_resource_ids',
             'admin_resource_ids[]',
             [],
-            $attributes
+            Attributes::fromArray([Html5::ATTR_SIZE => [(string)$size]])
         );
 
         foreach ($options as $option) {

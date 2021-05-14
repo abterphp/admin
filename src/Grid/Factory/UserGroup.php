@@ -11,6 +11,7 @@ use AbterPhp\Admin\Grid\Filters\UserGroup as Filters;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use Opulence\Routing\Urls\UrlGenerator;
 
 class UserGroup extends BaseFactory
@@ -53,13 +54,8 @@ class UserGroup extends BaseFactory
     {
         $attributeCallbacks = $this->getAttributeCallbacks();
 
-        $editAttributes = [
-            Html5::ATTR_HREF => Route::USER_GROUPS_EDIT,
-        ];
-
-        $deleteAttributes = [
-            Html5::ATTR_HREF => Route::USER_GROUPS_DELETE,
-        ];
+        $editAttributes   = Attributes::fromArray([Html5::ATTR_HREF => [Route::USER_GROUPS_EDIT]]);
+        $deleteAttributes = Attributes::fromArray([Html5::ATTR_HREF => [Route::USER_GROUPS_DELETE]]);
 
         $cellActions   = new Actions();
         $cellActions[] = new Action(

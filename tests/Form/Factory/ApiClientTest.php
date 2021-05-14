@@ -7,7 +7,7 @@ namespace AbterPhp\Admin\Form\Factory;
 use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Admin\Orm\AdminResourceRepo;
-use AbterPhp\Framework\Html\Component\ButtonFactory;
+use AbterPhp\Framework\Html\Factory\Button as ButtonFactory;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Http\Requests\RequestMethods;
 use Opulence\Orm\IEntity;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 class ApiClientTest extends TestCase
 {
     /** @var ApiClient - System Under Test */
-    protected $sut;
+    protected ApiClient $sut;
 
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -104,8 +104,6 @@ class ApiClientTest extends TestCase
      */
     protected function createMockEntity()
     {
-        $entityMock = $this->createMock(Entity::class);
-
-        return $entityMock;
+        return $this->createMock(Entity::class);
     }
 }

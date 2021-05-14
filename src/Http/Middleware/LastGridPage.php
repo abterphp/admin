@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Http\Middleware;
 
 use AbterPhp\Framework\Constant\Session;
-use AbterPhp\Framework\Html\Helper\ArrayHelper;
+use AbterPhp\Framework\Helper\Url;
 use Closure;
 use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\Response;
@@ -15,7 +15,7 @@ use Opulence\Sessions\ISession;
 class LastGridPage implements IMiddleware
 {
     /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
     /**
      * LastGridPage constructor.
@@ -45,7 +45,7 @@ class LastGridPage implements IMiddleware
         $path = sprintf(
             '%s%s',
             $request->getPath(),
-            ArrayHelper::toQuery($request->getQuery()->getAll())
+            Url::toQuery($request->getQuery()->getAll())
         );
 
         $this->session->set(Session::LAST_GRID_URL, $path);

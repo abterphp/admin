@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Grid\Filters;
 
 use AbterPhp\Framework\Grid\Component\Filters;
+use AbterPhp\Framework\Grid\Filter\Filter;
 use AbterPhp\Framework\Grid\Filter\LikeFilter;
 
 class ApiClient extends Filters
@@ -20,6 +21,6 @@ class ApiClient extends Filters
     {
         parent::__construct($intents, $attributes, $tag);
 
-        $this->nodes[] = new LikeFilter('description', 'admin:apiClientDescription');
+        $this->add(new LikeFilter('description', 'admin:apiClientDescription'));
     }
 }

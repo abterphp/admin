@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class ApiClientTest extends TestCase
 {
     /** @var ApiClient - System Under Test */
-    protected $sut;
+    protected ApiClient $sut;
 
     /** @var MockObject|UrlGenerator */
     protected $urlGeneratorMock;

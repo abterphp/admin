@@ -19,18 +19,17 @@ use AbterPhp\Framework\Form\Element\Select;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\IForm;
 use AbterPhp\Framework\Form\Label\Label;
-use AbterPhp\Framework\Html\Component;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Orm\IEntity;
 use Opulence\Sessions\ISession;
 
 class User extends Base
 {
-    /** @var UserGroupRepo */
-    protected $userGroupRepo;
+    protected UserGroupRepo $userGroupRepo;
 
-    /** @var UserLanguageRepo */
-    protected $userLanguageRepo;
+    protected UserLanguageRepo $userLanguageRepo;
 
     /**
      * User constructor.
@@ -95,9 +94,9 @@ class User extends Base
             '<i class="material-icons">warning</i>&nbsp;%s',
             $this->translator->translate('admin:jsOnly')
         );
-        $attributes = [Html5::ATTR_CLASS => 'only-js-form-warning'];
+        $attributes = Attributes::fromArray([Html5::ATTR_CLASS => 'only-js-form-warning']);
 
-        $this->form[] = new Component($content, [], $attributes, Html5::TAG_P);
+        $this->form[] = new Tag($content, [], $attributes, Html5::TAG_P);
 
         return $this;
     }
@@ -109,16 +108,12 @@ class User extends Base
      */
     protected function addUsername(Entity $entity): User
     {
-        $input = new Input(
-            'username',
-            'username',
-            $entity->getUsername(),
-            [],
-            [Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF]]
-        );
-        $label = new Label('username', 'admin:userUsername');
+        $attributes = Attributes::fromArray([Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF]]);
+        $input      = new Input('username', 'username', $entity->getUsername(), [], $attributes);
+        $label      = new Label('username', 'admin:userUsername');
 
-        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+        $attributes   = Attributes::fromArray([Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+        $this->form[] = new FormGroup($input, $label, null, [], $attributes);
 
         return $this;
     }
@@ -135,11 +130,17 @@ class User extends Base
             'email',
             $entity->getEmail(),
             [],
-            [Html5::ATTR_AUTOCOMPLETE => [Input::AUTOCOMPLETE_OFF], Html5::ATTR_TYPE => Input::TYPE_EMAIL]
+            Attributes::fromArray(
+                [
+                    Html5::ATTR_AUTOCOMPLETE => [Input::AUTOCOMPLETE_OFF],
+                    Html5::ATTR_TYPE         => Input::TYPE_EMAIL,
+                ]
+            )
         );
         $label = new Label('email', 'admin:userEmail');
 
-        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+        $attributes   = Attributes::fromArray([Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
+        $this->form[] = new FormGroup($input, $label, null, [], $attributes);
 
         return $this;
     }
@@ -154,7 +155,7 @@ class User extends Base
             'password',
             '',
             [],
-            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
+            Attributes::fromArray([Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]])
         );
 
         return $this;
@@ -170,7 +171,7 @@ class User extends Base
             'password_confirmed',
             '',
             [],
-            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
+            Attributes::fromArray([Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]])
         );
 
         return $this;
@@ -188,16 +189,19 @@ class User extends Base
             'raw_password',
             '',
             [],
-            [
-                Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF],
-                Html5::ATTR_TYPE => [Input::TYPE_PASSWORD],
-            ]
+            Attributes::fromArray(
+                [
+                    Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF],
+                    Html5::ATTR_TYPE => [Input::TYPE_PASSWORD],
+                ]
+            )
         );
         $label = new Label('raw_password', 'admin:userPassword');
 
         $class = $entity->getId() ? '' : FormGroup::CLASS_REQUIRED;
 
-        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => $class]);
+        $attributes   = Attributes::fromArray([Html5::ATTR_CLASS => $class]);
+        $this->form[] = new FormGroup($input, $label, null, [], $attributes);
 
         return $this;
     }
@@ -214,16 +218,19 @@ class User extends Base
             'raw_password_confirmed',
             '',
             [],
-            [
-                Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF],
-                Html5::ATTR_TYPE => [Input::TYPE_PASSWORD],
-            ]
+            Attributes::fromArray(
+                [
+                    Html5::ATTR_NAME => [Input::AUTOCOMPLETE_OFF],
+                    Html5::ATTR_TYPE => [Input::TYPE_PASSWORD],
+                ]
+            )
         );
         $label = new Label('raw_password_confirmed', 'admin:userConfirmPassword');
 
         $class = $entity->getId() ? '' : FormGroup::CLASS_REQUIRED;
 
-        $this->form[] = new FormGroup($input, $label, null, [], [Html5::ATTR_CLASS => $class]);
+        $attributes   = Attributes::fromArray([Html5::ATTR_CLASS => $class]);
+        $this->form[] = new FormGroup($input, $label, null, [], $attributes);
 
         return $this;
     }
@@ -235,9 +242,9 @@ class User extends Base
      */
     protected function addCanLogin(Entity $entity): User
     {
-        $attributes = [Html5::ATTR_TYPE => [Input::TYPE_CHECKBOX]];
+        $attributes = Attributes::fromArray([Html5::ATTR_TYPE => [Input::TYPE_CHECKBOX]]);
         if ($entity->canLogin()) {
-            $attributes[Html5::ATTR_CHECKED] = null;
+            $attributes = Attributes::addItem($attributes, Html5::ATTR_CHECKED);
         }
         $input = new Input(
             'can_login',
@@ -261,9 +268,9 @@ class User extends Base
      */
     protected function addIsGravatarAllowed(Entity $entity): User
     {
-        $attributes = [Html5::ATTR_TYPE => [Input::TYPE_CHECKBOX]];
+        $attributes = Attributes::fromArray([Html5::ATTR_TYPE => [Input::TYPE_CHECKBOX]]);
         if ($entity->isGravatarAllowed()) {
-            $attributes[Html5::ATTR_CHECKED] = null;
+            $attributes = Attributes::addItem($attributes, Html5::ATTR_CHECKED);
         }
         $input = new Input(
             'is_gravatar_allowed',
@@ -345,7 +352,7 @@ class User extends Base
             static::MULTISELECT_MIN_SIZE,
             static::MULTISELECT_MAX_SIZE
         );
-        $attributes = [Html5::ATTR_SIZE => [$size]];
+        $attributes = Attributes::fromArray([Html5::ATTR_SIZE => [(string)$size]]);
 
         $select = new MultiSelect('user_group_ids', 'user_group_ids[]', [], $attributes);
 
@@ -368,6 +375,7 @@ class User extends Base
      * @param Entity $entity
      *
      * @return $this
+     * @throws \Opulence\Orm\OrmException
      */
     protected function addUserLanguages(Entity $entity): User
     {
@@ -376,12 +384,13 @@ class User extends Base
 
         $options = $this->createUserLanguageOptions($allUserGroups, $userGroupId);
 
+        $attributes = Attributes::fromArray([Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]);
         $this->form[] = new FormGroup(
             $this->createUserLanguageSelect($options),
             $this->createUserLanguageLabel(),
             null,
             [],
-            [Html5::ATTR_CLASS => FormGroup::CLASS_REQUIRED]
+            $attributes
         );
 
         return $this;
@@ -425,7 +434,7 @@ class User extends Base
             static::MULTISELECT_MIN_SIZE,
             static::MULTISELECT_MAX_SIZE
         );
-        $attributes = [Html5::ATTR_SIZE => [$size]];
+        $attributes = Attributes::fromArray([Html5::ATTR_SIZE => [(string)$size]]);
 
         $select = new MultiSelect('user_language_id', 'user_language_id', [], $attributes);
 

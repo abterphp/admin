@@ -8,6 +8,7 @@ use AbterPhp\Admin\Domain\Entities\User as Entity;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\DefaultButtons;
+use AbterPhp\Framework\Html\Helper\Attributes;
 
 class Profile extends User
 {
@@ -23,7 +24,7 @@ class Profile extends User
             'can_login',
             '1',
             [],
-            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
+            Attributes::fromArray([Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]])
         );
 
         return $this;

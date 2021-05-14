@@ -19,38 +19,33 @@ abstract class BaseFactory implements IBase
     protected const LABEL_DELETE = 'framework:deleteItem';
     protected const LABEL_VIEW   = 'framework:viewItem';
 
-    /** @var UrlGenerator */
-    protected $urlGenerator;
+    protected UrlGenerator $urlGenerator;
 
-    /** @var PaginationFactory */
-    protected $paginationFactory;
+    protected PaginationFactory $paginationFactory;
 
-    /** @var TableFactory */
-    protected $tableFactory;
+    protected TableFactory $tableFactory;
 
-    /** @var GridFactory */
-    protected $gridFactory;
+    protected GridFactory $gridFactory;
 
-    /** @var Filters */
-    protected $filters;
+    protected Filters $filters;
 
     /** @var array */
-    protected $pageSizeOptions = [];
+    protected array $pageSizeOptions = [];
 
     /** @var string */
-    protected $url;
+    protected string $url;
 
     /** @var string[] */
-    protected $downloadIntents = [Action::INTENT_WARNING];
+    protected array $downloadIntents = [Action::INTENT_WARNING];
 
     /** @var string[] */
-    protected $editIntents = [Action::INTENT_PRIMARY];
+    protected array $editIntents = [Action::INTENT_PRIMARY];
 
     /** @var string[] */
-    protected $deleteIntents = [Action::INTENT_DANGER];
+    protected array $deleteIntents = [Action::INTENT_DANGER];
 
     /** @var string[] */
-    protected $viewIntents = [Action::INTENT_DEFAULT];
+    protected array $viewIntents = [Action::INTENT_DEFAULT];
 
     /**
      * Base constructor.
@@ -110,9 +105,7 @@ abstract class BaseFactory implements IBase
         $sortedUrl = $table->getSortedUrl($paginatedUrl);
         $pagination->setSortedUrl($sortedUrl);
 
-        $grid = $this->gridFactory->create($table, $pagination, $this->filters, $gridActions);
-
-        return $grid;
+        return $this->gridFactory->create($table, $pagination, $this->filters, $gridActions);
     }
 
     abstract protected function getGetters(): array;
@@ -122,9 +115,7 @@ abstract class BaseFactory implements IBase
      */
     protected function getRowActions(): Actions
     {
-        $cellActions = new Actions();
-
-        return $cellActions;
+        return new Actions();
     }
 
     /**
@@ -132,13 +123,11 @@ abstract class BaseFactory implements IBase
      */
     protected function getGridActions(): Actions
     {
-        $cellActions = new Actions();
-
-        return $cellActions;
+        return new Actions();
     }
 
     /**
-     * @return callable[]
+     * @return array<string,callable>
      */
     protected function getAttributeCallbacks(): array
     {
@@ -149,10 +138,8 @@ abstract class BaseFactory implements IBase
             return $urlGenerator->createFromName($attribute, $entity->getId());
         };
 
-        $attributeCallbacks = [
+        return [
             Html5::ATTR_HREF => $hrefClosure,
         ];
-
-        return $attributeCallbacks;
     }
 }

@@ -21,8 +21,7 @@ class User extends Filters
     {
         parent::__construct($intents, $attributes, $tag);
 
-        $this->nodes[] = new LikeFilter('username', 'admin:userUsername');
-
-        $this->nodes[] = new ExactFilter('email', 'admin:userEmail');
+        $this->add(new LikeFilter('username', 'admin:userUsername'));
+        $this->add(new ExactFilter('email', 'admin:userEmail'));
     }
 }

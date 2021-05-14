@@ -9,15 +9,20 @@ use AbterPhp\Framework\Grid\Component\Filters;
 use AbterPhp\Framework\Grid\Grid;
 use AbterPhp\Framework\Grid\Pagination\IPagination;
 use AbterPhp\Framework\Grid\Table\Table;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 
 class GridFactory
 {
     protected const ATTRIBUTE_CLASS = 'class';
 
-    /** @var array */
-    protected $attributes = [
-        self::ATTRIBUTE_CLASS => 'grid',
-    ];
+    /** @var array<string,Attribute> */
+    protected array $attributes =  [];
+
+    public function __construct()
+    {
+        $this->attributes = Attributes::fromArray([self::ATTRIBUTE_CLASS => 'grid']);
+    }
 
 
     /**

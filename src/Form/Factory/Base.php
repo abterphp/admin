@@ -8,6 +8,8 @@ use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Form\Element\Input;
 use AbterPhp\Framework\Form\Extra\DefaultButtons;
 use AbterPhp\Framework\Form\Form;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Framework\Http\CsrfTokenChecker;
 use Opulence\Http\Requests\RequestMethods;
@@ -15,17 +17,14 @@ use Opulence\Sessions\ISession;
 
 abstract class Base implements IFormFactory
 {
-    const MULTISELECT_MIN_SIZE = 3;
-    const MULTISELECT_MAX_SIZE = 20;
+    protected const MULTISELECT_MIN_SIZE = 3;
+    protected const MULTISELECT_MAX_SIZE = 20;
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
-    /** @var ITranslator */
-    protected $translator;
+    protected ITranslator $translator;
 
-    /** @var Form|null */
-    protected $form;
+    protected ?Form $form;
 
     /**
      * Base constructor.
@@ -40,11 +39,11 @@ abstract class Base implements IFormFactory
     }
 
     /**
-     * @param string     $action
-     * @param string     $method
-     * @param bool       $isMultipart
-     * @param string[]   $intents
-     * @param string[][] $attributes
+     * @param string                  $action
+     * @param string                  $method
+     * @param bool                    $isMultipart
+     * @param string[]                $intents
+     * @param array<string,Attribute> $attributes
      *
      * @return $this
      */
@@ -52,11 +51,12 @@ abstract class Base implements IFormFactory
         string $action,
         string $method,
         bool $isMultipart = false,
-        $intents = [],
-        $attributes = []
+        array $intents = [],
+        array $attributes = []
     ): Base {
+        $attributes ??= [];
         if ($isMultipart) {
-            $attributes[Html5::ATTR_ENCTYPE] = [Form::ENCTYPE_MULTIPART];
+            $attributes = Attributes::addItem($attributes, Html5::ATTR_ENCTYPE, Form::ENCTYPE_MULTIPART);
         }
 
         $formMethod = $method == RequestMethods::GET ? $method : RequestMethods::POST;
@@ -73,13 +73,8 @@ abstract class Base implements IFormFactory
      */
     private function addHttpMethod(string $method)
     {
-        $this->form[] = new Input(
-            '',
-            Input::NAME_HTTP_METHOD,
-            $method,
-            [],
-            [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]
-        );
+        $formAttributes = Attributes::fromArray([Html5::ATTR_TYPE => Input::TYPE_HIDDEN]);
+        $this->form[]   = new Input('', Input::NAME_HTTP_METHOD, $method, [], $formAttributes);
     }
 
     /**
@@ -90,9 +85,8 @@ abstract class Base implements IFormFactory
         $name  = CsrfTokenChecker::TOKEN_INPUT_NAME;
         $value = (string)$this->session->get($name);
 
-        $attributes = [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]];
-
-        $this->form[] = new Input($name, $name, $value, [], $attributes);
+        $formAttributes = Attributes::fromArray([Html5::ATTR_TYPE => Input::TYPE_HIDDEN]);
+        $this->form[]   = new Input($name, $name, $value, [], $formAttributes);
 
         return $this;
     }

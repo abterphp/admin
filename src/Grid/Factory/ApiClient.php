@@ -11,6 +11,7 @@ use AbterPhp\Admin\Grid\Filters\ApiClient as Filters;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use Opulence\Cryptography\Encryption\IEncrypter;
 use Opulence\Routing\Urls\UrlGenerator;
 
@@ -20,10 +21,10 @@ class ApiClient extends BaseFactory
     private const GETTER_DESCRIPTION = 'getDescription';
 
     /** @var IEncrypter */
-    protected $encrypter;
+    protected IEncrypter $encrypter;
 
     /**
-     * User constructor.
+     * ApiClient constructor.
      *
      * @param UrlGenerator      $urlGenerator
      * @param PaginationFactory $paginationFactory
@@ -63,13 +64,8 @@ class ApiClient extends BaseFactory
     {
         $attributeCallbacks = $this->getAttributeCallbacks();
 
-        $editAttributes = [
-            Html5::ATTR_HREF => [Route::API_CLIENTS_EDIT],
-        ];
-
-        $deleteAttributes = [
-            Html5::ATTR_HREF => [Route::API_CLIENTS_DELETE],
-        ];
+        $editAttributes   = Attributes::fromArray([Html5::ATTR_HREF => [Route::API_CLIENTS_EDIT]]);
+        $deleteAttributes = Attributes::fromArray([Html5::ATTR_HREF => [Route::API_CLIENTS_DELETE]]);
 
         $cellActions   = new Actions();
         $cellActions[] = new Action(

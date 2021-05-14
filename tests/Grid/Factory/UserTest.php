@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class UserTest extends TestCase
 {
     /** @var User - System Under Test */
-    protected $sut;
+    protected User $sut;
 
     /** @var MockObject|UrlGenerator */
     protected $urlGeneratorMock;

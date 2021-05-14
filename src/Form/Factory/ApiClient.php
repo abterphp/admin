@@ -18,20 +18,20 @@ use AbterPhp\Framework\Form\Element\Textarea;
 use AbterPhp\Framework\Form\Extra\Help;
 use AbterPhp\Framework\Form\IForm;
 use AbterPhp\Framework\Form\Label\Label;
-use AbterPhp\Framework\Html\Component;
-use AbterPhp\Framework\Html\Component\ButtonFactory;
 use AbterPhp\Framework\Html\Component\ButtonWithIcon;
+use AbterPhp\Framework\Html\Factory\Button as ButtonFactory;
+use AbterPhp\Framework\Html\Helper\Attributes;
+use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Orm\IEntity;
+use Opulence\Orm\OrmException;
 use Opulence\Sessions\ISession;
 
 class ApiClient extends Base
 {
-    /** @var AdminResourceRepo */
-    protected $adminResourceRepo;
+    protected AdminResourceRepo $adminResourceRepo;
 
-    /** @var ButtonFactory */
-    protected $buttonFactory;
+    protected ButtonFactory $buttonFactory;
 
     /**
      * ApiClient constructor.
@@ -60,6 +60,7 @@ class ApiClient extends Base
      * @param IEntity|null $entity
      *
      * @return IForm
+     * @throws OrmException
      */
     public function create(string $action, string $method, string $showUrl, ?IEntity $entity = null): IForm
     {
@@ -90,9 +91,9 @@ class ApiClient extends Base
             '<i class="material-icons">warning</i>&nbsp;%s',
             $this->translator->translate('admin:jsOnly')
         );
-        $attributes = [Html5::ATTR_CLASS => 'only-js-form-warning'];
+        $attributes = Attributes::fromArray([Html5::ATTR_CLASS => 'only-js-form-warning']);
 
-        $this->form[] = new Component($content, [], $attributes, Html5::TAG_P);
+        $this->form[] = new Tag($content, [], $attributes, Html5::TAG_P);
 
         return $this;
     }
@@ -104,7 +105,8 @@ class ApiClient extends Base
      */
     protected function addId(Entity $entity): ApiClient
     {
-        $this->form[] = new Input('id', 'id', $entity->getId(), [], [Html5::ATTR_TYPE => [Input::TYPE_HIDDEN]]);
+        $formAttributes = Attributes::fromArray([Html5::ATTR_TYPE => Input::TYPE_HIDDEN]);
+        $this->form[]   = new Input('id', 'id', $entity->getId(), [], $formAttributes);
 
         return $this;
     }
@@ -132,6 +134,7 @@ class ApiClient extends Base
      * @param Entity $entity
      *
      * @return $this
+     * @throws OrmException
      */
     protected function addAdminResources(Entity $entity): ApiClient
     {
@@ -154,7 +157,7 @@ class ApiClient extends Base
 
     /**
      * @return AdminResource[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     protected function getUserResources(): array
     {
@@ -189,14 +192,12 @@ class ApiClient extends Base
      */
     protected function createAdminResourceSelect(array $options): Select
     {
-        $size = $this->getMultiSelectSize(
+        $size       = $this->getMultiSelectSize(
             count($options),
             static::MULTISELECT_MIN_SIZE,
             static::MULTISELECT_MAX_SIZE
         );
-        $attributes = [
-            Html5::ATTR_SIZE => [$size],
-        ];
+        $attributes = Attributes::fromArray([Html5::ATTR_SIZE => [(string)$size]]);
 
         $select = new MultiSelect('admin_resource_ids', 'admin_resource_ids[]', [], $attributes);
 
@@ -212,36 +213,45 @@ class ApiClient extends Base
      */
     protected function addSecret(): ApiClient
     {
-        $input = new Input('secret', 'secret', '', [], [Html5::ATTR_READONLY => null]);
-        $label = new Label('secret', 'admin:apiClientSecret');
+        $attributes = Attributes::fromArray([Html5::ATTR_READONLY => null]);
+        $input      = new Input('secret', 'secret', '', [], $attributes);
+        $label      = new Label('secret', 'admin:apiClientSecret');
 
-        $container   = new Component(null, [], [], Html5::TAG_DIV);
-        $container[] = new Component(
-            $this->buttonFactory->createWithIcon(
-                'admin:generateSecret',
-                'autorenew',
-                [],
-                [],
-                [ButtonWithIcon::INTENT_DANGER, ButtonWithIcon::INTENT_SMALL],
-                [
-                    Html5::ATTR_ID    => ['generateSecret'],
-                    'data-positionX'  => ['center'],
-                    'data-positionY'  => ['top'],
-                    'data-effect'     => ['fadeInUp'],
-                    'data-duration'   => ['2000'],
-                    Html5::ATTR_CLASS => ['pmd-alert-toggle'],
-
-                ],
-                HTML5::TAG_A
-            ),
+        $btnAttributes = Attributes::fromArray(
+            [
+                Html5::ATTR_ID    => ['generateSecret'],
+                'data-positionX'  => ['center'],
+                'data-positionY'  => ['top'],
+                'data-effect'     => ['fadeInUp'],
+                'data-duration'   => ['2000'],
+                Html5::ATTR_CLASS => ['pmd-alert-toggle'],
+            ]
+        );
+        $btn           = $this->buttonFactory->createWithIcon(
+            'admin:generateSecret',
+            'autorenew',
             [],
-            [Html5::ATTR_CLASS => 'button-container'],
+            [],
+            [ButtonWithIcon::INTENT_DANGER, ButtonWithIcon::INTENT_SMALL],
+            $btnAttributes,
+            HTML5::TAG_A
+        );
+
+        $btnContainerAttributes = Attributes::fromArray([Html5::ATTR_CLASS => 'button-container']);
+        $helpAttributes         = Attributes::fromArray([Html5::ATTR_ID => ['secretHelp']]);
+
+        $container   = new Tag(null, [], [], Html5::TAG_DIV);
+        $container[] = new Tag(
+            $btn,
+            [],
+            $btnContainerAttributes,
             Html5::TAG_DIV
         );
         $container[] = new Help(
             'admin:apiClientSecretHelp',
-            [Help::INTENT_HIDDEN],
-            [Html5::ATTR_ID => ['secretHelp']]
+            // TODO: Tag::INTENT_HIDDEN
+            ['hidden'],
+            $helpAttributes
         );
 
         $this->form[] = new FormGroup($input, $label, $container);

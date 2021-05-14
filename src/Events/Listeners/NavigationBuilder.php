@@ -8,7 +8,8 @@ use AbterPhp\Admin\Constant\Resource;
 use AbterPhp\Admin\Constant\Route;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Events\NavigationReady;
-use AbterPhp\Framework\Html\Component\ButtonFactory;
+use AbterPhp\Framework\Html\Attribute;
+use AbterPhp\Framework\Html\Factory\Button as ButtonFactory;
 use AbterPhp\Framework\Navigation\Dropdown;
 use AbterPhp\Framework\Navigation\Item;
 use AbterPhp\Framework\Navigation\Navigation;
@@ -22,10 +23,10 @@ class NavigationBuilder
     const DEFAULT_BASE_WEIGHT = 1000;
 
     /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
     /** @var ButtonFactory */
-    protected $buttonFactory;
+    protected ButtonFactory $buttonFactory;
 
     /**
      * NavigationBuilder constructor.
@@ -60,18 +61,20 @@ class NavigationBuilder
 
         $mainItem = $this->createUserItem();
         $mainItem->setIntent(Item::INTENT_DROPDOWN);
-        $mainItem->setAttribute(Html5::ATTR_ID, 'nav-users');
-        $mainItem[0]->setAttribute(Html5::ATTR_HREF, 'javascript:void(0);');
+        $mainItem->setAttribute(new Attribute(Html5::ATTR_ID, 'nav-users'));
+        $mainItem[0]->setAttribute(new Attribute(Html5::ATTR_HREF, 'javascript:void(0);'));
         $mainItem[1] = $dropdown;
 
         $logout = $this->createLogoutItem();
 
-        $navigation->addItem($mainItem, static::DEFAULT_BASE_WEIGHT);
-        $navigation->addItem($logout, static::DEFAULT_BASE_WEIGHT);
+        $navigation->addWithWeight(static::DEFAULT_BASE_WEIGHT, $mainItem);
+        $navigation->addWithWeight(static::DEFAULT_BASE_WEIGHT, $logout);
     }
 
     /**
      * @param Navigation $navigation
+     *
+     * @throws \Opulence\Routing\Urls\UrlException
      */
     protected function insertFirstItem(Navigation $navigation)
     {
@@ -80,7 +83,7 @@ class NavigationBuilder
         $firstItem[] = $this->createUserBlock();
         $firstItem[] = $this->createUserBlockDropdown();
 
-        $navigation->addItem($firstItem, static::FIRST_ITEM_WEIGHT);
+        $navigation->addWithWeight(static::FIRST_ITEM_WEIGHT, $firstItem);
     }
 
     /**
@@ -93,6 +96,7 @@ class NavigationBuilder
 
     /**
      * @return Dropdown
+     * @throws \Opulence\Routing\Urls\UrlException
      */
     protected function createUserBlockDropdown(): Dropdown
     {
@@ -133,9 +137,7 @@ class NavigationBuilder
 
         $button = $this->buttonFactory->createFromName($text, Route::PROFILE_EDIT, [], $icon);
 
-        $item = new Item($button);
-
-        return $item;
+        return new Item($button);
     }
 
     /**
@@ -185,9 +187,7 @@ class NavigationBuilder
 
         $button = $this->buttonFactory->createFromName($text, Route::LOGOUT_EXECUTE, [], $icon);
 
-        $item = new Item($button);
-
-        return $item;
+        return new Item($button);
     }
 
     /**

@@ -11,6 +11,7 @@ use AbterPhp\Admin\Grid\Filters\User as Filters;
 use AbterPhp\Framework\Constant\Html5;
 use AbterPhp\Framework\Grid\Action\Action;
 use AbterPhp\Framework\Grid\Component\Actions;
+use AbterPhp\Framework\Html\Helper\Attributes;
 use Opulence\Routing\Urls\UrlGenerator;
 
 class User extends BaseFactory
@@ -55,13 +56,8 @@ class User extends BaseFactory
     {
         $attributeCallbacks = $this->getAttributeCallbacks();
 
-        $editAttributes = [
-            Html5::ATTR_HREF => [Route::USERS_EDIT],
-        ];
-
-        $deleteAttributes = [
-            Html5::ATTR_HREF => [Route::USERS_DELETE],
-        ];
+        $editAttributes   = Attributes::fromArray([Html5::ATTR_HREF => [Route::USERS_EDIT]]);
+        $deleteAttributes = Attributes::fromArray([Html5::ATTR_HREF => [Route::USERS_DELETE]]);
 
         $cellActions   = new Actions();
         $cellActions[] = new Action(

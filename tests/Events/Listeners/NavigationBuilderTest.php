@@ -6,7 +6,7 @@ namespace AbterPhp\Admin\Events\Listeners;
 
 use AbterPhp\Framework\Events\NavigationReady;
 use AbterPhp\Framework\Html\Component\Button;
-use AbterPhp\Framework\Html\Component\ButtonFactory;
+use AbterPhp\Framework\Html\Factory\Button as ButtonFactory;
 use AbterPhp\Framework\Navigation\Navigation;
 use AbterPhp\Framework\TestDouble\Session\MockSessionFactory;
 use Opulence\Sessions\ISession;
@@ -16,10 +16,10 @@ use PHPUnit\Framework\TestCase;
 class NavigationBuilderTest extends TestCase
 {
     /** @var NavigationBuilder - System Under Test */
-    protected $sut;
+    protected NavigationBuilder $sut;
 
-    /** @var array */
-    protected $sessionData = [
+    /** @var array<string,string> */
+    protected array $sessionData = [
         'username' => 'jane',
     ];
 

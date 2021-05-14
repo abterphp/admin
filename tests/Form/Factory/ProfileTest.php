@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class ProfileTest extends TestCase
 {
     /** @var Profile - System Under Test */
-    protected $sut;
+    protected Profile $sut;
 
     /** @var ISession|MockObject */
     protected $sessionMock;
@@ -132,8 +132,6 @@ class ProfileTest extends TestCase
      */
     protected function createMockEntity()
     {
-        $entityMock = $this->createMock(Entity::class);
-
-        return $entityMock;
+        return $this->createMock(Entity::class);
     }
 }

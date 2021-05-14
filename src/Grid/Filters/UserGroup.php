@@ -21,8 +21,7 @@ class UserGroup extends Filters
     {
         parent::__construct($intents, $attributes, $tag);
 
-        $this->nodes[] = new ExactFilter('identifier', 'admin:userGroupIdentifier');
-
-        $this->nodes[] = new LikeFilter('name', 'admin:userGroupName');
+        $this->add(new ExactFilter('identifier', 'admin:userGroupIdentifier'));
+        $this->add(new LikeFilter('name', 'admin:userGroupName'));
     }
 }

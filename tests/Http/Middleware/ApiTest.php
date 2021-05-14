@@ -8,7 +8,6 @@ use AbterPhp\Admin\Domain\Entities\User;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Admin\Orm\UserRepo;
 use AbterPhp\Admin\Psr7\RequestConverter;
-use AbterPhp\Framework\Config\EnvReader;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Nyholm\Psr7\ServerRequest as Psr7Request;
@@ -23,7 +22,7 @@ use Psr\Log\LoggerInterface;
 class ApiTest extends TestCase
 {
     /** @var Api - System Under Test */
-    protected $sut;
+    protected Api $sut;
 
     /** @var MockObject|ResourceServer */
     protected $resourceServerMock;
@@ -37,23 +36,20 @@ class ApiTest extends TestCase
     /** @var MockObject|LoggerInterface */
     protected $loggerMock;
 
-    /** @var MockObject|EnvReader */
-    protected $envReaderMock;
-
     public function setUp(): void
     {
         $this->resourceServerMock   = $this->createMock(ResourceServer::class);
         $this->requestConverterMock = $this->createMock(RequestConverter::class);
         $this->userRepoMock         = $this->createMock(UserRepo::class);
         $this->loggerMock           = $this->createMock(LoggerInterface::class);
-        $this->envReaderMock        = $this->createMock(EnvReader::class);
+        $problemUrlStub             = 'https://example.com/foo';
 
         $this->sut = new Api(
             $this->resourceServerMock,
             $this->requestConverterMock,
             $this->userRepoMock,
             $this->loggerMock,
-            $this->envReaderMock
+            $problemUrlStub
         );
     }
 
