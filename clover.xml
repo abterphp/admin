@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1621040088">
-  <project timestamp="1621040088">
+<coverage generated="1621040482">
+  <project timestamp="1621040482">
     <file name="/home/runner/work/admin/admin/src/Authorization/AdminResourceProvider.php">
       <class name="AbterPhp\Admin\Authorization\AdminResourceProvider" namespace="global">
         <metrics complexity="5" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="12" coveredelements="12"/>
