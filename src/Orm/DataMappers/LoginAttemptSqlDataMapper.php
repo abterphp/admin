@@ -7,6 +7,8 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\LoginAttempt as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -49,7 +51,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -70,7 +72,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -85,7 +87,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
      * @param int|string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id)
     {
@@ -102,7 +104,7 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -149,10 +151,9 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
     /**
      * @return SelectQuery
      */
-    private function getBaseQuery()
+    private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'login_attempts.id',
                 'login_attempts.ip_hash',
@@ -160,7 +161,5 @@ class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDa
                 'login_attempts.ip_address'
             )
             ->from('login_attempts');
-
-        return $query;
     }
 }

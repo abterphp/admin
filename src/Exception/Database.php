@@ -19,8 +19,8 @@ class Database extends RuntimeException
         array $errorInfo = [],
         Throwable $previous = null
     ) {
-        $message = isset($errorInfo[2]) ? $errorInfo[2] : print_r($errorInfo, true);
-        $code    = isset($errorInfo[1]) ? $errorInfo[1] : 0;
+        $message = $errorInfo[2] ?? print_r($errorInfo, true);
+        $code    = $errorInfo[1] ?? 0;
 
         parent::__construct($message, $code, $previous);
     }

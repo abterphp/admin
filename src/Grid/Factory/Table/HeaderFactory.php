@@ -16,14 +16,14 @@ class HeaderFactory
     protected const ACTIONS_CONTENT = 'framework:actions';
     protected const ACTIONS_GROUP   = 'actions';
 
-    /** @var array */
-    protected $headers = [];
+    /** @var array<string,string> */
+    protected array $headers = [];
 
-    /** @var array */
-    protected $inputNames = [];
+    /** @var array<string,string> */
+    protected array $inputNames = [];
 
-    /** @var array */
-    protected $fieldNames = [];
+    /** @var array<string,string> */
+    protected array $fieldNames = [];
 
     /**
      * @param bool   $hasActions

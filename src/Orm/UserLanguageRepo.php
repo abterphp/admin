@@ -6,6 +6,7 @@ namespace AbterPhp\Admin\Orm;
 
 use AbterPhp\Admin\Domain\Entities\UserLanguage as Entity;
 use AbterPhp\Framework\Orm\IGridRepo;
+use Opulence\Orm\OrmException;
 use Opulence\Orm\Repositories\Repository;
 
 class UserLanguageRepo extends Repository implements IGridRepo
@@ -18,7 +19,7 @@ class UserLanguageRepo extends Repository implements IGridRepo
      * @param array    $params
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -30,7 +31,7 @@ class UserLanguageRepo extends Repository implements IGridRepo
      * @param string $identifier
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByIdentifier(string $identifier): ?Entity
     {

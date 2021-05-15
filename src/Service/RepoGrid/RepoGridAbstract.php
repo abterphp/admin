@@ -14,17 +14,13 @@ use Opulence\Http\Collection;
 
 abstract class RepoGridAbstract implements IRepoGrid
 {
-    /** @var Enforcer */
-    protected $enforcer;
+    protected Enforcer $enforcer;
 
-    /** @var IGridRepo */
-    protected $repo;
+    protected IGridRepo $repo;
 
-    /** @var FoundRows */
-    protected $foundRows;
+    protected FoundRows $foundRows;
 
-    /** @var GridFactory */
-    protected $gridFactory;
+    protected GridFactory $gridFactory;
 
     /**
      * GridAbstract constructor.
@@ -110,8 +106,7 @@ abstract class RepoGridAbstract implements IRepoGrid
     protected function getOffset(Collection $query, int $pageSize): int
     {
         $page   = (int)$query->get('page', 1);
-        $offset = ($page - 1) * $pageSize;
 
-        return $offset;
+        return ($page - 1) * $pageSize;
     }
 }

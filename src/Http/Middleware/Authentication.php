@@ -12,14 +12,32 @@ use Opulence\Http\Requests\Request;
 use Opulence\Http\Responses\RedirectResponse;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
+use Opulence\Sessions\ISession;
+use SessionHandlerInterface;
 
 class Authentication extends Session
 {
+    protected RoutesConfig $routesConfig;
+
+    /**
+     * Authentication constructor.
+     *
+     * @param ISession                $session
+     * @param SessionHandlerInterface $sessionHandler
+     * @param RoutesConfig            $routesConfig
+     */
+    public function __construct(ISession $session, SessionHandlerInterface $sessionHandler, RoutesConfig $routesConfig)
+    {
+        parent::__construct($session, $sessionHandler);
+
+        $this->routesConfig = $routesConfig;
+    }
+
     // $next consists of the next middleware in the pipeline
     public function handle(Request $request, Closure $next): Response
     {
         if (!$this->session->has(SessionConstants::USERNAME)) {
-            return new RedirectResponse(RoutesConfig::getLoginPath(), ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
+            return new RedirectResponse($this->routesConfig->getLoginPath(), ResponseHeaders::HTTP_TEMPORARY_REDIRECT);
         }
 
         return $next($request);

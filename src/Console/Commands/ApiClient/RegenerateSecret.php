@@ -20,35 +20,30 @@ use ZxcvbnPhp\Zxcvbn;
 
 class RegenerateSecret extends Command
 {
-    const COMMAND_NAME            = 'apiclient:regenerate-secret';
-    const COMMAND_DESCRIPTION     = 'Regenerate the secret of an existing API client';
-    const COMMAND_SUCCESS         = '<success>API client secret is updated.</success>';
-    const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented updating existing API client.</info>';
+    public const COMMAND_NAME            = 'apiclient:regenerate-secret';
+    public const COMMAND_DESCRIPTION     = 'Regenerate the secret of an existing API client';
+    public const COMMAND_SUCCESS         = '<success>API client secret is updated.</success>';
+    public const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented updating existing API client.</info>';
 
-    const ARGUMENT_IDENTIFIER = 'identifier';
+    public const ARGUMENT_IDENTIFIER = 'identifier';
 
-    const OPTION_DRY_RUN    = 'dry-run';
-    const SHORTENED_DRY_RUN = 'd';
+    public const OPTION_DRY_RUN    = 'dry-run';
+    public const SHORTENED_DRY_RUN = 'd';
 
-    const RESPONSE_SECRET = '<info>Secret generated: <b>%s</b></info>';
+    public const RESPONSE_SECRET = '<info>Secret generated: <b>%s</b></info>';
 
-    /** @var ApiClientRepo */
-    protected $apiClientRepo;
+    protected ApiClientRepo $apiClientRepo;
 
     /** @var PasswordGenerator */
-    protected $passwordGenerator;
+    protected PasswordGenerator $passwordGenerator;
 
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var Zxcvbn */
-    protected $zxcvbn;
+    protected Zxcvbn $zxcvbn;
 
     /**
      * RegenerateSecret constructor.

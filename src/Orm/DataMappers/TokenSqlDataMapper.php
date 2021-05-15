@@ -7,8 +7,11 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\Token as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use DateTimeImmutable;
+use Exception;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -43,7 +46,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -65,7 +68,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -80,7 +83,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      * @param int|string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id): ?Entity
     {
@@ -96,7 +99,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      * @param string $clientId
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByClientId(string $clientId): ?Entity
     {
@@ -111,7 +114,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -141,7 +144,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      * @param array $data
      *
      * @return Entity
-     * @throws \Exception
+     * @throws Exception
      */
     protected function loadEntity(array $data): Entity
     {
@@ -164,8 +167,7 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
      */
     private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'tokens.id',
                 'tokens.api_client_id',
@@ -174,7 +176,5 @@ class TokenSqlDataMapper extends SqlDataMapper implements ITokenDataMapper
             )
             ->from('tokens')
             ->where('tokens.deleted_at IS NULL');
-
-        return $query;
     }
 }

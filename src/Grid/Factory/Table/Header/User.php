@@ -14,20 +14,20 @@ class User extends HeaderFactory
     private const HEADER_USERNAME = 'admin:userUsername';
     private const HEADER_EMAIL    = 'admin:userEmail';
 
-    /** @var array */
-    protected $headers = [
+    /** @var array<string,string> */
+    protected array $headers = [
         self::GROUP_USERNAME => self::HEADER_USERNAME,
         self::GROUP_EMAIL    => self::HEADER_EMAIL,
     ];
 
-    /** @var array */
-    protected $inputNames = [
+    /** @var array<string,string> */
+    protected array $inputNames = [
         self::GROUP_USERNAME => 'username',
         self::GROUP_EMAIL    => 'email',
     ];
 
-    /** @var array */
-    protected $fieldNames = [
+    /** @var array<string,string> */
+    protected array $fieldNames = [
         self::GROUP_USERNAME => 'users.username',
         self::GROUP_EMAIL    => 'users.email',
     ];

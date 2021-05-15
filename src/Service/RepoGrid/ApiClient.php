@@ -14,8 +14,7 @@ use Opulence\Sessions\ISession;
 
 class ApiClient extends RepoGridAbstract
 {
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
     /**
      * ApiClient constructor.

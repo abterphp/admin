@@ -12,13 +12,14 @@ use AbterPhp\Framework\Session\FlashService;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
 class LoginBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -29,6 +30,8 @@ class LoginBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

@@ -22,11 +22,15 @@ class SecurityTest extends TestCase
     /** @var MockObject|ICacheBridge */
     protected $cacheBridgeMock;
 
+    /** @var MockObject|RoutesConfig */
+    protected $routesConfigMock;
+
     public function setUp(): void
     {
-        $this->cacheBridgeMock = $this->createMock(ICacheBridge::class);
+        $this->cacheBridgeMock  = $this->createMock(ICacheBridge::class);
+        $this->routesConfigMock = $this->createMock(RoutesConfig::class);
 
-        $this->sut = new Security($this->cacheBridgeMock);
+        $this->sut = new Security($this->cacheBridgeMock, $this->routesConfigMock);
     }
 
     public function testHandleRunsChecksIfNoEnvironmentNameIsSet()
@@ -121,9 +125,9 @@ class SecurityTest extends TestCase
 
         $this->expectException(SecurityException::class);
 
-        RoutesConfig::setLoginPath($loginPath);
-        RoutesConfig::setAdminBasePath($adminBasePath);
-        RoutesConfig::setApiBasePath($apiBasePath);
+        $this->routesConfigMock->expects($this->any())->method('getLoginPath')->willReturn($loginPath);
+        $this->routesConfigMock->expects($this->any())->method('getAdminBasePath')->willReturn($adminBasePath);
+        $this->routesConfigMock->expects($this->any())->method('getApiBasePath')->willReturn($apiBasePath);
 
         $this->cacheBridgeMock->expects($this->once())->method('has')->willReturn(false);
 
@@ -148,9 +152,9 @@ class SecurityTest extends TestCase
         $apiBasePath              = '/baz';
         $oauth2PrivateKeyPassword = 'quix';
 
-        RoutesConfig::setLoginPath($loginPath);
-        RoutesConfig::setAdminBasePath($adminBasePath);
-        RoutesConfig::setApiBasePath($apiBasePath);
+        $this->routesConfigMock->expects($this->any())->method('getLoginPath')->willReturn($loginPath);
+        $this->routesConfigMock->expects($this->any())->method('getAdminBasePath')->willReturn($adminBasePath);
+        $this->routesConfigMock->expects($this->any())->method('getApiBasePath')->willReturn($apiBasePath);
 
         $this->cacheBridgeMock->expects($this->any())->method('has')->willReturn(false);
         $this->cacheBridgeMock->expects($this->once())->method('set')->willReturn(true);

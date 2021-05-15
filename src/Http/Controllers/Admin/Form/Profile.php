@@ -11,10 +11,13 @@ use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
+use Casbin\Exceptions\CasbinException;
 use Opulence\Events\Dispatchers\IEventDispatcher;
+use Opulence\Routing\Urls\UrlException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -61,6 +64,11 @@ class Profile extends User
         );
     }
 
+    /**
+     * @throws Throwable
+     * @throws CasbinException
+     * @throws URLException
+     */
     public function profile()
     {
         $userId = (string)$this->session->get(Session::USER_ID);

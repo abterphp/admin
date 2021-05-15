@@ -6,6 +6,7 @@ namespace AbterPhp\Admin\Http\Controllers\Api;
 
 use AbterPhp\Admin\Constant\Env;
 use Opulence\Environments\Environment;
+use Opulence\Http\Requests\UploadException;
 use Opulence\Http\Responses\JsonResponse;
 use Opulence\Http\Responses\Response;
 use Opulence\Http\Responses\ResponseHeaders;
@@ -15,6 +16,7 @@ class Editor extends Controller
 {
     /**
      * @return Response
+     * @throws UploadException
      */
     public function fileUpload(): Response
     {
@@ -31,9 +33,9 @@ class Editor extends Controller
             return $this->sendJson(ResponseHeaders::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $pathinfo  = pathinfo($image->getTempFilename());
+        $pathInfo  = pathinfo($image->getTempFilename());
         $baseName  = mb_substr(basename($image->getPathname()), 3);
-        $extension = $pathinfo['extension'] ?? '';
+        $extension = $pathInfo['extension'] ?? '';
         $filename  = sprintf('%s.%s', $baseName, $extension);
 
         $basePath = Environment::getVar(Env::EDITOR_BASE_PATH);
@@ -56,7 +58,7 @@ class Editor extends Controller
      *
      * @return Response
      */
-    protected function sendJson($status = ResponseHeaders::HTTP_OK, array $data = null): Response
+    protected function sendJson(int $status = ResponseHeaders::HTTP_OK, array $data = null): Response
     {
         $body = [
             'success' => $status == ResponseHeaders::HTTP_OK,

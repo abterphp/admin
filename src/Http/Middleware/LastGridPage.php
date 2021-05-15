@@ -14,7 +14,6 @@ use Opulence\Sessions\ISession;
 
 class LastGridPage implements IMiddleware
 {
-    /** @var ISession */
     protected ISession $session;
 
     /**

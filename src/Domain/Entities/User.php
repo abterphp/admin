@@ -8,29 +8,22 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 
 class User implements IStringerEntity
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var string */
-    protected $username;
+    protected string $username;
 
-    /** @var string */
-    protected $email;
+    protected string $email;
 
-    /** @var string */
-    protected $password;
+    protected string $password;
 
-    /** @var bool */
-    protected $canLogin;
+    protected bool $canLogin;
 
-    /** @var bool */
-    protected $isGravatarAllowed;
+    protected bool $isGravatarAllowed;
 
-    /** @var UserLanguage */
-    protected $userLanguage;
+    protected UserLanguage $userLanguage;
 
     /** @var UserGroup[] */
-    protected $userGroups;
+    protected array $userGroups;
 
     /**
      * User constructor.

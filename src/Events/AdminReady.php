@@ -8,8 +8,7 @@ use Opulence\Views\IView;
 
 class AdminReady
 {
-    /** @var IView */
-    private $view;
+    private IView $view;
 
     /**
      * AdminReady constructor.

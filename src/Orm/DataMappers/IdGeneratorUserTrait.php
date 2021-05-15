@@ -9,8 +9,7 @@ use Opulence\Orm\Ids\Generators\UuidV4Generator;
 
 trait IdGeneratorUserTrait
 {
-    /** @var IIdGenerator */
-    protected $idGenerator;
+    protected ?IIdGenerator $idGenerator = null;
 
     /**
      * @param IIdGenerator $idGenerator

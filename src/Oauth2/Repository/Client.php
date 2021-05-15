@@ -15,11 +15,9 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 /** @phan-file-suppress PhanTypeMismatchArgument */
 class Client implements ClientRepositoryInterface
 {
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
-    /** @var ConnectionPool */
-    protected $connectionPool;
+    protected ConnectionPool $connectionPool;
 
     /**
      * Client constructor.
@@ -45,9 +43,9 @@ class Client implements ClientRepositoryInterface
      */
     public function getClientEntity(
         $clientIdentifier,
-        $grantType = null,
-        $clientSecret = null,
-        $mustValidateSecret = true
+        ?string $grantType = null,
+        ?string $clientSecret = null,
+        bool $mustValidateSecret = true
     ) {
         $clientData = $this->query($clientIdentifier);
 
@@ -66,9 +64,7 @@ class Client implements ClientRepositoryInterface
             }
         }
 
-        $client = new Entity($clientIdentifier, $clientIdentifier, '');
-
-        return $client;
+        return new Entity($clientIdentifier, $clientIdentifier, '');
     }
 
     /**

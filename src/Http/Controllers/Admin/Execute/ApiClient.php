@@ -15,11 +15,11 @@ use Psr\Log\LoggerInterface;
 
 class ApiClient extends ExecuteAbstract
 {
-    const ENTITY_SINGULAR = 'apiClient';
-    const ENTITY_PLURAL   = 'apiClients';
+    public const ENTITY_SINGULAR = 'apiClient';
+    public const ENTITY_PLURAL   = 'apiClients';
 
-    const ENTITY_TITLE_SINGULAR = 'admin:apiClient';
-    const ENTITY_TITLE_PLURAL   = 'admin:apiClients';
+    public const ENTITY_TITLE_SINGULAR = 'admin:apiClient';
+    public const ENTITY_TITLE_PLURAL   = 'admin:apiClients';
 
     /**
      * ApiClient constructor.

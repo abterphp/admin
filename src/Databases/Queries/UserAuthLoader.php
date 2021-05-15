@@ -12,8 +12,7 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 
 class UserAuthLoader implements IAuthLoader
 {
-    /** @var ConnectionPool */
-    protected $connectionPool;
+    protected ConnectionPool $connectionPool;
 
     /**
      * BlockCache constructor.

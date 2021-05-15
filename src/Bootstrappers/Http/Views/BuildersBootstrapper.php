@@ -12,6 +12,7 @@ use AbterPhp\Framework\Navigation\Navigation; // @phan-suppress-current-line Pha
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Sessions\ISession;
 use Opulence\Views\Factories\IViewFactory;
 use Opulence\Views\IView;
@@ -23,6 +24,7 @@ class BuildersBootstrapper extends Bootstrapper
 {
     /**
      * @inheritdoc
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

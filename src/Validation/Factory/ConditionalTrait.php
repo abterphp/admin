@@ -8,8 +8,7 @@ use AbterPhp\Framework\Http\Service\Execute\IRepoService;
 
 trait ConditionalTrait
 {
-    /** @var int */
-    protected $additionalData = IRepoService::MIXED;
+    protected int $additionalData = IRepoService::MIXED;
 
     /**
      * @param int $additionalData

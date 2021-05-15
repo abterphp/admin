@@ -9,11 +9,9 @@ use AbterPhp\Framework\Grid\Pagination\Pagination;
 
 class PaginationFactory
 {
-    /** @var Options */
-    protected $options;
+    protected Options $options;
 
-    /** @var int */
-    protected $pageSize;
+    protected int $pageSize;
 
     /**
      * Pagination constructor.

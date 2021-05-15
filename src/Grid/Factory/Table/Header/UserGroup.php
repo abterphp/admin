@@ -12,18 +12,18 @@ class UserGroup extends HeaderFactory
 
     private const HEADER_NAME = 'admin:userGroupName';
 
-    /** @var array */
-    protected $headers = [
+    /** @var array<string,string> */
+    protected array $headers = [
         self::GROUP_NAME => self::HEADER_NAME,
     ];
 
-    /** @var array */
-    protected $inputNames = [
+    /** @var array<string,string> */
+    protected array $inputNames = [
         self::GROUP_NAME => 'name',
     ];
 
-    /** @var array */
-    protected $fieldNames = [
+    /** @var array<string,string> */
+    protected array $fieldNames = [
         self::GROUP_NAME => 'ug.name',
     ];
 }

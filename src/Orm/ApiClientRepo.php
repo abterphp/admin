@@ -7,6 +7,7 @@ namespace AbterPhp\Admin\Orm;
 use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Admin\Orm\DataMappers\ApiClientSqlDataMapper; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use AbterPhp\Framework\Orm\IGridRepo;
+use Opulence\Orm\OrmException;
 use Opulence\Orm\Repositories\Repository;
 
 class ApiClientRepo extends Repository implements IGridRepo
@@ -19,7 +20,7 @@ class ApiClientRepo extends Repository implements IGridRepo
      * @param array    $params
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {

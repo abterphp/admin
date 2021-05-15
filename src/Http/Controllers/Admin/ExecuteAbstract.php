@@ -10,7 +10,6 @@ use AbterPhp\Framework\Form\Extra\DefaultButtons;
 use AbterPhp\Framework\Http\Service\Execute\IRepoService;
 use AbterPhp\Framework\I18n\ITranslator;
 use AbterPhp\Framework\Session\FlashService;
-use Casbin\Exceptions\CasbinException;
 use Opulence\Http\Responses\RedirectResponse;
 use Opulence\Http\Responses\Response;
 use Opulence\Orm\OrmException;
@@ -21,32 +20,30 @@ use Psr\Log\LoggerInterface;
 
 abstract class ExecuteAbstract extends AdminAbstract
 {
-    const INPUT_NEXT = 'next';
+    public const INPUT_NEXT = 'next';
 
-    const URL_CREATE = '%s-create';
+    public const URL_CREATE = '%s-create';
 
-    const CREATE_SUCCESS = 'framework:create-success';
-    const CREATE_FAILURE = 'framework:create-failure';
-    const UPDATE_SUCCESS = 'framework:update-success';
-    const UPDATE_FAILURE = 'framework:update-failure';
-    const DELETE_SUCCESS = 'framework:delete-success';
-    const DELETE_FAILURE = 'framework:delete-failure';
+    public const CREATE_SUCCESS = 'framework:create-success';
+    public const CREATE_FAILURE = 'framework:create-failure';
+    public const UPDATE_SUCCESS = 'framework:update-success';
+    public const UPDATE_FAILURE = 'framework:update-failure';
+    public const DELETE_SUCCESS = 'framework:delete-success';
+    public const DELETE_FAILURE = 'framework:delete-failure';
 
-    const LOG_MSG_CREATE_FAILURE = 'Creating %1$s failed.';
-    const LOG_MSG_CREATE_SUCCESS = 'Creating %1$s was successful.';
-    const LOG_MSG_UPDATE_FAILURE = 'Updating %1$s with id "%2$s" failed.';
-    const LOG_MSG_UPDATE_SUCCESS = 'Updating %1$s with id "%2$s" was successful.';
-    const LOG_MSG_DELETE_FAILURE = 'Deleting %1$s with id "%2$s" failed.';
-    const LOG_MSG_DELETE_SUCCESS = 'Deleting %1$s with id "%2$s" was successful.';
+    public const LOG_MSG_CREATE_FAILURE = 'Creating %1$s failed.';
+    public const LOG_MSG_CREATE_SUCCESS = 'Creating %1$s was successful.';
+    public const LOG_MSG_UPDATE_FAILURE = 'Updating %1$s with id "%2$s" failed.';
+    public const LOG_MSG_UPDATE_SUCCESS = 'Updating %1$s with id "%2$s" was successful.';
+    public const LOG_MSG_DELETE_FAILURE = 'Deleting %1$s with id "%2$s" failed.';
+    public const LOG_MSG_DELETE_SUCCESS = 'Deleting %1$s with id "%2$s" was successful.';
 
-    const ENTITY_TITLE_SINGULAR = '';
-    const ENTITY_TITLE_PLURAL   = '';
+    public const ENTITY_TITLE_SINGULAR = '';
+    public const ENTITY_TITLE_PLURAL   = '';
 
-    /** @var IRepoService */
-    protected $repoService;
+    protected IRepoService $repoService;
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
     /**
      * ExecuteAbstract constructor.
@@ -74,10 +71,7 @@ abstract class ExecuteAbstract extends AdminAbstract
 
     /**
      * @return Response
-     * @throws CasbinException
-     * @throws OrmException
      * @throws URLException
-     * @throws \Throwable
      */
     public function create(): Response
     {
@@ -115,10 +109,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      * @param string $entityId
      *
      * @return Response
-     * @throws CasbinException
-     * @throws OrmException
      * @throws URLException
-     * @throws \Throwable
      */
     public function update(string $entityId): Response
     {
@@ -159,10 +150,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      * @param string $entityId
      *
      * @return Response
-     * @throws CasbinException
-     * @throws OrmException
      * @throws URLException
-     * @throws \Throwable
      */
     public function delete(string $entityId): Response
     {
@@ -188,9 +176,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      */
     protected function getPostData(): array
     {
-        $postData = $this->request->getPost()->getAll();
-
-        return $postData;
+        return $this->request->getPost()->getAll();
     }
 
     /**
@@ -198,9 +184,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      */
     protected function getFileData(): array
     {
-        $fileData = $this->request->getFiles()->getAll();
-
-        return $fileData;
+        return $this->request->getFiles()->getAll();
     }
 
     /**
@@ -230,7 +214,7 @@ abstract class ExecuteAbstract extends AdminAbstract
      * @return string
      * @throws URLException
      */
-    protected function getUrl(string $next, string $entityId = null)
+    protected function getUrl(string $next, string $entityId = null): string
     {
         switch ($next) {
             case DefaultButtons::BTN_VALUE_NEXT_BACK:

@@ -16,8 +16,7 @@ use Opulence\Orm\IUnitOfWork;
 
 class ApiClient extends RepoServiceAbstract
 {
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
     /**
      * ApiClient constructor.

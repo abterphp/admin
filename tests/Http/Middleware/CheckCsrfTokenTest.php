@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class CheckCsrfTokenTest extends TestCase
 {
     /** @var CheckCsrfToken - System Under Test */
-    protected $sut;
+    protected CheckCsrfToken $sut;
 
     /** @var MockObject|ISession */
     protected $sessionMock;
@@ -25,20 +25,30 @@ class CheckCsrfTokenTest extends TestCase
     /** @var MockObject|CsrfTokenChecker */
     protected $csrfTokenCheckerMock;
 
+    /** @var MockObject|RoutesConfig */
+    protected $routesConfigMock;
+
     public function setUp(): void
     {
         $this->sessionMock          = $this->createMock(ISession::class);
         $this->csrfTokenCheckerMock = $this->createMock(CsrfTokenChecker::class);
+        $this->routesConfigMock     = $this->createMock(RoutesConfig::class);
 
         $this->sut = new CheckCsrfToken(
             $this->csrfTokenCheckerMock,
-            $this->sessionMock
+            $this->sessionMock,
+            $this->routesConfigMock
         );
     }
 
+    /**
+     * @throws InvalidCsrfTokenException
+     */
     public function testHandleSkipsChecksForApiEndpoints()
     {
-        RoutesConfig::setApiBasePath('/foo');
+        $basePath = '/foo';
+
+        $this->routesConfigMock->expects($this->any())->method('getApiBasePath')->willReturn($basePath);
 
         $this->csrfTokenCheckerMock->expects($this->never())->method('tokenIsValid');
 
@@ -60,7 +70,9 @@ class CheckCsrfTokenTest extends TestCase
     {
         $this->expectException(InvalidCsrfTokenException::class);
 
-        RoutesConfig::setApiBasePath('/foo');
+        $basePath = '/foo';
+
+        $this->routesConfigMock->expects($this->any())->method('getApiBasePath')->willReturn($basePath);
 
         $this->csrfTokenCheckerMock->expects($this->once())->method('tokenIsValid')->willReturn(false);
 
@@ -76,9 +88,15 @@ class CheckCsrfTokenTest extends TestCase
         $this->sut->handle($requestStub, $next);
     }
 
+    /**
+     * @throws InvalidCsrfTokenException
+     */
     public function testHandleSetsCookieOnValidToken()
     {
-        RoutesConfig::setApiBasePath('/foo');
+        $basePath = '/foo';
+
+        $this->routesConfigMock->expects($this->any())->method('getApiBasePath')->willReturn($basePath);
+
         Config::set('sessions', 'cookie.path', '/bar');
         Config::set('sessions', 'cookie.domain', 'example.com');
         Config::set('sessions', 'cookie.isSecure', false);

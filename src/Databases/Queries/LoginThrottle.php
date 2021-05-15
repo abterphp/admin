@@ -12,8 +12,7 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 
 class LoginThrottle
 {
-    /** @var ConnectionPool */
-    protected $connectionPool;
+    protected ConnectionPool $connectionPool;
 
     /**
      * BlockCache constructor.

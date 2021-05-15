@@ -8,14 +8,11 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 
 class UserLanguage implements IStringerEntity
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var string */
-    protected $identifier;
+    protected string $identifier;
 
-    /** @var string */
-    protected $name;
+    protected string $name;
 
     /**
      * Page constructor.

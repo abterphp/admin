@@ -16,7 +16,7 @@ use SessionHandlerInterface;
 class AuthenticationTest extends TestCase
 {
     /** @var Authentication - System Under Test */
-    protected $sut;
+    protected Authentication $sut;
 
     /** @var MockObject|ISession */
     protected $sessionMock;
@@ -24,15 +24,19 @@ class AuthenticationTest extends TestCase
     /** @var MockObject|SessionHandlerInterface */
     protected $sessionHandlerMock;
 
+    /** @var MockObject|RoutesConfig */
+    protected $routesConfigMock;
+
     public function setUp(): void
     {
         $this->sessionMock = $this->createMock(ISession::class);
-
         $this->sessionHandlerMock = $this->createMock(SessionHandlerInterface::class);
+        $this->routesConfigMock = $this->createMock(RoutesConfig::class);
 
         $this->sut = new Authentication(
             $this->sessionMock,
-            $this->sessionHandlerMock
+            $this->sessionHandlerMock,
+            $this->routesConfigMock
         );
     }
 
@@ -40,7 +44,7 @@ class AuthenticationTest extends TestCase
     {
         $loginPath = '/foo';
 
-        RoutesConfig::setLoginPath($loginPath);
+        $this->routesConfigMock->expects($this->any())->method('getLoginPath')->willReturn($loginPath);
 
         $this->sessionMock->expects($this->once())->method('has')->willReturn(false);
 

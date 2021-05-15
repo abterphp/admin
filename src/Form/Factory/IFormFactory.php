@@ -7,7 +7,7 @@ use Opulence\Orm\IEntity;
 
 interface IFormFactory
 {
-    const ERR_MSG_ENTITY_MISSING = 'Entity missing';
+    public const ERR_MSG_ENTITY_MISSING = 'Entity missing';
 
     /**
      * @param string       $action

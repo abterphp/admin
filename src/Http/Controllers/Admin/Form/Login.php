@@ -14,13 +14,11 @@ use Psr\Log\LoggerInterface;
 
 class Login extends AdminAbstract
 {
-    const ENTITY_SINGULAR = 'login';
+    public const ENTITY_SINGULAR = 'login';
 
-    /** @var AssetManager */
-    protected $assets;
+    protected AssetManager $assets;
 
-    /** @var string */
-    protected $frontendSalt;
+    protected string $frontendSalt;
 
     /**
      * Login constructor.

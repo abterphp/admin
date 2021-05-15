@@ -26,27 +26,25 @@ use Opulence\Validation\Rules\RuleExtensionRegistry;
  */
 class ValidatorBootstrapper extends BaseBootstrapper
 {
-    const LANG_PATH = 'lang/';
+    protected const LANG_PATH = 'lang/';
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected $validatorFactories = [
+    protected array $validatorFactories = [
         User::class,
         UserGroup::class,
     ];
 
     /**
-     * @inheritdoc
+     * @return string[]
      */
     public function getBindings(): array
     {
-        $bindings = array_merge(
+        return array_merge(
             parent::getBindings(),
             $this->validatorFactories
         );
-
-        return $bindings;
     }
 
     /**

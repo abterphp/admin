@@ -10,8 +10,7 @@ use Opulence\Sessions\ISession;
 
 class SessionInitializer
 {
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
     /**
      * SessionInitializer constructor.

@@ -19,16 +19,14 @@ class Authorization extends ParameterizedMiddleware
 {
     public const PATH_403 = '/nope';
 
-    const RESOURCE = 'resource';
-    const ROLE     = 'role';
+    public const RESOURCE = 'resource';
+    public const ROLE     = 'role';
 
-    const RESOURCE_PREFIX = 'admin_resource_';
+    public const RESOURCE_PREFIX = 'admin_resource_';
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
-    /** @var Enforcer */
-    protected $enforcer;
+    protected Enforcer $enforcer;
 
     /**
      * Authorization constructor.

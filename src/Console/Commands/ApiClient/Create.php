@@ -20,47 +20,40 @@ use Opulence\Console\Requests\OptionTypes;
 use Opulence\Console\Responses\IResponse;
 use Opulence\Console\StatusCodes;
 use Opulence\Orm\IUnitOfWork;
+use Opulence\Orm\OrmException;
 use ZxcvbnPhp\Zxcvbn;
 
 class Create extends Command
 {
-    const COMMAND_NAME            = 'apiclient:create';
-    const COMMAND_DESCRIPTION     = 'Creates a new API client';
-    const COMMAND_SUCCESS         = '<success>New API client is created. ID: <b>%s</b></success>';
-    const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented creating new API client.</info>';
+    public const COMMAND_NAME            = 'apiclient:create';
+    public const COMMAND_DESCRIPTION     = 'Creates a new API client';
+    public const COMMAND_SUCCESS         = '<success>New API client is created. ID: <b>%s</b></success>';
+    public const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented creating new API client.</info>';
 
-    const ARGUMENT_USER        = 'user';
-    const ARGUMENT_DESCRIPTION = 'description';
-    const ARGUMENT_RESOURCES   = 'resources';
+    public const ARGUMENT_USER        = 'user';
+    public const ARGUMENT_DESCRIPTION = 'description';
+    public const ARGUMENT_RESOURCES   = 'resources';
 
-    const OPTION_DRY_RUN    = 'dry-run';
-    const SHORTENED_DRY_RUN = 'd';
+    public const OPTION_DRY_RUN    = 'dry-run';
+    public const SHORTENED_DRY_RUN = 'd';
 
-    const RESPONSE_SECRET = '<info>Secret generated: <b>%s</b></info>';
+    public const RESPONSE_SECRET = '<info>Secret generated: <b>%s</b></info>';
 
-    /** @var UserRepo */
-    protected $userRepo;
+    protected UserRepo $userRepo;
 
-    /** @var AdminResourceRepo */
-    protected $adminResourceRepo;
+    protected AdminResourceRepo $adminResourceRepo;
 
-    /** @var ApiClientRepo */
-    protected $apiClientRepo;
+    protected ApiClientRepo $apiClientRepo;
 
-    /** @var PasswordGenerator */
-    protected $passwordGenerator;
+    protected PasswordGenerator $passwordGenerator;
 
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var Zxcvbn */
-    protected $zxcvbn;
+    protected Zxcvbn $zxcvbn;
 
     /**
      * Create constructor.
@@ -199,7 +192,6 @@ class Create extends Command
      * @param AdminResource[] $adminResources
      *
      * @return ApiClient
-     * @throws \Opulence\Orm\OrmException
      * @throws \RuntimeException
      */
     protected function getApiClient(string $userId, string $packedPassword, array $adminResources): ApiClient
@@ -219,7 +211,7 @@ class Create extends Command
      * @param string $userId
      *
      * @return AdminResource[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     protected function getAdminResources(string $userId): array
     {

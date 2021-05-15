@@ -19,33 +19,28 @@ use ZxcvbnPhp\Zxcvbn;
 
 class UpdatePassword extends Command
 {
-    const COMMAND_NAME            = 'user:update-password';
-    const COMMAND_DESCRIPTION     = 'Update the password of an existing user';
-    const COMMAND_SUCCESS         = '<success>User password is updated.</success>';
-    const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented updating user password.</info>';
-    const COMMAND_UNSAFE_PASSWORD = '<fatal>Password provided is not safe.</fatal>';
+    public const COMMAND_NAME            = 'user:update-password';
+    public const COMMAND_DESCRIPTION     = 'Update the password of an existing user';
+    public const COMMAND_SUCCESS         = '<success>User password is updated.</success>';
+    public const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented updating user password.</info>';
+    public const COMMAND_UNSAFE_PASSWORD = '<fatal>Password provided is not safe.</fatal>';
 
-    const ARGUMENT_IDENTIFIER = 'identifier';
-    const ARGUMENT_PASSWORD   = 'password';
+    public const ARGUMENT_IDENTIFIER = 'identifier';
+    public const ARGUMENT_PASSWORD   = 'password';
 
-    const OPTION_DRY_RUN    = 'dry-run';
-    const SHORTENED_DRY_RUN = 'd';
-    const OPTION_UNSAFE     = 'unsafe';
+    public const OPTION_DRY_RUN    = 'dry-run';
+    public const SHORTENED_DRY_RUN = 'd';
+    public const OPTION_UNSAFE     = 'unsafe';
 
-    /** @var UserRepo */
-    protected $userRepo;
+    protected UserRepo $userRepo;
 
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var Zxcvbn */
-    protected $zxcvbn;
+    protected Zxcvbn $zxcvbn;
 
     /**
      * CreateUserCommand constructor.

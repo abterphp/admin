@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AbterPhp\Admin\Grid\Filters;
 
 use AbterPhp\Framework\Grid\Component\Filters;
-use AbterPhp\Framework\Grid\Filter\Filter;
 use AbterPhp\Framework\Grid\Filter\LikeFilter;
 
 class ApiClient extends Filters

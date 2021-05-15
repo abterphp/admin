@@ -11,6 +11,7 @@ use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\Session;
 use AbterPhp\Framework\Constant\View;
 use AbterPhp\Framework\Navigation\Navigation;
+use League\Flysystem\FilesystemException;
 use Opulence\Environments\Environment;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Sessions\ISession;
@@ -22,20 +23,15 @@ use Opulence\Views\IView;
  */
 class AdminBuilder implements IViewBuilder
 {
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
-    /** @var AssetManager */
-    protected $assetManager;
+    protected AssetManager $assetManager;
 
-    /** @var IEventDispatcher */
-    protected $eventDispatcher;
+    protected IEventDispatcher $eventDispatcher;
 
-    /** @var Navigation|null */
-    protected $primaryNav;
+    protected ?Navigation $primaryNav;
 
-    /** @var Navigation|null */
-    protected $navbar;
+    protected ?Navigation $navbar;
 
     /**
      * AdminBuilder constructor.
@@ -86,6 +82,7 @@ class AdminBuilder implements IViewBuilder
 
     /**
      * @inheritdoc
+     * @throws FilesystemException
      */
     public function build(IView $view): IView
     {

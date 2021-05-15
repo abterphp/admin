@@ -14,13 +14,13 @@ use Psr\Log\LoggerInterface;
 
 class User extends ExecuteAbstract
 {
-    const ENTITY_SINGULAR = 'user';
-    const ENTITY_PLURAL   = 'users';
+    public const ENTITY_SINGULAR = 'user';
+    public const ENTITY_PLURAL   = 'users';
 
-    const ENTITY_TITLE_SINGULAR = 'admin:user';
-    const ENTITY_TITLE_PLURAL   = 'admin:users';
+    public const ENTITY_TITLE_SINGULAR = 'admin:user';
+    public const ENTITY_TITLE_PLURAL   = 'admin:users';
 
-    const ROUTING_PATH = 'users';
+    public const ROUTING_PATH = 'users';
 
     /**
      * User constructor.

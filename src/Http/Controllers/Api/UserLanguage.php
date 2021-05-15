@@ -6,14 +6,13 @@ namespace AbterPhp\Admin\Http\Controllers\Api;
 
 use AbterPhp\Admin\Http\Controllers\ApiAbstract;
 use AbterPhp\Admin\Service\Execute\UserLanguage as RepoService;
-use AbterPhp\Framework\Config\EnvReader;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use Psr\Log\LoggerInterface;
 
 class UserLanguage extends ApiAbstract
 {
-    const ENTITY_SINGULAR = 'userLanguage';
-    const ENTITY_PLURAL   = 'userLanguages';
+    public const ENTITY_SINGULAR = 'userLanguage';
+    public const ENTITY_PLURAL   = 'userLanguages';
 
     /**
      * UserLanguage constructor.
@@ -21,14 +20,14 @@ class UserLanguage extends ApiAbstract
      * @param LoggerInterface $logger
      * @param RepoService     $repoService
      * @param FoundRows       $foundRows
-     * @param EnvReader       $envReader
+     * @param string          $problemBaseUrl
      */
     public function __construct(
         LoggerInterface $logger,
         RepoService $repoService,
         FoundRows $foundRows,
-        EnvReader $envReader
+        string $problemBaseUrl
     ) {
-        parent::__construct($logger, $repoService, $foundRows, $envReader);
+        parent::__construct($logger, $repoService, $foundRows, $problemBaseUrl);
     }
 }

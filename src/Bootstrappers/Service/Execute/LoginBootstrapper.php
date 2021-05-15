@@ -13,12 +13,13 @@ use AbterPhp\Framework\Crypto\Crypto;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Orm\IUnitOfWork;
 
 class LoginBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -29,6 +30,8 @@ class LoginBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

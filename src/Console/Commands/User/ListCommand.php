@@ -13,11 +13,10 @@ use Opulence\Console\Responses\IResponse;
 
 class ListCommand extends Command
 {
-    const COMMAND_NAME        = 'user:list';
-    const COMMAND_DESCRIPTION = 'List available users';
+    public const COMMAND_NAME        = 'user:list';
+    public const COMMAND_DESCRIPTION = 'List available users';
 
-    /** @var UserRepo */
-    protected $userRepo;
+    protected UserRepo $userRepo;
 
     /**
      * ListCommand constructor.

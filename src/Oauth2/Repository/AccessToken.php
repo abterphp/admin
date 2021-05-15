@@ -17,11 +17,9 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 /** @phan-file-suppress PhanTypeMismatchArgument */
 class AccessToken implements AccessTokenRepositoryInterface
 {
-    /** @var UuidV4Generator */
-    protected $uuidGenerator;
+    protected UuidV4Generator $uuidGenerator;
 
-    /** @var ConnectionPool */
-    protected $connectionPool;
+    protected ConnectionPool $connectionPool;
 
     /**
      * AccessToken constructor.

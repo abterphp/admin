@@ -9,8 +9,7 @@ use Opulence\Http\Responses\ResponseHeaders;
 
 trait ApiIssueTrait
 {
-    /** @var string */
-    protected $problemBaseUrl;
+    protected string $problemBaseUrl;
 
     /**
      * @param string $msg

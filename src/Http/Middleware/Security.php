@@ -16,24 +16,26 @@ use Opulence\Routing\Middleware\IMiddleware;
 
 class Security implements IMiddleware
 {
-    const KEY = 'abteradmin:security';
+    public const KEY = 'abteradmin:security';
 
-    const TEST_LOGIN_PATH                  = '/login-iddqd';
-    const TEST_ADMIN_BASE_PATH             = '/admin-iddqd';
-    const TEST_API_BASE_PATH               = '/api-iddqd';
-    const TEST_OAUTH2_PRIVATE_KEY_PASSWORD = 'CuDU2M9FRD8ckRxj9dhB82f6VjMs4EMf';
+    public const TEST_LOGIN_PATH                  = '/login-iddqd';
+    public const TEST_ADMIN_BASE_PATH             = '/admin-iddqd';
+    public const TEST_API_BASE_PATH               = '/api-iddqd';
+    public const TEST_OAUTH2_PRIVATE_KEY_PASSWORD = 'CuDU2M9FRD8ckRxj9dhB82f6VjMs4EMf';
 
-    /** @var ICacheBridge */
-    protected $cacheBridge;
+    protected ICacheBridge $cacheBridge;
+    protected RoutesConfig $routesConfig;
 
     /**
      * Security constructor.
      *
      * @param ICacheBridge $cacheBridge
+     * @param RoutesConfig $routesConfig
      */
-    public function __construct(ICacheBridge $cacheBridge)
+    public function __construct(ICacheBridge $cacheBridge, RoutesConfig $routesConfig)
     {
-        $this->cacheBridge = $cacheBridge;
+        $this->cacheBridge  = $cacheBridge;
+        $this->routesConfig = $routesConfig;
     }
 
     // $next consists of the next middleware in the pipeline
@@ -63,15 +65,15 @@ class Security implements IMiddleware
 
     private function checkRoutes()
     {
-        if (RoutesConfig::getLoginPath() === static::TEST_LOGIN_PATH) {
+        if ($this->routesConfig->getLoginPath() === static::TEST_LOGIN_PATH) {
             throw new SecurityException('Invalid ADMIN_LOGIN_PATH environment variable.');
         }
 
-        if (RoutesConfig::getAdminBasePath() === static::TEST_ADMIN_BASE_PATH) {
+        if ($this->routesConfig->getAdminBasePath() === static::TEST_ADMIN_BASE_PATH) {
             throw new SecurityException('Invalid ADMIN_BASE_PATH environment variable.');
         }
 
-        if (RoutesConfig::getApiBasePath() === static::TEST_API_BASE_PATH) {
+        if ($this->routesConfig->getApiBasePath() === static::TEST_API_BASE_PATH) {
             throw new SecurityException('Invalid ADMIN_BASE_PATH environment variable.');
         }
     }

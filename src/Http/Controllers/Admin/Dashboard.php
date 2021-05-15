@@ -11,21 +11,19 @@ use Casbin\Enforcer;
 use Opulence\Http\Responses\Response;
 use Opulence\Routing\Urls\UrlGenerator;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class Dashboard extends AdminAbstract
 {
-    const ENTITY_SINGULAR = 'dashboard';
+    public const ENTITY_SINGULAR = 'dashboard';
 
-    const TITLE_DASHBOARD = 'admin:dashboard';
+    public const TITLE_DASHBOARD = 'admin:dashboard';
 
-    /** @var ITranslator */
-    protected $translator;
+    protected ITranslator $translator;
 
-    /** @var Enforcer */
-    protected $enforcer;
+    protected Enforcer $enforcer;
 
-    /** @var DashboardCollection */
-    protected $dashboard;
+    protected DashboardCollection $dashboard;
 
     /**
      * Dashboard constructor.
@@ -53,6 +51,7 @@ class Dashboard extends AdminAbstract
 
     /**
      * @return Response
+     * @throws Throwable
      */
     public function showDashboard(): Response
     {

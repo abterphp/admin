@@ -7,7 +7,9 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\UserLanguage as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -39,7 +41,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -61,7 +63,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -80,7 +82,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      * @param array    $params
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -111,7 +113,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      * @param string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id)
     {
@@ -129,7 +131,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      * @param string $identifier
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByIdentifier(string $identifier): ?Entity
     {
@@ -146,7 +148,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -192,8 +194,7 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
      */
     private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'user_languages.id',
                 'user_languages.identifier',
@@ -201,7 +202,5 @@ class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDa
             )
             ->from('user_languages')
             ->where('user_languages.deleted_at IS NULL');
-
-        return $query;
     }
 }

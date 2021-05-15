@@ -16,17 +16,13 @@ use Psr\Log\LoggerInterface;
 
 class AccessToken extends ControllerAbstract
 {
-    /** @var AuthorizationServer */
-    protected $authorizationServer;
+    protected AuthorizationServer $authorizationServer;
 
-    /** @var RequestConverter */
-    protected $requestConverter;
+    protected RequestConverter $requestConverter;
 
-    /** @var ResponseFactory */
-    protected $responseFactory;
+    protected ResponseFactory $responseFactory;
 
-    /** @var ResponseConverter */
-    protected $responseConverter;
+    protected ResponseConverter $responseConverter;
 
     /**
      * AccessToken constructor.
@@ -70,8 +66,6 @@ class AccessToken extends ControllerAbstract
             $this->logger->info($e->getMessage());
         }
 
-        $response = $this->responseConverter->fromPsr($prs7Response);
-
-        return $response;
+        return $this->responseConverter->fromPsr($prs7Response);
     }
 }

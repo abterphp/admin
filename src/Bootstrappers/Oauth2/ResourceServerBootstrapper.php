@@ -11,12 +11,13 @@ use Opulence\Databases\ConnectionPools\ConnectionPool;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Orm\Ids\Generators\UuidV4Generator;
 
 class ResourceServerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @inheritdoc
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -25,6 +26,7 @@ class ResourceServerBootstrapper extends Bootstrapper implements ILazyBootstrapp
 
     /**
      * @inheritdoc
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

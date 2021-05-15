@@ -22,7 +22,7 @@ use Opulence\Orm\Ids\Generators\UuidV4Generator;
 class AuthorizationServerBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @inheritdoc
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -31,6 +31,7 @@ class AuthorizationServerBootstrapper extends Bootstrapper implements ILazyBoots
 
     /**
      * @inheritdoc
+     * @throws \Exception
      */
     public function registerBindings(IContainer $container)
     {

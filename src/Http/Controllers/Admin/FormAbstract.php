@@ -21,39 +21,36 @@ use Opulence\Routing\Urls\URLException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 abstract class FormAbstract extends AdminAbstract
 {
-    const LOG_MSG_LOAD_FAILURE = 'Loading %1$s failed.';
+    public const LOG_MSG_LOAD_FAILURE = 'Loading %1$s failed.';
 
-    const ENTITY_TITLE_SINGULAR = '';
+    public const ENTITY_TITLE_SINGULAR = '';
 
-    const VIEW_FORM = 'contents/backend/form';
+    public const VIEW_FORM = 'contents/backend/form';
 
-    const VAR_ENTITY = 'entity';
-    const VAR_FORM   = 'form';
+    public const VAR_ENTITY = 'entity';
+    public const VAR_FORM   = 'form';
 
-    const TITLE_NEW  = 'framework:titleNew';
-    const TITLE_EDIT = 'framework:titleEdit';
+    public const TITLE_NEW  = 'framework:titleNew';
+    public const TITLE_EDIT = 'framework:titleEdit';
 
-    const URL_NEW = '%s-new';
+    public const URL_NEW = '%s-new';
 
-    const RESOURCE_DEFAULT = '%s-form';
-    const RESOURCE_HEADER  = '%s-header-form';
-    const RESOURCE_FOOTER  = '%s-footer-form';
-    const RESOURCE_TYPE    = 'form';
+    public const RESOURCE_DEFAULT = '%s-form';
+    public const RESOURCE_HEADER  = '%s-header-form';
+    public const RESOURCE_FOOTER  = '%s-footer-form';
+    public const RESOURCE_TYPE    = 'form';
 
-    /** @var IGridRepo */
-    protected $repo;
+    protected IGridRepo $repo;
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
-    /** @var IFormFactory */
-    protected $formFactory;
+    protected IFormFactory $formFactory;
 
-    /** @var IEventDispatcher */
-    protected $eventDispatcher;
+    protected IEventDispatcher $eventDispatcher;
 
     /**
      * FormAbstract constructor.
@@ -89,7 +86,7 @@ abstract class FormAbstract extends AdminAbstract
      * @return Response
      * @throws CasbinException
      * @throws URLException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function new(): Response
     {
@@ -118,7 +115,7 @@ abstract class FormAbstract extends AdminAbstract
      * @return Response
      * @throws CasbinException
      * @throws URLException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function edit(string $entityId): Response
     {
@@ -148,7 +145,6 @@ abstract class FormAbstract extends AdminAbstract
      */
     public function retrieveEntity(string $entityId): IStringerEntity
     {
-        /** @var FlashService $flashService */
         $flashService = $this->flashService;
 
         try {
@@ -187,9 +183,7 @@ abstract class FormAbstract extends AdminAbstract
             return (string)$this->session->get(Session::LAST_GRID_URL);
         }
 
-        $url = $this->urlGenerator->createFromName(static::ROUTING_PATH);
-
-        return $url;
+        return $this->urlGenerator->createFromName(static::ROUTING_PATH);
     }
 
     /**
@@ -202,9 +196,7 @@ abstract class FormAbstract extends AdminAbstract
     {
         $routeName = sprintf(static::URL_EDIT, static::ROUTING_PATH);
 
-        $url = $this->urlGenerator->createFromName($routeName, $id);
-
-        return $url;
+        return $this->urlGenerator->createFromName($routeName, $id);
     }
 
     /**

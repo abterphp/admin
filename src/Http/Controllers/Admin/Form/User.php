@@ -25,26 +25,22 @@ use Psr\Log\LoggerInterface;
  */
 class User extends FormAbstract
 {
-    const ENTITY_PLURAL   = 'users';
-    const ENTITY_SINGULAR = 'user';
+    public const ENTITY_PLURAL   = 'users';
+    public const ENTITY_SINGULAR = 'user';
 
-    const ENTITY_TITLE_SINGULAR = 'admin:user';
-    const ENTITY_TITLE_PLURAL   = 'admin:users';
+    public const ENTITY_TITLE_SINGULAR = 'admin:user';
+    public const ENTITY_TITLE_PLURAL   = 'admin:users';
 
-    const VAR_ALL_USER_GROUPS    = 'allUserGroups';
-    const VAR_ALL_USER_LANGUAGES = 'allUserLanguages';
+    public const VAR_ALL_USER_GROUPS    = 'allUserGroups';
+    public const VAR_ALL_USER_LANGUAGES = 'allUserLanguages';
 
-    /** @var Slugify */
-    protected $slugify;
+    protected Slugify $slugify;
 
-    /** @var AssetManager */
-    protected $assetManager;
+    protected AssetManager $assetManager;
 
-    /** @var string */
-    protected $frontendSalt;
+    protected string $frontendSalt;
 
-    /** @var string */
-    protected $resource = 'users';
+    protected string $resource = 'users';
 
     /**
      * User constructor.
@@ -99,8 +95,9 @@ class User extends FormAbstract
             '',
             ''
         );
-        $entity       = new Entity(
-            (string)$entityId,
+
+        return new Entity(
+            $entityId,
             '',
             '',
             '',
@@ -108,8 +105,6 @@ class User extends FormAbstract
             true,
             $userLanguage
         );
-
-        return $entity;
     }
 
     /**

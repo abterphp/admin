@@ -15,8 +15,7 @@ use Opulence\Orm\IUnitOfWork;
 
 class UserLanguage extends RepoServiceAbstract
 {
-    /** @var Slugify */
-    protected $slugify;
+    protected Slugify $slugify;
 
     /**
      * UserLanguage constructor.

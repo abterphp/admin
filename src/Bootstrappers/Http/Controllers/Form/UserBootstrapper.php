@@ -15,6 +15,7 @@ use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 use Opulence\Routing\Urls\UrlGenerator;
 use Opulence\Sessions\ISession;
 use Psr\Log\LoggerInterface;
@@ -22,7 +23,7 @@ use Psr\Log\LoggerInterface;
 class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -33,6 +34,8 @@ class UserBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

@@ -19,20 +19,15 @@ use Opulence\Validation\IValidator;
 
 abstract class RepoServiceAbstract implements IRepoService
 {
-    /** @var IGridRepo */
-    protected $repo;
+    protected IGridRepo $repo;
 
-    /** @var IValidatorFactory */
-    protected $validatorFactory;
+    protected IValidatorFactory $validatorFactory;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var IEventDispatcher */
-    protected $eventDispatcher;
+    protected IEventDispatcher $eventDispatcher;
 
-    /** @var IValidator */
-    protected $validator;
+    protected ?IValidator $validator = null;
 
     /**
      * RepoExecuteAbstract constructor.
@@ -198,9 +193,7 @@ abstract class RepoServiceAbstract implements IRepoService
     public function retrieveEntity(string $entityId): IStringerEntity
     {
         /** @var IStringerEntity $entity */
-        $entity = $this->repo->getById($entityId);
-
-        return $entity;
+        return $this->repo->getById($entityId);
     }
 
     /**

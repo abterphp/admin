@@ -10,13 +10,9 @@ use AbterPhp\Admin\Authorization\UserProvider;
 
 class AuthInitializer
 {
-    /** @var UserProvider */
-    protected $userProvider;
+    protected UserProvider $userProvider;
 
-    /**
-     * @var AdminResourceProvider
-     */
-    protected $adminResourceProvider;
+    protected AdminResourceProvider $adminResourceProvider;
 
     /**
      * AuthRegistrar constructor.

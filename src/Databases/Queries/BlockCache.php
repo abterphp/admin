@@ -13,8 +13,7 @@ use Opulence\QueryBuilders\MySql\QueryBuilder;
 
 class BlockCache
 {
-    /** @var ConnectionPool */
-    protected $connectionPool;
+    protected ConnectionPool $connectionPool;
 
     /**
      * BlockCache constructor.

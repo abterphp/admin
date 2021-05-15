@@ -21,18 +21,24 @@ use Opulence\Sessions\ISession;
 class CheckCsrfToken implements IMiddleware
 {
     /** @var CsrfTokenChecker The CSRF token checker */
-    protected $csrfTokenChecker = null;
+    protected CsrfTokenChecker $csrfTokenChecker;
+
     /** @var ISession The current session */
-    protected $session = null;
+    protected ISession $session;
+
+    private RoutesConfig $routesConfig;
 
     /**
      * @param CsrfTokenChecker $csrfTokenChecker The CSRF token checker
      * @param ISession         $session          The current session
+     * @param RoutesConfig     $routesConfig
      */
-    public function __construct(CsrfTokenChecker $csrfTokenChecker, ISession $session)
+    public function __construct(CsrfTokenChecker $csrfTokenChecker, ISession $session, RoutesConfig $routesConfig)
     {
         $this->csrfTokenChecker = $csrfTokenChecker;
         $this->session          = $session;
+
+        $this->routesConfig = $routesConfig;
     }
 
     /**
@@ -59,13 +65,11 @@ class CheckCsrfToken implements IMiddleware
      */
     protected function isApiRequest(Request $request): bool
     {
-        $apiBasePath = RoutesConfig::getApiBasePath();
+        $apiBasePath = $this->routesConfig->getApiBasePath();
 
         $path = $request->getPath();
 
-        $isApiRequest = substr($path, 0, strlen($apiBasePath)) === $apiBasePath;
-
-        return $isApiRequest;
+        return substr($path, 0, strlen($apiBasePath)) === $apiBasePath;
     }
 
     /**

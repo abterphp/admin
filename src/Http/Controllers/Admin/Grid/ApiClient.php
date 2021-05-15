@@ -15,15 +15,14 @@ use Psr\Log\LoggerInterface;
 
 class ApiClient extends GridAbstract
 {
-    const ENTITY_SINGULAR = 'apiClient';
-    const ENTITY_PLURAL   = 'apiClients';
+    public const ENTITY_SINGULAR = 'apiClient';
+    public const ENTITY_PLURAL   = 'apiClients';
 
-    const ENTITY_TITLE_PLURAL = 'admin:apiClients';
+    public const ENTITY_TITLE_PLURAL = 'admin:apiClients';
 
-    const ROUTING_PATH = 'api-clients';
+    public const ROUTING_PATH = 'api-clients';
 
-    /** @var string */
-    protected $resource = 'api_clients';
+    protected string $resource = 'api_clients';
 
     /**
      * ApiClient constructor.

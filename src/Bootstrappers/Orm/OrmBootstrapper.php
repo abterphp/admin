@@ -44,8 +44,8 @@ use RuntimeException;
  */
 class OrmBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
-    /** @var array */
-    protected $repoMappers = [
+    /** @var array<string,string[]> */
+    protected array $repoMappers = [
         AdminResourceRepo::class => [AdminResourceSqlDataMapper::class, AdminResource::class],
         LoginAttemptRepo::class  => [LoginAttemptSqlDataMapper::class, LoginAttempt::class],
         ApiClientRepo::class     => [ApiClientSqlDataMapper::class, ApiClient::class],
@@ -55,7 +55,7 @@ class OrmBootstrapper extends Bootstrapper implements ILazyBootstrapper
     ];
 
     /**
-     * @inheritdoc
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -102,6 +102,8 @@ class OrmBootstrapper extends Bootstrapper implements ILazyBootstrapper
      *
      * @param IContainer  $container  The container to bind to
      * @param IUnitOfWork $unitOfWork The unit of work to use in repositories
+     *
+     * @throws IocException
      */
     protected function bindRepositories(IContainer $container, IUnitOfWork $unitOfWork)
     {
@@ -141,7 +143,7 @@ class OrmBootstrapper extends Bootstrapper implements ILazyBootstrapper
         IConnection $readConnection,
         IConnection $writeConnection,
         IUnitOfWork $unitOfWork
-    ) {
+    ): \Closure {
         return function () use (
             $repoClass,
             $dataMapperClass,

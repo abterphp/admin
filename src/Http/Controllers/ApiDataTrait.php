@@ -8,8 +8,7 @@ use Opulence\Http\Requests\UploadedFile;
 
 trait ApiDataTrait
 {
-    /** @var string */
-    protected $problemBaseUrl;
+    protected string $problemBaseUrl;
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

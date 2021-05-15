@@ -9,7 +9,9 @@ use AbterPhp\Admin\Domain\Entities\UserGroup;
 use AbterPhp\Admin\Domain\Entities\UserLanguage;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -52,7 +54,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -84,7 +86,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -103,7 +105,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      * @param array    $params
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -134,7 +136,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      * @param int|string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id): ?Entity
     {
@@ -149,7 +151,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      * @param string $identifier
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function find(string $identifier): ?Entity
     {
@@ -167,7 +169,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      * @param string $clientId
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByClientId(string $clientId): ?Entity
     {
@@ -191,7 +193,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      * @param string $username
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByUsername(string $username): ?Entity
     {
@@ -209,7 +211,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      * @param string $email
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByEmail(string $email): ?Entity
     {
@@ -226,7 +228,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -313,8 +315,7 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
      */
     private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'users.id',
                 'users.username',
@@ -338,14 +339,12 @@ class UserSqlDataMapper extends SqlDataMapper implements IUserDataMapper
             ->leftJoin('user_groups', 'ug', 'ug.id = uug.user_group_id AND ug.deleted_at IS NULL')
             ->groupBy('users.id')
             ->where('users.deleted_at IS NULL');
-
-        return $query;
     }
 
     /**
      * @param Entity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     protected function deleteUserGroups(Entity $entity)
     {

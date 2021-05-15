@@ -18,9 +18,9 @@ use Opulence\Sessions\ISession;
 
 class NavigationBuilder
 {
-    const FIRST_ITEM_WEIGHT = 0;
+    public const FIRST_ITEM_WEIGHT = 0;
 
-    const DEFAULT_BASE_WEIGHT = 1000;
+    public const DEFAULT_BASE_WEIGHT = 1000;
 
     /** @var ISession */
     protected ISession $session;

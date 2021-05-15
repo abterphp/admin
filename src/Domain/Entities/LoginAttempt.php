@@ -8,17 +8,13 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 
 class LoginAttempt implements IStringerEntity
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var string */
-    protected $ipHash;
+    protected string $ipHash;
 
-    /** @var string */
-    protected $username;
+    protected string $username;
 
-    /** @var string|null */
-    protected $ipAddress;
+    protected ?string $ipAddress;
 
     /**
      * LoginAttempt constructor.

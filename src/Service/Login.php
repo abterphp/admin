@@ -17,31 +17,24 @@ use Opulence\QueryBuilders\InvalidQueryException;
 
 class Login
 {
-    const ERROR_MSG_LOGIN_THROTTLED    = 'login:throttled';
-    const ERROR_MSG_DB_PROBLEM         = 'login:dbProblem';
-    const ERROR_MSG_UNEXPECTED_PROBLEM = 'login:unexpectedProblem';
-    const ERROR_MSG_LOGIN_FAILED       = 'login:unknownFailure';
+    public const ERROR_MSG_LOGIN_THROTTLED    = 'login:throttled';
+    public const ERROR_MSG_DB_PROBLEM         = 'login:dbProblem';
+    public const ERROR_MSG_UNEXPECTED_PROBLEM = 'login:unexpectedProblem';
+    public const ERROR_MSG_LOGIN_FAILED       = 'login:unknownFailure';
 
-    /** @var UserRepo */
-    protected $userRepo;
+    protected UserRepo $userRepo;
 
-    /** @var LoginAttemptRepo */
-    protected $loginAttemptRepo;
+    protected LoginAttemptRepo $loginAttemptRepo;
 
-    /** @var LoginThrottle */
-    protected $loginThrottle;
+    protected LoginThrottle $loginThrottle;
 
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var int */
-    protected $loginMaxAttempts;
+    protected int $loginMaxAttempts;
 
-    /** @var bool */
-    protected $loginLogIp;
+    protected bool $loginLogIp;
 
     /**
      * Login constructor.
@@ -78,7 +71,6 @@ class Login
      *
      * @return bool
      * @throws InvalidQueryException
-     * @throws OrmException
      */
     public function isLoginAllowed(string $username, string $ipAddress): bool
     {

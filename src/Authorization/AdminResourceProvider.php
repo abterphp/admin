@@ -13,7 +13,7 @@ class AdminResourceProvider implements CasbinAdapter
 {
     use PolicyProviderTrait;
 
-    const PREFIX = 'admin_resource';
+    protected const PREFIX = 'admin_resource';
 
     /**
      * AdminResourceProvider constructor.

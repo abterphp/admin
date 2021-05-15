@@ -21,7 +21,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "abterphp/framework": "*"
+    "abterphp/framework": "*",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",

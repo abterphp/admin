@@ -8,7 +8,9 @@ use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\UserGroup as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -19,7 +21,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
 {
     use IdGeneratorUserTrait;
 
-    const ADMIN_RESOURCE_IDS = 'admin_resource_ids';
+    public const ADMIN_RESOURCE_IDS = 'admin_resource_ids';
 
     /**
      * @param IStringerEntity $entity
@@ -48,7 +50,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -68,7 +70,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -85,7 +87,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      * @param array    $params
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -116,7 +118,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      * @param int|string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id)
     {
@@ -133,7 +135,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      * @param string $identifier
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByIdentifier(string $identifier): ?Entity
     {
@@ -149,7 +151,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -217,8 +219,7 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
      */
     private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'ug.id',
                 'ug.identifier',
@@ -229,14 +230,12 @@ class UserGroupSqlDataMapper extends SqlDataMapper implements IUserGroupDataMapp
             ->leftJoin('user_groups_admin_resources', 'ugar', 'ugar.user_group_id = ug.id')
             ->where('ug.deleted_at IS NULL')
             ->groupBy('ug.id');
-
-        return $query;
     }
 
     /**
      * @param Entity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     protected function deleteAdminResources(Entity $entity)
     {

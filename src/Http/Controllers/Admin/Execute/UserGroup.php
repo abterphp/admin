@@ -14,13 +14,13 @@ use Psr\Log\LoggerInterface;
 
 class UserGroup extends ExecuteAbstract
 {
-    const ENTITY_SINGULAR = 'userGroup';
-    const ENTITY_PLURAL   = 'userGroups';
+    public const ENTITY_SINGULAR = 'userGroup';
+    public const ENTITY_PLURAL   = 'userGroups';
 
-    const ENTITY_TITLE_SINGULAR = 'admin:userGroup';
-    const ENTITY_TITLE_PLURAL   = 'admin:userGroups';
+    public const ENTITY_TITLE_SINGULAR = 'admin:userGroup';
+    public const ENTITY_TITLE_PLURAL   = 'admin:userGroups';
 
-    const ROUTING_PATH = 'user-groups';
+    public const ROUTING_PATH = 'user-groups';
 
     /**
      * UserGroup constructor.

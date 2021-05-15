@@ -24,25 +24,21 @@ use Psr\Log\LoggerInterface;
  */
 class ApiClient extends FormAbstract
 {
-    const ENTITY_SINGULAR = 'apiClient';
-    const ENTITY_PLURAL   = 'apiClients';
+    public const ENTITY_SINGULAR = 'apiClient';
+    public const ENTITY_PLURAL   = 'apiClients';
 
-    const ENTITY_TITLE_SINGULAR = 'admin:apiClient';
-    const ENTITY_TITLE_PLURAL   = 'admin:apiClients';
+    public const ENTITY_TITLE_SINGULAR = 'admin:apiClient';
+    public const ENTITY_TITLE_PLURAL   = 'admin:apiClients';
 
-    const ROUTING_PATH = 'api-clients';
+    public const ROUTING_PATH = 'api-clients';
 
-    /** @var Slugify */
-    protected $slugify;
+    protected Slugify $slugify;
 
-    /** @var AssetManager */
-    protected $assets;
+    protected AssetManager $assets;
 
-    /** @var string */
-    protected $secretLength;
+    protected string $secretLength;
 
-    /** @var string */
-    protected $resource = 'api_clients';
+    protected string $resource = 'api_clients';
 
     /**
      * ApiClient constructor.
@@ -92,9 +88,7 @@ class ApiClient extends FormAbstract
      */
     public function createEntity(string $entityId): IStringerEntity
     {
-        $entity = new Entity((string)$entityId, '', '', '');
-
-        return $entity;
+        return new Entity((string)$entityId, '', '', '');
     }
 
     /**

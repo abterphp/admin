@@ -9,20 +9,16 @@ use DateTimeImmutable;
 
 class Token implements IStringerEntity
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var string */
-    protected $apiClientId;
+    protected string $apiClientId;
 
-    /** @var DateTimeImmutable */
-    protected $expiresAt;
+    protected DateTimeImmutable $expiresAt;
 
-    /** @var DateTimeImmutable|null */
-    protected $revokedAt;
+    protected ?DateTimeImmutable $revokedAt;
 
     /** @var string[] */
-    protected $adminResources;
+    protected array $adminResources;
 
     /**
      * Token constructor.

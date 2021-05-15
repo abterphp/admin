@@ -8,8 +8,7 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 class Scope implements ScopeEntityInterface
 {
-    /** @var string */
-    protected $identifier;
+    protected string $identifier;
 
     /**
      * Scope constructor.

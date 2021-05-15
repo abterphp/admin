@@ -8,7 +8,9 @@ use AbterPhp\Admin\Domain\Entities\AdminResource;
 use AbterPhp\Admin\Domain\Entities\ApiClient as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
 use Opulence\QueryBuilders\MySql\SelectQuery;
 
@@ -49,7 +51,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -69,7 +71,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -86,7 +88,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
      * @param array    $params
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getPage(int $limitFrom, int $pageSize, array $orders, array $conditions, array $params): array
     {
@@ -117,7 +119,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
      * @param int|string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id)
     {
@@ -133,7 +135,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -205,8 +207,7 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
      */
     private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'ac.id',
                 'ac.user_id',
@@ -220,14 +221,12 @@ class ApiClientSqlDataMapper extends SqlDataMapper implements IApiClientDataMapp
             ->leftJoin('admin_resources', 'ar', 'acar.admin_resource_id = ar.id')
             ->where('ac.deleted_at IS NULL')
             ->groupBy('ac.id');
-
-        return $query;
     }
 
     /**
      * @param Entity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     protected function deleteAdminResources(Entity $entity)
     {

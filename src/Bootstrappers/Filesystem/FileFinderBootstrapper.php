@@ -7,7 +7,6 @@ namespace AbterPhp\Admin\Bootstrappers\Filesystem;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Filesystem\FileFinder;
 use AbterPhp\Framework\Filesystem\IFileFinder;
-use AbterPhp\Framework\Module\Manager; // @phan-suppress-current-line PhanUnreferencedUseNormal
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use Opulence\Databases\Adapters\Pdo\MySql\Driver as MySqlDriver;
@@ -19,15 +18,14 @@ use Opulence\Ioc\IContainer;
 
 class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
-    const MIGRATION_FILE_FINDER = 'MigrationFileFinder';
+    public const MIGRATION_FILE_FINDER = 'MigrationFileFinder';
 
-    const MIGRATIONS_PATH_SEGMENT = 'migrations';
+    public const MIGRATIONS_PATH_SEGMENT = 'migrations';
 
-    /** @var string|null */
-    protected $dbDriverName;
+    protected ?string $dbDriverName = null;
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -39,8 +37,6 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
-     *
-     * @throws \Opulence\Ioc\IocException
      */
     public function registerBindings(IContainer $container)
     {
@@ -64,7 +60,6 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
      */
     protected function registerMigrationFileFinder(IContainer $container)
     {
-        /** @var Manager $abterModuleManager */
         global $abterModuleManager;
 
         $dbDriver   = $this->getDbDriver();

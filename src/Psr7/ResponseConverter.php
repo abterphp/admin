@@ -20,8 +20,6 @@ class ResponseConverter
         $statusCode  = $psrResponse->getStatusCode();
         $headers     = $psrResponse->getHeaders();
 
-        $response = new OpulenceResponse($content, $statusCode, $headers);
-
-        return $response;
+        return new OpulenceResponse($content, $statusCode, $headers);
     }
 }

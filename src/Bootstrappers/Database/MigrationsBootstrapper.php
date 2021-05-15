@@ -11,11 +11,12 @@ use Opulence\Databases\IConnection; // @phan-suppress-current-line PhanUnreferen
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\Bootstrappers\ILazyBootstrapper;
 use Opulence\Ioc\IContainer;
+use Opulence\Ioc\IocException;
 
 class MigrationsBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -27,7 +28,7 @@ class MigrationsBootstrapper extends Bootstrapper implements ILazyBootstrapper
     /**
      * @param IContainer $container
      *
-     * @throws \Opulence\Ioc\IocException
+     * @throws IocException
      */
     public function registerBindings(IContainer $container)
     {

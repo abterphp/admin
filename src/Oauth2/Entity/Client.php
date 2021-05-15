@@ -8,14 +8,11 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 class Client implements ClientEntityInterface
 {
-    /** @var string */
-    protected $identifier;
+    protected string $identifier;
 
-    /** @var string */
-    protected $name;
+    protected string $name;
 
-    /** @var string */
-    protected $redirectUri;
+    protected string $redirectUri;
 
     /**
      * Client constructor.

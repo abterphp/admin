@@ -12,11 +12,10 @@ use Opulence\Console\Responses\IResponse;
 // @phan-suppress-current-line PhanUnreferencedUseNormal
 class ListCommand extends Command
 {
-    const COMMAND_NAME        = 'usergroup:list';
-    const COMMAND_DESCRIPTION = 'List available user groups';
+    public const COMMAND_NAME        = 'usergroup:list';
+    public const COMMAND_DESCRIPTION = 'List available user groups';
 
-    /** @var UserGroupRepo */
-    protected $userGroupRepo;
+    protected UserGroupRepo $userGroupRepo;
 
     /**
      * ListCommand constructor.

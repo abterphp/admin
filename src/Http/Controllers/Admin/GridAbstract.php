@@ -22,43 +22,36 @@ use Psr\Log\LoggerInterface;
 
 abstract class GridAbstract extends AdminAbstract
 {
-    const ENTITY_PLURAL       = '';
-    const ENTITY_TITLE_PLURAL = '';
+    public const ENTITY_PLURAL       = '';
+    public const ENTITY_TITLE_PLURAL = '';
 
-    const VIEW_LIST = 'contents/backend/grid';
+    public const VIEW_LIST = 'contents/backend/grid';
 
-    const VAR_GRID       = 'grid';
-    const VAR_CREATE_URL = 'createUrl';
+    public const VAR_GRID       = 'grid';
+    public const VAR_CREATE_URL = 'createUrl';
 
-    const TITLE_SHOW = 'framework:titleList';
+    public const TITLE_SHOW = 'framework:titleList';
 
-    const URL_CREATE = '%s-create';
+    public const URL_CREATE = '%s-create';
 
-    const RESOURCE_DEFAULT = '%s-grid';
-    const RESOURCE_HEADER  = '%s-header-grid';
-    const RESOURCE_FOOTER  = '%s-footer-grid';
-    const RESOURCE_TYPE    = 'grid';
+    public const RESOURCE_DEFAULT = '%s-grid';
+    public const RESOURCE_HEADER  = '%s-header-grid';
+    public const RESOURCE_FOOTER  = '%s-footer-grid';
+    public const RESOURCE_TYPE    = 'grid';
 
-    /** @var IGridRepo */
-    protected $gridRepo;
+    protected IGridRepo $gridRepo;
 
-    /** @var FoundRows */
-    protected $foundRows;
+    protected FoundRows $foundRows;
 
-    /** @var GridFactory */
-    protected $gridFactory;
+    protected GridFactory $gridFactory;
 
-    /** @var PaginationOptions */
-    protected $paginationOptions;
+    protected PaginationOptions $paginationOptions;
 
-    /** @var AssetManager */
-    protected $assets;
+    protected AssetManager $assets;
 
-    /** @var IRepoGrid */
-    protected $repoGrid;
+    protected IRepoGrid $repoGrid;
 
-    /** @var IEventDispatcher */
-    protected $eventDispatcher;
+    protected IEventDispatcher $eventDispatcher;
 
     /**
      * GridAbstract constructor.
@@ -171,8 +164,7 @@ abstract class GridAbstract extends AdminAbstract
     protected function getCreateUrl(): string
     {
         $urlName = sprintf(static::URL_CREATE, static::ROUTING_PATH);
-        $url     = $this->urlGenerator->createFromName($urlName);
 
-        return $url;
+        return $this->urlGenerator->createFromName($urlName);
     }
 }

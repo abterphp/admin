@@ -18,10 +18,11 @@ use Psr\Log\LoggerInterface;
 
 class Logout extends AdminAbstract
 {
-    const SUCCESS_MSG = 'User "%s" logged out.';
+    public const SUCCESS_MSG = 'User "%s" logged out.';
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
+
+    protected RoutesConfig $routesConfig;
 
     /**
      * Logout constructor.
@@ -31,17 +32,20 @@ class Logout extends AdminAbstract
      * @param ITranslator     $translator
      * @param UrlGenerator    $urlGenerator
      * @param ISession        $session
+     * @param RoutesConfig    $routesConfig
      */
     public function __construct(
         FlashService $flashService,
         LoggerInterface $logger,
         ITranslator $translator,
         UrlGenerator $urlGenerator,
-        ISession $session
+        ISession $session,
+        RoutesConfig $routesConfig
     ) {
         parent::__construct($flashService, $logger, $translator, $urlGenerator);
 
-        $this->session = $session;
+        $this->session      = $session;
+        $this->routesConfig = $routesConfig;
     }
 
     /**
@@ -55,6 +59,6 @@ class Logout extends AdminAbstract
 
         $this->logger->info(sprintf(static::SUCCESS_MSG, $username));
 
-        return new RedirectResponse(RoutesConfig::getLoginPath(), ResponseHeaders::HTTP_FOUND);
+        return new RedirectResponse($this->routesConfig->getLoginPath(), ResponseHeaders::HTTP_FOUND);
     }
 }

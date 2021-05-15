@@ -14,19 +14,19 @@ class ApiClient extends HeaderFactory
     private const HEADER_ID          = 'admin:apiClientId';
     private const HEADER_DESCRIPTION = 'admin:apiClientDescription';
 
-    /** @var array */
-    protected $headers = [
+    /** @var array<string,string> */
+    protected array $headers = [
         self::GROUP_ID          => self::HEADER_ID,
         self::GROUP_DESCRIPTION => self::HEADER_DESCRIPTION,
     ];
 
-    /** @var array */
-    protected $inputNames = [
+    /** @var array<string,string> */
+    protected array $inputNames = [
         self::GROUP_DESCRIPTION => 'description',
     ];
 
-    /** @var array */
-    protected $fieldNames = [
+    /** @var array<string,string> */
+    protected array $fieldNames = [
         self::GROUP_DESCRIPTION => 'ac.description',
     ];
 }

@@ -18,26 +18,25 @@ use Psr\Log\LoggerInterface;
 
 class Login extends ControllerAbstract
 {
-    const REMOTE_ADDR = 'REMOTE_ADDR';
+    public const REMOTE_ADDR = 'REMOTE_ADDR';
 
-    const POST_USERNAME = 'username';
-    const POST_PASSWORD = 'password';
+    public const POST_USERNAME = 'username';
+    public const POST_PASSWORD = 'password';
 
-    const ERROR_MSG_LOGIN_THROTTLED    = 'admin:throttled';
-    const ERROR_MSG_DB_PROBLEM         = 'admin:dbProblem';
-    const ERROR_MSG_UNEXPECTED_PROBLEM = 'admin:unexpectedProblem';
-    const ERROR_MSG_LOGIN_FAILED       = 'admin:unknownFailure';
+    public const ERROR_MSG_LOGIN_THROTTLED    = 'admin:throttled';
+    public const ERROR_MSG_DB_PROBLEM         = 'admin:dbProblem';
+    public const ERROR_MSG_UNEXPECTED_PROBLEM = 'admin:unexpectedProblem';
+    public const ERROR_MSG_LOGIN_FAILED       = 'admin:unknownFailure';
 
-    const SUCCESS_MSG = 'User "%s" logged in.';
+    public const SUCCESS_MSG = 'User "%s" logged in.';
 
-    /** @var SessionInitializer */
-    protected $sessionInitializer;
+    protected SessionInitializer $sessionInitializer;
 
-    /** @var ITranslator */
-    protected $translator;
+    protected ITranslator $translator;
 
-    /** @var LoginService */
-    protected $loginService;
+    protected LoginService $loginService;
+
+    protected RoutesConfig $routesConfig;
 
     /**
      * Login constructor.
@@ -47,19 +46,22 @@ class Login extends ControllerAbstract
      * @param SessionInitializer $sessionInitializer
      * @param ITranslator        $translator
      * @param LoginService       $loginService
+     * @param RoutesConfig       $routesConfig
      */
     public function __construct(
         FlashService $flashService,
         LoggerInterface $logger,
         SessionInitializer $sessionInitializer,
         ITranslator $translator,
-        LoginService $loginService
+        LoginService $loginService,
+        RoutesConfig $routesConfig
     ) {
         parent::__construct($flashService, $logger);
 
         $this->sessionInitializer = $sessionInitializer;
         $this->translator         = $translator;
         $this->loginService       = $loginService;
+        $this->routesConfig       = $routesConfig;
     }
 
     public function execute(): Response
@@ -72,7 +74,7 @@ class Login extends ControllerAbstract
             if (!$this->loginService->isLoginAllowed($username, $ipAddress)) {
                 $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_LOGIN_THROTTLED)]);
 
-                return new RedirectResponse(RoutesConfig::getLoginFailurePath());
+                return new RedirectResponse($this->routesConfig->getLoginFailurePath());
             }
 
             $user = $this->loginService->login($username, $password, $ipAddress);
@@ -81,19 +83,17 @@ class Login extends ControllerAbstract
 
                 $this->sessionInitializer->initialize($user);
 
-                return new RedirectResponse(RoutesConfig::getLoginSuccessPath());
+                return new RedirectResponse($this->routesConfig->getLoginSuccessPath());
             } else {
                 $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_LOGIN_FAILED)]);
             }
-        } catch (OrmException $e) {
-            $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_DB_PROBLEM)]);
-        } catch (InvalidQueryException $e) {
+        } catch (OrmException | InvalidQueryException $e) {
             $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_DB_PROBLEM)]);
         } catch (\Exception $e) {
             $this->flashService->mergeErrorMessages([$this->translate(static::ERROR_MSG_UNEXPECTED_PROBLEM)]);
         }
 
-        return new RedirectResponse(RoutesConfig::getLoginFailurePath());
+        return new RedirectResponse($this->routesConfig->getLoginFailurePath());
     }
 
     /**
@@ -101,7 +101,7 @@ class Login extends ControllerAbstract
      *
      * @return string
      */
-    protected function translate(string $messageType)
+    protected function translate(string $messageType): string
     {
         return $this->translator->translate($messageType);
     }

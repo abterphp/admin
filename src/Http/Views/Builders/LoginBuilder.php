@@ -9,6 +9,7 @@ use AbterPhp\Admin\Events\AdminReady;
 use AbterPhp\Framework\Assets\AssetManager;
 use AbterPhp\Framework\Constant\Env;
 use AbterPhp\Framework\Constant\View;
+use League\Flysystem\FilesystemException;
 use Opulence\Events\Dispatchers\IEventDispatcher;
 use Opulence\Views\Factories\IViewBuilder;
 use Opulence\Views\IView;
@@ -18,11 +19,9 @@ use Opulence\Views\IView;
  */
 class LoginBuilder implements IViewBuilder
 {
-    /** @var AssetManager */
-    protected $assets;
+    protected AssetManager $assets;
 
-    /** @var IEventDispatcher */
-    protected $eventDispatcher;
+    protected IEventDispatcher $eventDispatcher;
 
     /**
      * AdminBuilder constructor.
@@ -38,6 +37,7 @@ class LoginBuilder implements IViewBuilder
 
     /**
      * @inheritdoc
+     * @throws FilesystemException
      */
     public function build(IView $view): IView
     {

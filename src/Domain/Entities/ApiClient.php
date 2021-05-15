@@ -8,20 +8,16 @@ use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 
 class ApiClient implements IStringerEntity
 {
-    /** @var string */
-    protected $id;
+    protected string $id;
 
-    /** @var string */
-    protected $userId;
+    protected string $userId;
 
-    /** @var string */
-    protected $description;
+    protected string $description;
 
-    /** @var string */
-    protected $secret;
+    protected string $secret;
 
     /** @var AdminResource[] */
-    protected $adminResources;
+    protected array $adminResources;
 
     /**
      * ApiClient constructor.

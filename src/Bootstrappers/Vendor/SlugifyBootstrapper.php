@@ -12,7 +12,7 @@ use Opulence\Ioc\IContainer;
 class SlugifyBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @inheritdoc
+     * @return string[]
      */
     public function getBindings(): array
     {

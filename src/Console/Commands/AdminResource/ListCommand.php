@@ -8,14 +8,14 @@ use AbterPhp\Admin\Domain\Entities\AdminResource; // @phan-suppress-current-line
 use AbterPhp\Admin\Orm\AdminResourceRepo;
 use Opulence\Console\Commands\Command;
 use Opulence\Console\Responses\IResponse;
+use Opulence\Orm\OrmException;
 
 class ListCommand extends Command
 {
-    const COMMAND_NAME        = 'adminresource:list';
-    const COMMAND_DESCRIPTION = 'List available admin resources';
+    protected const COMMAND_NAME        = 'adminresource:list';
+    protected const COMMAND_DESCRIPTION = 'List available admin resources';
 
-    /** @var AdminResourceRepo */
-    protected $adminResourceRepo;
+    protected AdminResourceRepo $adminResourceRepo;
 
     /**
      * ListCommand constructor.
@@ -39,6 +39,7 @@ class ListCommand extends Command
 
     /**
      * @inheritdoc
+     * @throws OrmException
      */
     protected function doExecute(IResponse $response)
     {

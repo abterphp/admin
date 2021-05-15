@@ -13,31 +13,31 @@ use Psr\Log\LoggerInterface;
 
 abstract class AdminAbstract extends ControllerAbstract
 {
-    const ENTITY_PLURAL   = '';
-    const ENTITY_SINGULAR = '';
+    public const ENTITY_PLURAL   = '';
+    public const ENTITY_SINGULAR = '';
 
-    const ENTITY_LOAD_FAILURE = 'framework:load-failure';
+    public const ENTITY_LOAD_FAILURE = 'framework:load-failure';
 
-    const URL_EDIT = '%s-edit';
+    public const URL_EDIT = '%s-edit';
 
-    const RESOURCE_DEFAULT = '%s';
-    const RESOURCE_HEADER  = '%s-header';
-    const RESOURCE_FOOTER  = '%s-footer';
-    const RESOURCE_TYPE    = 'void';
+    public const RESOURCE_DEFAULT = '%s';
+    public const RESOURCE_HEADER  = '%s-header';
+    public const RESOURCE_FOOTER  = '%s-footer';
+    public const RESOURCE_TYPE    = 'void';
 
-    const LOG_CONTEXT_EXCEPTION  = 'Exception';
-    const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
+    public const LOG_CONTEXT_EXCEPTION  = 'Exception';
+    public const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
 
-    const ROUTING_PATH = '';
+    public const ROUTING_PATH = '';
 
     /** @var ITranslator */
-    protected $translator;
+    protected ITranslator $translator;
 
     /** @var UrlGenerator */
     protected $urlGenerator;
 
     /** @var string */
-    protected $resource = '';
+    protected string $resource = '';
 
     /**
      * AdminAbstract constructor.

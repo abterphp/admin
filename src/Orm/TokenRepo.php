@@ -6,6 +6,7 @@ namespace AbterPhp\Admin\Orm;
 
 use AbterPhp\Admin\Domain\Entities\Token as Entity;
 use AbterPhp\Admin\Orm\DataMappers\TokenSqlDataMapper; // @phan-suppress-current-line PhanUnreferencedUseNormal
+use Opulence\Orm\OrmException;
 use Opulence\Orm\Repositories\Repository;
 
 class TokenRepo extends Repository
@@ -14,7 +15,7 @@ class TokenRepo extends Repository
      * @param string $username
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByClientId(string $username): ?Entity
     {

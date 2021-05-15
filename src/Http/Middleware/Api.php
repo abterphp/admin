@@ -20,11 +20,11 @@ use Psr\Log\LoggerInterface;
 
 class Api implements IMiddleware
 {
-    const ATTRIBUTE_USER_ID   = 'oauth_user_id';
-    const ATTRIBUTE_CLIENT_ID = 'oauth_client_id';
+    public const ATTRIBUTE_USER_ID   = 'oauth_user_id';
+    public const ATTRIBUTE_CLIENT_ID = 'oauth_client_id';
 
-    const HEADER_USER_ID       = 'xxx-user-id';
-    const HEADER_USER_USERNAME = 'xxx-user-username';
+    public const HEADER_USER_ID       = 'xxx-user-id';
+    public const HEADER_USER_USERNAME = 'xxx-user-username';
 
     protected ResourceServer $resourceServer;
 
@@ -143,9 +143,7 @@ class Api implements IMiddleware
             return null;
         }
 
-        $user = $this->userRepo->getById($userId);
-
-        return $user;
+        return $this->userRepo->getById($userId);
     }
 
     /**
@@ -161,8 +159,6 @@ class Api implements IMiddleware
             return null;
         }
 
-        $user = $this->userRepo->getByClientId($clientId);
-
-        return $user;
+        return $this->userRepo->getByClientId($clientId);
     }
 }

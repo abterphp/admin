@@ -17,24 +17,21 @@ use Opulence\Orm\IUnitOfWork;
 
 class Delete extends Command
 {
-    const COMMAND_NAME            = 'apiclient:delete';
-    const COMMAND_DESCRIPTION     = 'Deletes an existing user';
-    const COMMAND_SUCCESS         = '<success>Existing API client is deleted.</success>';
-    const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented deleting existing user.</info>';
+    public const COMMAND_NAME            = 'apiclient:delete';
+    public const COMMAND_DESCRIPTION     = 'Deletes an existing user';
+    public const COMMAND_SUCCESS         = '<success>Existing API client is deleted.</success>';
+    public const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented deleting existing user.</info>';
 
-    const ARGUMENT_IDENTIFIER = 'identifier';
+    public const ARGUMENT_IDENTIFIER = 'identifier';
 
-    const OPTION_DRY_RUN    = 'dry-run';
-    const SHORTENED_DRY_RUN = 'd';
+    public const OPTION_DRY_RUN    = 'dry-run';
+    public const SHORTENED_DRY_RUN = 'd';
 
-    /** @var ApiClientRepo */
-    protected $apiClientRepo;
+    protected ApiClientRepo $apiClientRepo;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
     /**
      * Delete constructor.

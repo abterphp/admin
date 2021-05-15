@@ -16,8 +16,7 @@ use Opulence\Orm\IUnitOfWork;
 
 class UserGroup extends RepoServiceAbstract
 {
-    /** @var Slugify */
-    protected $slugify;
+    protected Slugify $slugify;
 
     /**
      * UserGroup constructor.

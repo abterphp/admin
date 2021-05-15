@@ -249,8 +249,7 @@ class ApiClient extends Base
         );
         $container[] = new Help(
             'admin:apiClientSecretHelp',
-            // TODO: Tag::INTENT_HIDDEN
-            ['hidden'],
+            [Tag::INTENT_HIDDEN],
             $helpAttributes
         );
 

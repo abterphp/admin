@@ -11,11 +11,10 @@ use Opulence\Console\Responses\IResponse;
 
 class ListCommand extends Command
 {
-    const COMMAND_NAME        = 'userlanguage:list';
-    const COMMAND_DESCRIPTION = 'List available user languages';
+    public const COMMAND_NAME        = 'userlanguage:list';
+    public const COMMAND_DESCRIPTION = 'List available user languages';
 
-    /** @var UserLanguageRepo */
-    protected $userLanguageRepo;
+    protected UserLanguageRepo $userLanguageRepo;
 
     /**
      * ListCommand constructor.

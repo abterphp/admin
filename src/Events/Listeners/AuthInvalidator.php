@@ -14,11 +14,9 @@ use Opulence\Sessions\ISession;
 
 class AuthInvalidator
 {
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var ISession */
-    protected $session;
+    protected ISession $session;
 
     /**
      * AuthInvalidator constructor.

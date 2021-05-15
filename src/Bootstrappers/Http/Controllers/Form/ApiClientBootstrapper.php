@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
 class ApiClientBootstrapper extends Bootstrapper implements ILazyBootstrapper
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings(): array
     {
@@ -33,6 +33,8 @@ class ApiClientBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
     /**
      * @param IContainer $container
+     *
+     * @throws \Opulence\Ioc\IocException
      */
     public function registerBindings(IContainer $container)
     {

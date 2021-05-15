@@ -22,46 +22,39 @@ use ZxcvbnPhp\Zxcvbn;
 
 class Create extends Command
 {
-    const COMMAND_NAME            = 'user:create';
-    const COMMAND_DESCRIPTION     = 'Creates a new user';
-    const COMMAND_SUCCESS         = '<success>New user is created.</success>';
-    const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented creating new user.</info>';
-    const COMMAND_UNSAFE_PASSWORD = '<fatal>Password provided is not safe.</fatal>';
+    public const COMMAND_NAME            = 'user:create';
+    public const COMMAND_DESCRIPTION     = 'Creates a new user';
+    public const COMMAND_SUCCESS         = '<success>New user is created.</success>';
+    public const COMMAND_DRY_RUN_MESSAGE = '<info>Dry run prevented creating new user.</info>';
+    public const COMMAND_UNSAFE_PASSWORD = '<fatal>Password provided is not safe.</fatal>';
 
-    const ARGUMENT_USERNAME    = 'username';
-    const ARGUMENT_EMAIL       = 'email';
-    const ARGUMENT_PASSWORD    = 'password';
-    const ARGUMENT_USER_GROUPS = 'usergroups';
-    const ARGUMENT_USER_LANG   = 'lang';
+    public const ARGUMENT_USERNAME    = 'username';
+    public const ARGUMENT_EMAIL       = 'email';
+    public const ARGUMENT_PASSWORD    = 'password';
+    public const ARGUMENT_USER_GROUPS = 'usergroups';
+    public const ARGUMENT_USER_LANG   = 'lang';
 
-    const OPTION_CAN_LOGIN       = 'can-login';
-    const SHORTENED_CAN_LOGIN    = 'l';
-    const OPTION_HAS_GRAVATAR    = 'has-gravatar';
-    const SHORTENED_HAS_GRAVATAR = 'g';
-    const OPTION_DRY_RUN         = 'dry-run';
-    const SHORTENED_DRY_RUN      = 'd';
-    const OPTION_UNSAFE          = 'unsafe';
+    public const OPTION_CAN_LOGIN       = 'can-login';
+    public const SHORTENED_CAN_LOGIN    = 'l';
+    public const OPTION_HAS_GRAVATAR    = 'has-gravatar';
+    public const SHORTENED_HAS_GRAVATAR = 'g';
+    public const OPTION_DRY_RUN         = 'dry-run';
+    public const SHORTENED_DRY_RUN      = 'd';
+    public const OPTION_UNSAFE          = 'unsafe';
 
-    /** @var UserRepo */
-    protected $userRepo;
+    protected UserRepo $userRepo;
 
-    /** @var UserGroupRepo */
-    protected $userGroupRepo;
+    protected UserGroupRepo $userGroupRepo;
 
-    /** @var UserLanguageRepo */
-    protected $userLanguageRepo;
+    protected UserLanguageRepo $userLanguageRepo;
 
-    /** @var Crypto */
-    protected $crypto;
+    protected Crypto $crypto;
 
-    /** @var IUnitOfWork */
-    protected $unitOfWork;
+    protected IUnitOfWork $unitOfWork;
 
-    /** @var CacheManager */
-    protected $cacheManager;
+    protected CacheManager $cacheManager;
 
-    /** @var Zxcvbn */
-    protected $zxcvbn;
+    protected Zxcvbn $zxcvbn;
 
     /**
      * CreateCommand constructor.

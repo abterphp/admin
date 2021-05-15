@@ -18,8 +18,7 @@ use Opulence\Validation\IValidator;
 
 class User extends RepoServiceAbstract
 {
-    /** @var Crypto */
-    private $crypto;
+    private Crypto $crypto;
 
     /**
      * User constructor.
@@ -75,7 +74,8 @@ class User extends RepoServiceAbstract
             '',
             ''
         );
-        $entity       = new Entity(
+
+        return new Entity(
             $entityId,
             '',
             '',
@@ -84,8 +84,6 @@ class User extends RepoServiceAbstract
             false,
             $userLanguage
         );
-
-        return $entity;
     }
 
     /**

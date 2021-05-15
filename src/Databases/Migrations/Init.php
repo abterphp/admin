@@ -9,7 +9,7 @@ use DateTime;
 
 class Init extends BaseMigration
 {
-    const FILENAME = 'admin.sql';
+    public const FILENAME = 'admin.sql';
 
     /**
      * Gets the creation date, which is used for ordering
@@ -18,6 +18,6 @@ class Init extends BaseMigration
      */
     public static function getCreationDate(): DateTime
     {
-        return DateTime::createFromFormat(DateTime::ATOM, '2019-02-28T21:00:00+00:00');
+        return DateTime::createFromFormat(DATE_ATOM, '2019-02-28T21:00:00+00:00');
     }
 }

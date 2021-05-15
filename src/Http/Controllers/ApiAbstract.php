@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AbterPhp\Admin\Http\Controllers;
 
-use AbterPhp\Admin\Constant\Env;
-use AbterPhp\Framework\Config\EnvReader;
 use AbterPhp\Framework\Databases\Queries\FoundRows;
 use AbterPhp\Framework\Http\Service\Execute\IRepoService;
 use Opulence\Http\Responses\Response;
@@ -19,26 +17,23 @@ abstract class ApiAbstract extends Controller
     use ApiIssueTrait;
     use ApiDataTrait;
 
-    const LOG_MSG_CREATE_FAILURE = 'Creating %1$s failed.';
-    const LOG_MSG_UPDATE_FAILURE = 'Updating %1$s with id "%2$s" failed.';
-    const LOG_MSG_DELETE_FAILURE = 'Deleting %1$s with id "%2$s" failed.';
-    const LOG_MSG_GET_FAILURE    = 'Retrieving %1$s with id "%2$s" failed.';
-    const LOG_MSG_LIST_FAILURE   = 'Retrieving %1$s failed.';
+    public const LOG_MSG_CREATE_FAILURE = 'Creating %1$s failed.';
+    public const LOG_MSG_UPDATE_FAILURE = 'Updating %1$s with id "%2$s" failed.';
+    public const LOG_MSG_DELETE_FAILURE = 'Deleting %1$s with id "%2$s" failed.';
+    public const LOG_MSG_GET_FAILURE    = 'Retrieving %1$s with id "%2$s" failed.';
+    public const LOG_MSG_LIST_FAILURE   = 'Retrieving %1$s failed.';
 
-    const LOG_CONTEXT_EXCEPTION  = 'Exception';
-    const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
+    public const LOG_CONTEXT_EXCEPTION  = 'Exception';
+    public const LOG_PREVIOUS_EXCEPTION = 'Previous exception #%d';
 
-    const ENTITY_SINGULAR = '';
-    const ENTITY_PLURAL   = '';
+    public const ENTITY_SINGULAR = '';
+    public const ENTITY_PLURAL   = '';
 
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /** @var IRepoService */
-    protected $repoService;
+    protected IRepoService $repoService;
 
-    /** @var FoundRows */
-    protected $foundRows;
+    protected FoundRows $foundRows;
 
     /**
      * ApiAbstract constructor.
@@ -46,18 +41,18 @@ abstract class ApiAbstract extends Controller
      * @param LoggerInterface $logger
      * @param IRepoService    $repoService
      * @param FoundRows       $foundRows
-     * @param EnvReader       $envReader
+     * @param string          $problemBaseUrl
      */
     public function __construct(
         LoggerInterface $logger,
         IRepoService $repoService,
         FoundRows $foundRows,
-        EnvReader $envReader
+        string $problemBaseUrl
     ) {
         $this->logger         = $logger;
         $this->repoService    = $repoService;
         $this->foundRows      = $foundRows;
-        $this->problemBaseUrl = $envReader->get(Env::API_PROBLEM_BASE_URL);
+        $this->problemBaseUrl = $problemBaseUrl;
     }
 
     /**

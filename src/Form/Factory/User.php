@@ -23,6 +23,7 @@ use AbterPhp\Framework\Html\Helper\Attributes;
 use AbterPhp\Framework\Html\Tag;
 use AbterPhp\Framework\I18n\ITranslator;
 use Opulence\Orm\IEntity;
+use Opulence\Orm\OrmException;
 use Opulence\Sessions\ISession;
 
 class User extends Base
@@ -58,6 +59,7 @@ class User extends Base
      * @param IEntity|null $entity
      *
      * @return IForm
+     * @throws OrmException
      */
     public function create(string $action, string $method, string $showUrl, ?IEntity $entity = null): IForm
     {
@@ -294,6 +296,7 @@ class User extends Base
      * @param Entity $entity
      *
      * @return $this
+     * @throws OrmException
      */
     protected function addUserGroups(Entity $entity): User
     {
@@ -316,7 +319,7 @@ class User extends Base
 
     /**
      * @return UserGroup[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     protected function getAllUserGroups(): array
     {
@@ -375,7 +378,7 @@ class User extends Base
      * @param Entity $entity
      *
      * @return $this
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     protected function addUserLanguages(Entity $entity): User
     {
@@ -398,7 +401,7 @@ class User extends Base
 
     /**
      * @return UserLanguage[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     protected function getAllUserLanguages(): array
     {

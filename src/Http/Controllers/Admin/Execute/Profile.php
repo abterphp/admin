@@ -6,9 +6,13 @@ namespace AbterPhp\Admin\Http\Controllers\Admin\Execute;
 
 use AbterPhp\Admin\Constant\Route;
 use AbterPhp\Framework\Constant\Session;
+use Opulence\Routing\Urls\UrlException;
 
 class Profile extends User
 {
+    /**
+     * @throws URLException
+     */
     public function profile()
     {
         $userId = (string)$this->session->get(Session::USER_ID);
@@ -25,10 +29,8 @@ class Profile extends User
      * @return string
      * @throws \Opulence\Routing\Urls\URLException
      */
-    protected function getUrl(string $next, string $entityId = null)
+    protected function getUrl(string $next, string $entityId = null): string
     {
-        $url = $this->urlGenerator->createFromName(Route::PROFILE_EDIT);
-
-        return $url;
+        return $this->urlGenerator->createFromName(Route::PROFILE_EDIT);
     }
 }
