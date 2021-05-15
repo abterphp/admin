@@ -24,10 +24,9 @@ unit:
 
 coverage:
 	XDEBUG_MODE=coverage ./vendor/bin/phpunit -c phpunit-cov.xml
-	XDEBUG_MODE=off ./vendor/bin/php-coveralls -vvv --coverage_clover=./tmp/report/clover.xml --json_path=./tmp/report/coveralls-upload.json
 
 pull:
 	git pull
 	git submodule update --recursive --remote
 
-.PHONY: install update build precommit unit integration coverage pull
+.PHONY: build precommit install update unit coverage pull

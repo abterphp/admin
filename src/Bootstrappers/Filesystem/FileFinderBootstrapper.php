@@ -106,10 +106,10 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
 
         switch ($driverClass) {
             case MySqlDriver::class:
-                $this->dbDriverName = 'mysql';
+                $dbDriverName = 'mysql';
                 break;
             case PostgreSqlDriver::class:
-                $this->dbDriverName = 'pgsql';
+                $dbDriverName = 'pgsql';
                 break;
             default:
                 throw new \RuntimeException(
@@ -117,6 +117,8 @@ class FileFinderBootstrapper extends Bootstrapper implements ILazyBootstrapper
                 );
         }
 
-        return $this->dbDriverName;
+        $this->dbDriverName = $dbDriverName;
+
+        return $dbDriverName;
     }
 }

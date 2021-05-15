@@ -102,7 +102,7 @@ class Routes extends FrameworkRoutes
 
         $this->adminBasePath = $adminBasePath;
 
-        return $this->adminBasePath;
+        return $adminBasePath;
     }
 
     /**
@@ -129,7 +129,7 @@ class Routes extends FrameworkRoutes
 
         $this->apiBasePath = $apiBasePath;
 
-        return $this->apiBasePath;
+        return $apiBasePath;
     }
 
     /**
@@ -177,11 +177,11 @@ class Routes extends FrameworkRoutes
             '%s%s%s',
             rtrim($this->getMediaUrl(), DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
-            ltrim(Environment::getVar(Env::EDITOR_BASE_PATH), DIRECTORY_SEPARATOR)
+            ltrim(Environment::mustGetVar(Env::EDITOR_BASE_PATH), DIRECTORY_SEPARATOR)
         );
 
         $this->uploadUrl = $uploadUrl;
 
-        return $this->uploadUrl;
+        return $uploadUrl;
     }
 }
