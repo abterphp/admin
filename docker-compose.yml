@@ -23,8 +23,8 @@ services:
     environment:
       - MH_HOSTNAME=localhost
 
-  cli:
-    image: abtercms/php:74
+  cli82:
+    image: abtercms/php:82
     links:
       - db_test
       - memcached
@@ -34,17 +34,5 @@ services:
       - .:/website
       - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
       - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
-    working_dir: /website
-
-  cli80:
-    image: abtercms/php:80
-    links:
-      - db_test
-      - memcached
-      - redis
-      - mailcatcher
-    volumes:
-      - .:/website
-      - ./docker/php/conf.d/zzz_020_general.ini:/usr/local/etc/php/conf.d/zzz_020_general.ini:ro
-      - ./docker/php/conf.d/zzz_500_local.ini:/usr/local/etc/php/conf.d/zzz_500_local.ini:ro
+      - ./docker/php/conf.d/ast-on.ini:/usr/local/etc/php/conf.d/ast-on.ini:ro
     working_dir: /website

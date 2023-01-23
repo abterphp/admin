@@ -10,7 +10,7 @@ use Opulence\Orm\DataMappers\SqlDataMapper;
 use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
-use Opulence\QueryBuilders\MySql\SelectQuery;
+use Opulence\QueryBuilders\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
 class LoginAttemptSqlDataMapper extends SqlDataMapper implements ILoginAttemptDataMapper

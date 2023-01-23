@@ -31,7 +31,7 @@ class UserTest extends TestCase
 
         $html = (string)$sut;
 
-        $this->assertStringContainsString('<div class="hidable">', $html);
+        $this->assertStringContainsString('<div class="hideable">', $html);
         $this->assertStringContainsString('filter-username', $html);
         $this->assertStringContainsString('filter-email', $html);
     }

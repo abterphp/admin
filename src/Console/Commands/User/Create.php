@@ -213,7 +213,10 @@ class Create extends Command
 
         $userGroups = [];
         foreach (explode(',', $ugIdentifiers) as $ugIdentifier) {
-            $userGroups[] = $this->userGroupRepo->getByIdentifier($ugIdentifier);
+            $ug = $this->userGroupRepo->getByIdentifier($ugIdentifier);
+            if ($ug !== null) {
+                $userGroups[] = $ug;
+            }
         }
         $userLanguage = $this->userLanguageRepo->getByIdentifier($ulIdentifier);
 

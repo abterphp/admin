@@ -11,7 +11,7 @@ use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
 use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
-use Opulence\QueryBuilders\MySql\SelectQuery;
+use Opulence\QueryBuilders\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
 class UserLanguageSqlDataMapper extends SqlDataMapper implements IUserLanguageDataMapper

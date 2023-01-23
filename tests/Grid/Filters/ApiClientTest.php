@@ -31,7 +31,7 @@ class ApiClientTest extends TestCase
 
         $html = (string)$sut;
 
-        $this->assertStringContainsString('<div class="hidable">', $html);
+        $this->assertStringContainsString('<div class="hideable">', $html);
         $this->assertStringContainsString('filter-description', $html);
     }
 }

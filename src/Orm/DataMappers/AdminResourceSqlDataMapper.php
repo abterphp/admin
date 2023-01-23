@@ -7,9 +7,11 @@ namespace AbterPhp\Admin\Orm\DataMappers;
 use AbterPhp\Admin\Domain\Entities\AdminResource as Entity;
 use AbterPhp\Framework\Domain\Entities\IStringerEntity;
 use Opulence\Orm\DataMappers\SqlDataMapper;
+use Opulence\Orm\OrmException;
 use Opulence\QueryBuilders\Expression;
+use Opulence\QueryBuilders\InvalidQueryException;
 use Opulence\QueryBuilders\MySql\QueryBuilder;
-use Opulence\QueryBuilders\MySql\SelectQuery;
+use Opulence\QueryBuilders\SelectQuery;
 
 /** @phan-file-suppress PhanTypeMismatchArgument */
 class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResourceDataMapper
@@ -38,7 +40,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function delete($entity)
     {
@@ -60,7 +62,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
 
     /**
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getAll(): array
     {
@@ -75,7 +77,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      * @param int|string $id
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getById($id)
     {
@@ -92,7 +94,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      * @param string $identifier
      *
      * @return Entity|null
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByIdentifier(string $identifier): ?Entity
     {
@@ -109,7 +111,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
      * @param string $userId
      *
      * @return Entity[]
-     * @throws \Opulence\Orm\OrmException
+     * @throws OrmException
      */
     public function getByUserId(string $userId): array
     {
@@ -131,7 +133,7 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
     /**
      * @param IStringerEntity $entity
      *
-     * @throws \Opulence\QueryBuilders\InvalidQueryException
+     * @throws InvalidQueryException
      */
     public function update($entity)
     {
@@ -170,17 +172,14 @@ class AdminResourceSqlDataMapper extends SqlDataMapper implements IAdminResource
     /**
      * @return SelectQuery
      */
-    private function getBaseQuery()
+    private function getBaseQuery(): SelectQuery
     {
-        /** @var SelectQuery $query */
-        $query = (new QueryBuilder())
+        return (new QueryBuilder())
             ->select(
                 'ar.id',
                 'ar.identifier'
             )
             ->from('admin_resources', 'ar')
             ->where('ar.deleted_at IS NULL');
-
-        return $query;
     }
 }
